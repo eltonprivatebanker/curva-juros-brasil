@@ -1,0 +1,453 @@
+{
+  "schema_version": 1,
+  "date": "2026-08-12",
+  "source": "B3 (coleta e parsing via PYield)",
+  "demo": false,
+  "generated_at": "2026-08-15T00:20:05-03:00",
+  "contracts": [
+    {
+      "ticker": "DI1U26",
+      "maturity": "2026-09-01",
+      "business_days": 14,
+      "rate": 0.13902,
+      "rate_pct": 13.902,
+      "open_interest": 1720578,
+      "trades": 387,
+      "financial_volume": 1200088919.25
+    },
+    {
+      "ticker": "DI1V26",
+      "maturity": "2026-10-01",
+      "business_days": 35,
+      "rate": 0.13843,
+      "rate_pct": 13.843,
+      "open_interest": 3581681,
+      "trades": 1747,
+      "financial_volume": 31662761443.42
+    },
+    {
+      "ticker": "DI1X26",
+      "maturity": "2026-11-03",
+      "business_days": 56,
+      "rate": 0.13791,
+      "rate_pct": 13.791,
+      "open_interest": 825447,
+      "trades": 689,
+      "financial_volume": 6201277927.84
+    },
+    {
+      "ticker": "DI1Z26",
+      "maturity": "2026-12-01",
+      "business_days": 75,
+      "rate": 0.13762,
+      "rate_pct": 13.762,
+      "open_interest": 795611,
+      "trades": 165,
+      "financial_volume": 6235208914.59
+    },
+    {
+      "ticker": "DI1F27",
+      "maturity": "2027-01-04",
+      "business_days": 97,
+      "rate": 0.13751,
+      "rate_pct": 13.751,
+      "open_interest": 6851878,
+      "trades": 7841,
+      "financial_volume": 49394573066.22
+    },
+    {
+      "ticker": "DI1G27",
+      "maturity": "2027-02-01",
+      "business_days": 117,
+      "rate": 0.13757,
+      "rate_pct": 13.757,
+      "open_interest": 204520,
+      "trades": 138,
+      "financial_volume": 2380936117.26
+    },
+    {
+      "ticker": "DI1H27",
+      "maturity": "2027-03-01",
+      "business_days": 135,
+      "rate": 0.1377,
+      "rate_pct": 13.77,
+      "open_interest": 150102,
+      "trades": 152,
+      "financial_volume": 5246847391.76
+    },
+    {
+      "ticker": "DI1J27",
+      "maturity": "2027-04-01",
+      "business_days": 157,
+      "rate": 0.13785,
+      "rate_pct": 13.785,
+      "open_interest": 1813454,
+      "trades": 5316,
+      "financial_volume": 15474657518.19
+    },
+    {
+      "ticker": "DI1K27",
+      "maturity": "2027-05-03",
+      "business_days": 178,
+      "rate": 0.13797,
+      "rate_pct": 13.797,
+      "open_interest": 178347,
+      "trades": 5,
+      "financial_volume": 41349908.04
+    },
+    {
+      "ticker": "DI1M27",
+      "maturity": "2027-06-01",
+      "business_days": 198,
+      "rate": 0.13815,
+      "rate_pct": 13.815,
+      "open_interest": 64916,
+      "trades": 16,
+      "financial_volume": 211811693.7
+    },
+    {
+      "ticker": "DI1N27",
+      "maturity": "2027-07-01",
+      "business_days": 220,
+      "rate": 0.13838,
+      "rate_pct": 13.838,
+      "open_interest": 2229850,
+      "trades": 7867,
+      "financial_volume": 16354802153
+    },
+    {
+      "ticker": "DI1Q27",
+      "maturity": "2027-08-02",
+      "business_days": 242,
+      "rate": 0.13849,
+      "rate_pct": 13.849,
+      "open_interest": 75226,
+      "trades": 167,
+      "financial_volume": 83163556.94
+    },
+    {
+      "ticker": "DI1V27",
+      "maturity": "2027-10-01",
+      "business_days": 285,
+      "rate": 0.13885,
+      "rate_pct": 13.885,
+      "open_interest": 1280576,
+      "trades": 2315,
+      "financial_volume": 2303100594.65
+    },
+    {
+      "ticker": "DI1X27",
+      "maturity": "2027-11-01",
+      "business_days": 305,
+      "rate": 0.13892,
+      "rate_pct": 13.892,
+      "open_interest": 47271,
+      "trades": 13,
+      "financial_volume": 28789945.62
+    },
+    {
+      "ticker": "DI1Z27",
+      "maturity": "2027-12-01",
+      "business_days": 325,
+      "rate": 0.13899,
+      "rate_pct": 13.899,
+      "open_interest": 64445,
+      "trades": 79,
+      "financial_volume": 33655836.44
+    },
+    {
+      "ticker": "DI1F28",
+      "maturity": "2028-01-03",
+      "business_days": 348,
+      "rate": 0.13921,
+      "rate_pct": 13.921,
+      "open_interest": 4864278,
+      "trades": 22693,
+      "financial_volume": 33056579501.24
+    },
+    {
+      "ticker": "DI1J28",
+      "maturity": "2028-04-03",
+      "business_days": 411,
+      "rate": 0.13988,
+      "rate_pct": 13.988,
+      "open_interest": 568507,
+      "trades": 659,
+      "financial_volume": 991113844.51
+    },
+    {
+      "ticker": "DI1N28",
+      "maturity": "2028-07-03",
+      "business_days": 472,
+      "rate": 0.14076,
+      "rate_pct": 14.076,
+      "open_interest": 760986,
+      "trades": 6471,
+      "financial_volume": 4354307662.21
+    },
+    {
+      "ticker": "DI1V28",
+      "maturity": "2028-10-02",
+      "business_days": 536,
+      "rate": 0.14164,
+      "rate_pct": 14.164,
+      "open_interest": 317123,
+      "trades": 1243,
+      "financial_volume": 886754865.22
+    },
+    {
+      "ticker": "DI1X28",
+      "maturity": "2028-11-01",
+      "business_days": 557,
+      "rate": 0.14186,
+      "rate_pct": 14.186,
+      "open_interest": 27199,
+      "trades": 5,
+      "financial_volume": 521982.17
+    },
+    {
+      "ticker": "DI1Z28",
+      "maturity": "2028-12-01",
+      "business_days": 576,
+      "rate": 0.14204,
+      "rate_pct": 14.204,
+      "open_interest": 29003,
+      "trades": 4,
+      "financial_volume": 442760.82
+    },
+    {
+      "ticker": "DI1F29",
+      "maturity": "2029-01-02",
+      "business_days": 596,
+      "rate": 0.14222,
+      "rate_pct": 14.222,
+      "open_interest": 3124572,
+      "trades": 27010,
+      "financial_volume": 18592282034.32
+    },
+    {
+      "ticker": "DI1J29",
+      "maturity": "2029-04-02",
+      "business_days": 657,
+      "rate": 0.14282,
+      "rate_pct": 14.282,
+      "open_interest": 172817,
+      "trades": 60,
+      "financial_volume": 20271743.48
+    },
+    {
+      "ticker": "DI1N29",
+      "maturity": "2029-07-02",
+      "business_days": 720,
+      "rate": 0.14335,
+      "rate_pct": 14.335,
+      "open_interest": 2017047,
+      "trades": 3414,
+      "financial_volume": 2155095321.61
+    },
+    {
+      "ticker": "DI1V29",
+      "maturity": "2029-10-01",
+      "business_days": 784,
+      "rate": 0.14355,
+      "rate_pct": 14.355,
+      "open_interest": 99067,
+      "trades": 402,
+      "financial_volume": 157215790.59
+    },
+    {
+      "ticker": "DI1X29",
+      "maturity": "2029-11-01",
+      "business_days": 806,
+      "rate": 0.14362,
+      "rate_pct": 14.362,
+      "open_interest": 8481,
+      "trades": 3,
+      "financial_volume": 715901.63
+    },
+    {
+      "ticker": "DI1Z29",
+      "maturity": "2029-12-03",
+      "business_days": 825,
+      "rate": 0.14367,
+      "rate_pct": 14.367,
+      "open_interest": 12702,
+      "trades": 1,
+      "financial_volume": 64412.91
+    },
+    {
+      "ticker": "DI1F30",
+      "maturity": "2030-01-02",
+      "business_days": 845,
+      "rate": 0.14384,
+      "rate_pct": 14.384,
+      "open_interest": 1562903,
+      "trades": 13886,
+      "financial_volume": 5855341826.47
+    },
+    {
+      "ticker": "DI1J30",
+      "maturity": "2030-04-01",
+      "business_days": 906,
+      "rate": 0.14395,
+      "rate_pct": 14.395,
+      "open_interest": 79249,
+      "trades": 32,
+      "financial_volume": 3763329.91
+    },
+    {
+      "ticker": "DI1N30",
+      "maturity": "2030-07-01",
+      "business_days": 968,
+      "rate": 0.14422,
+      "rate_pct": 14.422,
+      "open_interest": 123419,
+      "trades": 163,
+      "financial_volume": 47293032.71
+    },
+    {
+      "ticker": "DI1V30",
+      "maturity": "2030-10-01",
+      "business_days": 1034,
+      "rate": 0.14436,
+      "rate_pct": 14.436,
+      "open_interest": 53394,
+      "trades": 30,
+      "financial_volume": 3625552.57
+    },
+    {
+      "ticker": "DI1F31",
+      "maturity": "2031-01-02",
+      "business_days": 1097,
+      "rate": 0.14455,
+      "rate_pct": 14.455,
+      "open_interest": 2678700,
+      "trades": 19820,
+      "financial_volume": 6875796910.69
+    },
+    {
+      "ticker": "DI1J31",
+      "maturity": "2031-04-01",
+      "business_days": 1158,
+      "rate": 0.14461,
+      "rate_pct": 14.461,
+      "open_interest": 85835,
+      "trades": 37,
+      "financial_volume": 8185967.8
+    },
+    {
+      "ticker": "DI1N31",
+      "maturity": "2031-07-01",
+      "business_days": 1219,
+      "rate": 0.14481,
+      "rate_pct": 14.481,
+      "open_interest": 53979,
+      "trades": 208,
+      "financial_volume": 45823053.51
+    },
+    {
+      "ticker": "DI1V31",
+      "maturity": "2031-10-01",
+      "business_days": 1285,
+      "rate": 0.14499,
+      "rate_pct": 14.499,
+      "open_interest": 27185,
+      "trades": 31,
+      "financial_volume": 3512879.91
+    },
+    {
+      "ticker": "DI1F32",
+      "maturity": "2032-01-02",
+      "business_days": 1349,
+      "rate": 0.14532,
+      "rate_pct": 14.532,
+      "open_interest": 1430784,
+      "trades": 6113,
+      "financial_volume": 2278252070.77
+    },
+    {
+      "ticker": "DI1F33",
+      "maturity": "2033-01-03",
+      "business_days": 1601,
+      "rate": 0.14554,
+      "rate_pct": 14.554,
+      "open_interest": 697156,
+      "trades": 4317,
+      "financial_volume": 1220647356.26
+    },
+    {
+      "ticker": "DI1F34",
+      "maturity": "2034-01-02",
+      "business_days": 1852,
+      "rate": 0.14549,
+      "rate_pct": 14.549,
+      "open_interest": 311996,
+      "trades": 68,
+      "financial_volume": 7925053.71
+    },
+    {
+      "ticker": "DI1F35",
+      "maturity": "2035-01-02",
+      "business_days": 2100,
+      "rate": 0.14554,
+      "rate_pct": 14.554,
+      "open_interest": 722700,
+      "trades": 7643,
+      "financial_volume": 669571997.28
+    },
+    {
+      "ticker": "DI1F36",
+      "maturity": "2036-01-02",
+      "business_days": 2349,
+      "rate": 0.14527,
+      "rate_pct": 14.527,
+      "open_interest": 98923,
+      "trades": 85,
+      "financial_volume": 8302625.25
+    },
+    {
+      "ticker": "DI1F37",
+      "maturity": "2037-01-02",
+      "business_days": 2602,
+      "rate": 0.1454,
+      "rate_pct": 14.54,
+      "open_interest": 376559,
+      "trades": 1528,
+      "financial_volume": 241223333.49
+    },
+    {
+      "ticker": "DI1F38",
+      "maturity": "2038-01-04",
+      "business_days": 2851,
+      "rate": 0.14545,
+      "rate_pct": 14.545,
+      "open_interest": 54031,
+      "trades": 19,
+      "financial_volume": 1184128.19
+    },
+    {
+      "ticker": "DI1F39",
+      "maturity": "2039-01-03",
+      "business_days": 3102,
+      "rate": 0.14515,
+      "rate_pct": 14.515,
+      "open_interest": 45378
+    },
+    {
+      "ticker": "DI1F40",
+      "maturity": "2040-01-02",
+      "business_days": 3353,
+      "rate": 0.14501,
+      "rate_pct": 14.501,
+      "open_interest": 47928
+    },
+    {
+      "ticker": "DI1F41",
+      "maturity": "2041-01-02",
+      "business_days": 3603,
+      "rate": 0.14492,
+      "rate_pct": 14.492,
+      "open_interest": 24524
+    }
+  ]
+}

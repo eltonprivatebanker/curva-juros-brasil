@@ -1,18 +1,43 @@
 {
   "schema_version": 1,
-  "mode": "demo",
-  "source": "Dados sintéticos para teste da interface",
+  "mode": "live",
+  "source": "B3 (coleta e parsing via PYield)",
   "latest": "2026-08-14",
   "entries": [
     {
+      "date": "2026-08-06",
+      "path": "data/snapshots/2026-08-06.json",
+      "demo": false
+    },
+    {
+      "date": "2026-08-07",
+      "path": "data/snapshots/2026-08-07.json",
+      "demo": false
+    },
+    {
+      "date": "2026-08-10",
+      "path": "data/snapshots/2026-08-10.json",
+      "demo": false
+    },
+    {
+      "date": "2026-08-11",
+      "path": "data/snapshots/2026-08-11.json",
+      "demo": false
+    },
+    {
+      "date": "2026-08-12",
+      "path": "data/snapshots/2026-08-12.json",
+      "demo": false
+    },
+    {
       "date": "2026-08-13",
-      "path": "data/demo/2026-08-13.json",
-      "demo": true
+      "path": "data/snapshots/2026-08-13.json",
+      "demo": false
     },
     {
       "date": "2026-08-14",
-      "path": "data/demo/2026-08-14.json",
-      "demo": true
+      "path": "data/snapshots/2026-08-14.json",
+      "demo": false
     }
   ]
 }
