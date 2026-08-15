@@ -1,0 +1,13 @@
+{
+  "schema_version": 1,
+  "mode": "seed",
+  "source": "ANBIMA · ETTJ",
+  "latest": "2026-08-14",
+  "entries": [
+    {
+      "date": "2026-08-14",
+      "path": "data/anbima/2026-08-14.json",
+      "seed": true
+    }
+  ]
+}

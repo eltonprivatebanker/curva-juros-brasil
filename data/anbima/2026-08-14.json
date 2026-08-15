@@ -1,0 +1,673 @@
+{
+  "schema_version": 1,
+  "date": "2026-08-14",
+  "source": "ANBIMA · Estrutura a Termo das Taxas de Juros Estimada",
+  "source_mode": "manual_page_seed",
+  "precision_note": "Os beta/lambda deste snapshot inicial têm apenas as casas exibidas na página. Para reconstrução pelo modelo, use os parâmetros completos do download/API.",
+  "parameters": [
+    {
+      "group": "PREFIXADOS",
+      "b1": 0.1384,
+      "b2": -0.0008,
+      "b3": -0.0158,
+      "b4": 0.0398,
+      "l1": 2.7862,
+      "l2": 0.2568
+    },
+    {
+      "group": "IPCA",
+      "b1": 0.0696,
+      "b2": 0.0608,
+      "b3": -0.0682,
+      "b4": 0.0458,
+      "l1": 5.9999,
+      "l2": 0.4579
+    }
+  ],
+  "curves": [
+    {
+      "du": 126,
+      "ipca_pct": 7.5164,
+      "pre_pct": 13.5719,
+      "implied_pct": 5.6321
+    },
+    {
+      "du": 252,
+      "ipca_pct": 7.6324,
+      "pre_pct": 13.812,
+      "implied_pct": 5.7413
+    },
+    {
+      "du": 378,
+      "ipca_pct": 7.8887,
+      "pre_pct": 14.0718,
+      "implied_pct": 5.7309
+    },
+    {
+      "du": 504,
+      "ipca_pct": 8.0669,
+      "pre_pct": 14.2844,
+      "implied_pct": 5.7533
+    },
+    {
+      "du": 630,
+      "ipca_pct": 8.1821,
+      "pre_pct": 14.4505,
+      "implied_pct": 5.7943
+    },
+    {
+      "du": 756,
+      "ipca_pct": 8.2513,
+      "pre_pct": 14.5797,
+      "implied_pct": 5.846
+    },
+    {
+      "du": 882,
+      "ipca_pct": 8.2868,
+      "pre_pct": 14.6805,
+      "implied_pct": 5.9044
+    },
+    {
+      "du": 1008,
+      "ipca_pct": 8.2977,
+      "pre_pct": 14.759,
+      "implied_pct": 5.9662
+    },
+    {
+      "du": 1134,
+      "ipca_pct": 8.2908,
+      "pre_pct": 14.8196,
+      "implied_pct": 6.0289
+    },
+    {
+      "du": 1260,
+      "ipca_pct": 8.2711,
+      "pre_pct": 14.8656,
+      "implied_pct": 6.0907
+    },
+    {
+      "du": 1386,
+      "ipca_pct": 8.2426,
+      "pre_pct": 14.8996,
+      "implied_pct": 6.15
+    },
+    {
+      "du": 1512,
+      "ipca_pct": 8.2081,
+      "pre_pct": 14.9236,
+      "implied_pct": 6.206
+    },
+    {
+      "du": 1638,
+      "ipca_pct": 8.1699,
+      "pre_pct": 14.9395,
+      "implied_pct": 6.2583
+    },
+    {
+      "du": 1764,
+      "ipca_pct": 8.1296,
+      "pre_pct": 14.9484,
+      "implied_pct": 6.3061
+    },
+    {
+      "du": 1890,
+      "ipca_pct": 8.0885,
+      "pre_pct": 14.9517,
+      "implied_pct": 6.3496
+    },
+    {
+      "du": 2016,
+      "ipca_pct": 8.0473,
+      "pre_pct": 14.9502,
+      "implied_pct": 6.3887
+    },
+    {
+      "du": 2142,
+      "ipca_pct": 8.0068,
+      "pre_pct": 14.9449,
+      "implied_pct": 6.4237
+    },
+    {
+      "du": 2268,
+      "ipca_pct": 7.9673,
+      "pre_pct": 14.9363,
+      "implied_pct": 6.4547
+    },
+    {
+      "du": 2394,
+      "ipca_pct": 7.9292,
+      "pre_pct": 14.9252,
+      "implied_pct": 6.482
+    },
+    {
+      "du": 2520,
+      "ipca_pct": 7.8926,
+      "pre_pct": 14.9119,
+      "implied_pct": 6.5058
+    },
+    {
+      "du": 2646,
+      "ipca_pct": 7.8577,
+      "pre_pct": null,
+      "implied_pct": null
+    },
+    {
+      "du": 2772,
+      "ipca_pct": 7.8244,
+      "pre_pct": null,
+      "implied_pct": null
+    },
+    {
+      "du": 2898,
+      "ipca_pct": 7.7929,
+      "pre_pct": null,
+      "implied_pct": null
+    },
+    {
+      "du": 3024,
+      "ipca_pct": 7.763,
+      "pre_pct": null,
+      "implied_pct": null
+    },
+    {
+      "du": 3150,
+      "ipca_pct": 7.7347,
+      "pre_pct": null,
+      "implied_pct": null
+    },
+    {
+      "du": 3276,
+      "ipca_pct": 7.708,
+      "pre_pct": null,
+      "implied_pct": null
+    },
+    {
+      "du": 3402,
+      "ipca_pct": 7.6827,
+      "pre_pct": null,
+      "implied_pct": null
+    },
+    {
+      "du": 3528,
+      "ipca_pct": 7.6589,
+      "pre_pct": null,
+      "implied_pct": null
+    },
+    {
+      "du": 3654,
+      "ipca_pct": 7.6364,
+      "pre_pct": null,
+      "implied_pct": null
+    },
+    {
+      "du": 3780,
+      "ipca_pct": 7.6151,
+      "pre_pct": null,
+      "implied_pct": null
+    },
+    {
+      "du": 3906,
+      "ipca_pct": 7.595,
+      "pre_pct": null,
+      "implied_pct": null
+    },
+    {
+      "du": 4032,
+      "ipca_pct": 7.5759,
+      "pre_pct": null,
+      "implied_pct": null
+    },
+    {
+      "du": 4158,
+      "ipca_pct": 7.5579,
+      "pre_pct": null,
+      "implied_pct": null
+    },
+    {
+      "du": 4284,
+      "ipca_pct": 7.5409,
+      "pre_pct": null,
+      "implied_pct": null
+    },
+    {
+      "du": 4410,
+      "ipca_pct": 7.5247,
+      "pre_pct": null,
+      "implied_pct": null
+    },
+    {
+      "du": 4536,
+      "ipca_pct": 7.5094,
+      "pre_pct": null,
+      "implied_pct": null
+    },
+    {
+      "du": 4662,
+      "ipca_pct": 7.4949,
+      "pre_pct": null,
+      "implied_pct": null
+    },
+    {
+      "du": 4788,
+      "ipca_pct": 7.481,
+      "pre_pct": null,
+      "implied_pct": null
+    },
+    {
+      "du": 4914,
+      "ipca_pct": 7.4679,
+      "pre_pct": null,
+      "implied_pct": null
+    },
+    {
+      "du": 5040,
+      "ipca_pct": 7.4553,
+      "pre_pct": null,
+      "implied_pct": null
+    },
+    {
+      "du": 5166,
+      "ipca_pct": 7.4434,
+      "pre_pct": null,
+      "implied_pct": null
+    },
+    {
+      "du": 5292,
+      "ipca_pct": 7.432,
+      "pre_pct": null,
+      "implied_pct": null
+    },
+    {
+      "du": 5418,
+      "ipca_pct": 7.4211,
+      "pre_pct": null,
+      "implied_pct": null
+    },
+    {
+      "du": 5544,
+      "ipca_pct": 7.4108,
+      "pre_pct": null,
+      "implied_pct": null
+    },
+    {
+      "du": 5670,
+      "ipca_pct": 7.4008,
+      "pre_pct": null,
+      "implied_pct": null
+    },
+    {
+      "du": 5796,
+      "ipca_pct": 7.3913,
+      "pre_pct": null,
+      "implied_pct": null
+    },
+    {
+      "du": 5922,
+      "ipca_pct": 7.3822,
+      "pre_pct": null,
+      "implied_pct": null
+    },
+    {
+      "du": 6048,
+      "ipca_pct": 7.3735,
+      "pre_pct": null,
+      "implied_pct": null
+    },
+    {
+      "du": 6174,
+      "ipca_pct": 7.3651,
+      "pre_pct": null,
+      "implied_pct": null
+    },
+    {
+      "du": 6300,
+      "ipca_pct": 7.357,
+      "pre_pct": null,
+      "implied_pct": null
+    },
+    {
+      "du": 6426,
+      "ipca_pct": 7.3493,
+      "pre_pct": null,
+      "implied_pct": null
+    },
+    {
+      "du": 6552,
+      "ipca_pct": 7.3418,
+      "pre_pct": null,
+      "implied_pct": null
+    },
+    {
+      "du": 6678,
+      "ipca_pct": 7.3347,
+      "pre_pct": null,
+      "implied_pct": null
+    },
+    {
+      "du": 6804,
+      "ipca_pct": 7.3278,
+      "pre_pct": null,
+      "implied_pct": null
+    },
+    {
+      "du": 6930,
+      "ipca_pct": 7.3211,
+      "pre_pct": null,
+      "implied_pct": null
+    },
+    {
+      "du": 7056,
+      "ipca_pct": 7.3147,
+      "pre_pct": null,
+      "implied_pct": null
+    },
+    {
+      "du": 7182,
+      "ipca_pct": 7.3085,
+      "pre_pct": null,
+      "implied_pct": null
+    },
+    {
+      "du": 7308,
+      "ipca_pct": 7.3026,
+      "pre_pct": null,
+      "implied_pct": null
+    },
+    {
+      "du": 7434,
+      "ipca_pct": 7.2968,
+      "pre_pct": null,
+      "implied_pct": null
+    },
+    {
+      "du": 7560,
+      "ipca_pct": 7.2912,
+      "pre_pct": null,
+      "implied_pct": null
+    },
+    {
+      "du": 7686,
+      "ipca_pct": 7.2858,
+      "pre_pct": null,
+      "implied_pct": null
+    },
+    {
+      "du": 7812,
+      "ipca_pct": 7.2806,
+      "pre_pct": null,
+      "implied_pct": null
+    },
+    {
+      "du": 7938,
+      "ipca_pct": 7.2755,
+      "pre_pct": null,
+      "implied_pct": null
+    },
+    {
+      "du": 8064,
+      "ipca_pct": 7.2706,
+      "pre_pct": null,
+      "implied_pct": null
+    },
+    {
+      "du": 8190,
+      "ipca_pct": 7.2659,
+      "pre_pct": null,
+      "implied_pct": null
+    },
+    {
+      "du": 8316,
+      "ipca_pct": 7.2613,
+      "pre_pct": null,
+      "implied_pct": null
+    },
+    {
+      "du": 8442,
+      "ipca_pct": 7.2568,
+      "pre_pct": null,
+      "implied_pct": null
+    }
+  ],
+  "circular_3361": [
+    {
+      "du": 21,
+      "rate_pct": 13.6522
+    },
+    {
+      "du": 42,
+      "rate_pct": 13.5873
+    },
+    {
+      "du": 63,
+      "rate_pct": 13.5538
+    },
+    {
+      "du": 126,
+      "rate_pct": 13.5719
+    },
+    {
+      "du": 252,
+      "rate_pct": 13.812
+    },
+    {
+      "du": 504,
+      "rate_pct": 14.2844
+    },
+    {
+      "du": 756,
+      "rate_pct": 14.5797
+    },
+    {
+      "du": 1008,
+      "rate_pct": 14.759
+    },
+    {
+      "du": 1260,
+      "rate_pct": 14.8656
+    },
+    {
+      "du": 2520,
+      "rate_pct": 14.9119
+    }
+  ],
+  "errors": [
+    {
+      "title_type": "LTN",
+      "selic_code": "100000",
+      "maturity": "2026-10-01",
+      "error_pct": -0.0314
+    },
+    {
+      "title_type": "LTN",
+      "selic_code": "100000",
+      "maturity": "2027-04-01",
+      "error_pct": -0.0074
+    },
+    {
+      "title_type": "LTN",
+      "selic_code": "100000",
+      "maturity": "2027-07-01",
+      "error_pct": 0.0491
+    },
+    {
+      "title_type": "LTN",
+      "selic_code": "100000",
+      "maturity": "2027-10-01",
+      "error_pct": -0.0424
+    },
+    {
+      "title_type": "LTN",
+      "selic_code": "100000",
+      "maturity": "2028-01-01",
+      "error_pct": -0.0407
+    },
+    {
+      "title_type": "LTN",
+      "selic_code": "100000",
+      "maturity": "2028-04-01",
+      "error_pct": -0.005
+    },
+    {
+      "title_type": "LTN",
+      "selic_code": "100000",
+      "maturity": "2028-07-01",
+      "error_pct": 0.0379
+    },
+    {
+      "title_type": "LTN",
+      "selic_code": "100000",
+      "maturity": "2028-10-01",
+      "error_pct": -0.0331
+    },
+    {
+      "title_type": "LTN",
+      "selic_code": "100000",
+      "maturity": "2029-01-01",
+      "error_pct": -0.0357
+    },
+    {
+      "title_type": "LTN",
+      "selic_code": "100000",
+      "maturity": "2029-07-01",
+      "error_pct": -0.04
+    },
+    {
+      "title_type": "LTN",
+      "selic_code": "100000",
+      "maturity": "2030-01-01",
+      "error_pct": 0.0015
+    },
+    {
+      "title_type": "LTN",
+      "selic_code": "100000",
+      "maturity": "2032-01-01",
+      "error_pct": 0.0623
+    },
+    {
+      "title_type": "NTN-F",
+      "selic_code": "950199",
+      "maturity": "2027-01-01",
+      "error_pct": 0.0202
+    },
+    {
+      "title_type": "NTN-F",
+      "selic_code": "950199",
+      "maturity": "2029-01-01",
+      "error_pct": 0.0795
+    },
+    {
+      "title_type": "NTN-F",
+      "selic_code": "950199",
+      "maturity": "2031-01-01",
+      "error_pct": -0.0147
+    },
+    {
+      "title_type": "NTN-F",
+      "selic_code": "950199",
+      "maturity": "2033-01-01",
+      "error_pct": -0.0162
+    },
+    {
+      "title_type": "NTN-F",
+      "selic_code": "950199",
+      "maturity": "2035-01-01",
+      "error_pct": -0.0043
+    },
+    {
+      "title_type": "NTN-F",
+      "selic_code": "950199",
+      "maturity": "2037-01-01",
+      "error_pct": 0.0057
+    },
+    {
+      "title_type": "NTN-B",
+      "selic_code": "760199",
+      "maturity": "2026-08-15",
+      "error_pct": -0.321
+    },
+    {
+      "title_type": "NTN-B",
+      "selic_code": "760199",
+      "maturity": "2027-05-15",
+      "error_pct": 0.1145
+    },
+    {
+      "title_type": "NTN-B",
+      "selic_code": "760199",
+      "maturity": "2028-08-15",
+      "error_pct": -0.2532
+    },
+    {
+      "title_type": "NTN-B",
+      "selic_code": "760199",
+      "maturity": "2029-05-15",
+      "error_pct": 0.0759
+    },
+    {
+      "title_type": "NTN-B",
+      "selic_code": "760199",
+      "maturity": "2030-08-15",
+      "error_pct": 0.0591
+    },
+    {
+      "title_type": "NTN-B",
+      "selic_code": "760199",
+      "maturity": "2031-05-15",
+      "error_pct": 0.0662
+    },
+    {
+      "title_type": "NTN-B",
+      "selic_code": "760199",
+      "maturity": "2032-08-15",
+      "error_pct": -0.012
+    },
+    {
+      "title_type": "NTN-B",
+      "selic_code": "760199",
+      "maturity": "2033-05-15",
+      "error_pct": -0.0171
+    },
+    {
+      "title_type": "NTN-B",
+      "selic_code": "760199",
+      "maturity": "2035-05-15",
+      "error_pct": -0.0518
+    },
+    {
+      "title_type": "NTN-B",
+      "selic_code": "760199",
+      "maturity": "2037-05-15",
+      "error_pct": 0.0376
+    },
+    {
+      "title_type": "NTN-B",
+      "selic_code": "760199",
+      "maturity": "2040-08-15",
+      "error_pct": -0.0203
+    },
+    {
+      "title_type": "NTN-B",
+      "selic_code": "760199",
+      "maturity": "2045-05-15",
+      "error_pct": -0.0062
+    },
+    {
+      "title_type": "NTN-B",
+      "selic_code": "760199",
+      "maturity": "2050-08-15",
+      "error_pct": -0.0215
+    },
+    {
+      "title_type": "NTN-B",
+      "selic_code": "760199",
+      "maturity": "2055-05-15",
+      "error_pct": 0.0297
+    },
+    {
+      "title_type": "NTN-B",
+      "selic_code": "760199",
+      "maturity": "2060-08-15",
+      "error_pct": 0.0068
+    }
+  ]
+}
