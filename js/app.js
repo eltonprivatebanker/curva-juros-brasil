@@ -259,34 +259,52 @@ function movementSummary(pairs) {
   };
 }
 
+function movementPhrase(value, article = '') {
+  if (!Number.isFinite(value)) return `${article}sem dados`.trim();
+
+  const abs = Math.abs(value);
+  if (value > 1) return `${article}abriu ${fmtBp(abs).replace('+', '')}`.trim();
+  if (value < -1) return `${article}fechou ${fmtBp(abs).replace('+', '')}`.trim();
+  return `${article}ficou praticamente estável (${fmtBp(value)})`.trim();
+}
+
 function describe(m, currentDate, compareDate) {
   if (!m.largest) return 'Não há contratos em comum suficientes para comparar as duas curvas.';
 
-  const overall = direction(m.avg);
-  const regions = [
-    ['short', m.short],
-    ['mid', m.mid],
-    ['long', m.long],
-  ].filter(([, v]) => Number.isFinite(v));
+  const overall =
+    m.avg > 1
+      ? `as taxas subiram, em média, ${fmtBp(m.avg)}`
+      : m.avg < -1
+        ? `as taxas recuaram, em média, ${fmtBp(Math.abs(m.avg)).replace('+', '')}`
+        : `as taxas ficaram próximas da estabilidade, com movimento médio de ${fmtBp(m.avg)}`;
 
-  const regionText = regions
-    .map(([key, value]) => `${regionLabel(key)} ${direction(value)} ${fmtBp(value)}`)
-    .join('; ');
+  const shortText = Number.isFinite(m.short)
+    ? `o curto ${movementPhrase(m.short)}`
+    : null;
+  const midText = Number.isFinite(m.mid)
+    ? `o miolo ${movementPhrase(m.mid)}`
+    : null;
+  const longText = Number.isFinite(m.long)
+    ? `a ponta longa ${movementPhrase(m.long)}`
+    : null;
 
-  const absValues = regions.map(([, v]) => Math.abs(v));
-  const spread = absValues.length ? Math.max(...absValues) - Math.min(...absValues) : 0;
-  const concentration = spread >= 5 && m.strongestRegion
-    ? ` O movimento ficou mais concentrado no ${regionLabel(m.strongestRegion)}.`
+  const regionParts = [shortText, midText, longText].filter(Boolean);
+  const regionSentence = regionParts.length
+    ? ` Por faixa, ${regionParts.join('; ')}.`
     : '';
 
-  const largestDirection = direction(m.largest.delta);
-  const prefix = overall === 'abertura'
-    ? 'As taxas subiram'
-    : overall === 'fechamento'
-      ? 'As taxas recuaram'
-      : 'A curva ficou próxima da estabilidade';
+  const concentration = m.strongestRegion && Number.isFinite(m.strongestValue)
+    ? ` O movimento foi mais intenso ${m.strongestRegion === 'long' ? 'na' : 'no'} ${regionLabel(m.strongestRegion)}.`
+    : '';
 
-  return `De ${fmtDate(compareDate)} para ${fmtDate(currentDate)}, ${prefix}, em média ${fmtBp(m.avg)}. Por faixa: ${regionText}.${concentration} O maior movimento individual foi ${m.largest.current.ticker}, com ${fmtBp(m.largest.delta)} (${largestDirection}).`;
+  const largestDirection =
+    m.largest.delta > 1
+      ? `abertura de ${fmtBp(Math.abs(m.largest.delta)).replace('+', '')}`
+      : m.largest.delta < -1
+        ? `fechamento de ${fmtBp(Math.abs(m.largest.delta)).replace('+', '')}`
+        : `movimento de ${fmtBp(m.largest.delta)}`;
+
+  return `De ${fmtDate(compareDate)} para ${fmtDate(currentDate)}, ${overall}.${regionSentence}${concentration} O maior movimento individual foi no ${m.largest.current.ticker}, com ${largestDirection}.`;
 }
 
 function setMetric(id, value) {
