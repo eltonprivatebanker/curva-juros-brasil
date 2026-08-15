@@ -6,7 +6,7 @@
   <meta name="description" content="Painel didático de curva DI Futuro, movimentos em pontos-base e comparação entre pregões.">
   <title>Juros Brasil · V2 Teste</title>
   <link rel="stylesheet" href="css/style.css?v=1.2.0">
-  <link rel="stylesheet" href="css/v2.css?v=2.0a1">
+  <link rel="stylesheet" href="css/v2.css?v=2.0a2">
 </head>
 <body>
   <main class="shell">
@@ -119,14 +119,14 @@
         <div>
           <p class="eyebrow">EVOLUÇÃO DA CURVA</p>
           <h2>Curvas sobrepostas no tempo</h2>
-          <p class="sectionSubtitle">Hoje é sempre exibido. Ative as janelas históricas para enxergar deslocamentos, inclinação e reprecificação da curva.</p>
+          <p class="sectionSubtitle">A curva selecionada é sempre exibida. Ative as janelas históricas para enxergar deslocamentos, inclinação e reprecificação da curva.</p>
         </div>
         <div id="evolutionLegend" class="legend"></div>
       </div>
 
       <div class="evoControls">
         <div class="presetWrap">
-          <span class="presetLabel">Mostrar junto com a curva atual</span>
+          <span class="presetLabel">Mostrar junto com a curva selecionada</span>
           <div class="presetButtons evoButtons" id="evolutionButtons">
             <button type="button" data-evo="5d">1 semana</button>
             <button type="button" data-evo="1m">1 mês</button>
@@ -207,7 +207,9 @@
       <section class="panel reading"><div class="panelHead"><div><p class="eyebrow">LEITURA DO BASIS</p><h2 id="basisTitle">—</h2></div><div id="basisStatus" class="muted">—</div></div><p id="basisText" class="readingText">Carregando…</p></section>
       <section class="panel chartPanel"><div class="panelHead"><div><p class="eyebrow">CURVAS NORMALIZADAS</p><h2>DI interpolado × ANBIMA Pré</h2></div><div id="connectionLegend" class="legend"></div></div><div id="connectionChart" class="chart"></div></section>
       <section class="panel"><div class="panelHead"><div><p class="eyebrow">BASIS</p><h2>ANBIMA Pré − DI</h2><p class="sectionSubtitle">Diferença em pontos-base; não representa spread de crédito.</p></div></div><div id="basisBars" class="basisBars"></div><div class="tableWrap"><table><thead><tr><th>Vértice</th><th>Prazo</th><th>DI interpolado</th><th>ANBIMA Pré</th><th>Basis</th></tr></thead><tbody id="basisTable"></tbody></table></div></section>
-    </div>\n\n    <section class="panel notePanel">
+    </div>
+
+    <section class="panel notePanel">
       <p><strong>V2 teste:</strong> além da comparação “atual × data escolhida”, a página principal continua preservada; esta versão de teste acrescenta ANBIMA, Tesouro Direto e a conexão DI × ANBIMA.</p>
     </section>
 
@@ -216,6 +218,6 @@
     </footer>
   </main>
   <script src="js/app.js?v=1.2.0" defer></script>
-  <script src="js/market.js?v=2.0a1" defer></script>
+  <script src="js/market.js?v=2.0a2" defer></script>
 </body>
 </html>

@@ -1,25 +1,21 @@
-CURVA DE JUROS BRASIL — V1.2
+V2.0a2 — PATCH
 
-Substitua estes 3 arquivos no repositório:
+Substituir:
+- v2.html
+- js/market.js
 
-1) index.html
-2) css/style.css
-3) js/app.js
+Adicionar na pasta EXATA:
+- .github/workflows/atualizar-tesouro.yml
+- .github/workflows/atualizar-anbima.yml
 
-Não altere:
-- data/
-- scripts/
-- requirements.txt
-- .github/workflows/
+Correções:
+- campos ANBIMA ausentes deixam de aparecer como 0,00% e passam a mostrar —
+- remove o texto literal \n\n
+- “Hoje” passa a “Selecionada” na evolução da V2
+- “1 dia corridos” passa a “1 dia corrido”
+- mantém a página principal index.html intacta
 
-Novidades:
-- nova seção "Evolução da curva";
-- várias curvas históricas sobrepostas;
-- botões para 1 semana, 1 mês, 3 meses, 6 meses e 1 ano;
-- legenda dinâmica com as datas exibidas;
-- narrativa textual natural mantida;
-- anti-cache atualizado para v1.2.0.
-
-Observação:
-- nesta V1.2, a evolução usa os snapshots históricos existentes;
-- a versão futura pode incluir curva normalizada por prazo constante.
+Depois:
+1. GitHub > Actions
+2. Deve aparecer “Atualizar Tesouro Direto”
+3. Abra-o > Run workflow
