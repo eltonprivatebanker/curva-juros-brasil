@@ -1,7 +1,12 @@
 {
   "schema_version": 1,
-  "mode": "pending",
+  "mode": "live",
   "source": "Tesouro Nacional · Tesouro Transparente",
-  "latest": null,
-  "entries": []
+  "latest": "2026-08-14",
+  "entries": [
+    {
+      "date": "2026-08-14",
+      "path": "data/tesouro/2026-08-14.json"
+    }
+  ]
 }

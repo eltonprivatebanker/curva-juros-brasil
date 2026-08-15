@@ -1,0 +1,549 @@
+{
+  "schema_version": 1,
+  "date": "2026-08-14",
+  "source": "Tesouro Nacional · Tesouro Transparente",
+  "dataset": "Taxas dos Títulos Ofertados pelo Tesouro Direto",
+  "generated_at": "2026-08-15T17:04:03-03:00",
+  "titles": [
+    {
+      "type": "Tesouro Educa+",
+      "maturity": "2030-12-15",
+      "buy_rate_pct": 8.06,
+      "sell_rate_pct": 8.18,
+      "buy_price": 3485.52,
+      "sell_price": 3555.84,
+      "base_price": 3555.84
+    },
+    {
+      "type": "Tesouro Educa+",
+      "maturity": "2031-12-15",
+      "buy_rate_pct": 8.08,
+      "sell_rate_pct": 8.2,
+      "buy_price": 3824.7,
+      "sell_price": 3812.53,
+      "base_price": 3812.53
+    },
+    {
+      "type": "Tesouro Educa+",
+      "maturity": "2032-12-15",
+      "buy_rate_pct": 8.1,
+      "sell_rate_pct": 8.22,
+      "buy_price": 3537.95,
+      "sell_price": 3522.8,
+      "base_price": 3522.8
+    },
+    {
+      "type": "Tesouro Educa+",
+      "maturity": "2033-12-15",
+      "buy_rate_pct": 8.09,
+      "sell_rate_pct": 8.21,
+      "buy_price": 3275.81,
+      "sell_price": 3258.19,
+      "base_price": 3258.19
+    },
+    {
+      "type": "Tesouro Educa+",
+      "maturity": "2034-12-15",
+      "buy_rate_pct": 8.08,
+      "sell_rate_pct": 8.2,
+      "buy_price": 3033.05,
+      "sell_price": 3013.41,
+      "base_price": 3013.41
+    },
+    {
+      "type": "Tesouro Educa+",
+      "maturity": "2035-12-15",
+      "buy_rate_pct": 8.05,
+      "sell_rate_pct": 8.17,
+      "buy_price": 2812.41,
+      "sell_price": 2791.1,
+      "base_price": 2791.1
+    },
+    {
+      "type": "Tesouro Educa+",
+      "maturity": "2036-12-15",
+      "buy_rate_pct": 7.99,
+      "sell_rate_pct": 8.11,
+      "buy_price": 2615.02,
+      "sell_price": 2592.34,
+      "base_price": 2592.34
+    },
+    {
+      "type": "Tesouro Educa+",
+      "maturity": "2037-12-15",
+      "buy_rate_pct": 7.92,
+      "sell_rate_pct": 8.04,
+      "buy_price": 2436.33,
+      "sell_price": 2412.52,
+      "base_price": 2412.52
+    },
+    {
+      "type": "Tesouro Educa+",
+      "maturity": "2038-12-15",
+      "buy_rate_pct": 7.84,
+      "sell_rate_pct": 7.96,
+      "buy_price": 2275.25,
+      "sell_price": 2250.51,
+      "base_price": 2250.51
+    },
+    {
+      "type": "Tesouro Educa+",
+      "maturity": "2039-12-15",
+      "buy_rate_pct": 7.78,
+      "sell_rate_pct": 7.9,
+      "buy_price": 2123.71,
+      "sell_price": 2098.29,
+      "base_price": 2098.29
+    },
+    {
+      "type": "Tesouro Educa+",
+      "maturity": "2040-12-15",
+      "buy_rate_pct": 7.72,
+      "sell_rate_pct": 7.84,
+      "buy_price": 1983.99,
+      "sell_price": 1958.06,
+      "base_price": 1958.06
+    },
+    {
+      "type": "Tesouro Educa+",
+      "maturity": "2041-12-15",
+      "buy_rate_pct": 7.68,
+      "sell_rate_pct": 7.8,
+      "buy_price": 1851.11,
+      "sell_price": 1824.89,
+      "base_price": 1824.89
+    },
+    {
+      "type": "Tesouro Educa+",
+      "maturity": "2042-12-15",
+      "buy_rate_pct": 7.64,
+      "sell_rate_pct": 7.76,
+      "buy_price": 1728.42,
+      "sell_price": 1702.04,
+      "base_price": 1702.04
+    },
+    {
+      "type": "Tesouro Educa+",
+      "maturity": "2043-12-15",
+      "buy_rate_pct": 7.61,
+      "sell_rate_pct": 7.73,
+      "buy_price": 1612.72,
+      "sell_price": 1586.34,
+      "base_price": 1586.34
+    },
+    {
+      "type": "Tesouro Educa+",
+      "maturity": "2044-12-15",
+      "buy_rate_pct": 7.57,
+      "sell_rate_pct": 7.69,
+      "buy_price": 1507.91,
+      "sell_price": 1481.59,
+      "base_price": 1481.59
+    },
+    {
+      "type": "Tesouro Educa+",
+      "maturity": "2045-12-15",
+      "buy_rate_pct": 7.52,
+      "sell_rate_pct": 7.64,
+      "buy_price": 1413.26,
+      "sell_price": 1387.05,
+      "base_price": 1387.05
+    },
+    {
+      "type": "Tesouro Educa+",
+      "maturity": "2046-12-15",
+      "buy_rate_pct": 7.49,
+      "sell_rate_pct": 7.61,
+      "buy_price": 1321.53,
+      "sell_price": 1295.57,
+      "base_price": 1295.57
+    },
+    {
+      "type": "Tesouro Educa+",
+      "maturity": "2047-12-15",
+      "buy_rate_pct": 7.46,
+      "sell_rate_pct": 7.58,
+      "buy_price": 1236.54,
+      "sell_price": 1210.9,
+      "base_price": 1210.9
+    },
+    {
+      "type": "Tesouro Educa+",
+      "maturity": "2048-12-15",
+      "buy_rate_pct": 7.44,
+      "sell_rate_pct": 7.56,
+      "buy_price": 1155.56,
+      "sell_price": 1130.35,
+      "base_price": 1130.35
+    },
+    {
+      "type": "Tesouro IGPM+ com Juros Semestrais",
+      "maturity": "2031-01-01",
+      "buy_rate_pct": 8.09,
+      "sell_rate_pct": 8.21,
+      "buy_price": 7600.74,
+      "sell_price": 7566.06,
+      "base_price": 7566.06
+    },
+    {
+      "type": "Tesouro IPCA+",
+      "maturity": "2026-08-15",
+      "buy_rate_pct": 13.32,
+      "sell_rate_pct": 13.44,
+      "buy_price": 4739.77,
+      "sell_price": 4740.25,
+      "base_price": 4740.25
+    },
+    {
+      "type": "Tesouro IPCA+",
+      "maturity": "2029-05-15",
+      "buy_rate_pct": 8.04,
+      "sell_rate_pct": 8.16,
+      "buy_price": 3844.28,
+      "sell_price": 3831.93,
+      "base_price": 3831.93
+    },
+    {
+      "type": "Tesouro IPCA+",
+      "maturity": "2032-08-15",
+      "buy_rate_pct": 8.12,
+      "sell_rate_pct": 8.24,
+      "buy_price": 2977.71,
+      "sell_price": 2957.47,
+      "base_price": 2957.47
+    },
+    {
+      "type": "Tesouro IPCA+",
+      "maturity": "2035-05-15",
+      "buy_rate_pct": 7.98,
+      "sell_rate_pct": 8.1,
+      "buy_price": 2434.82,
+      "sell_price": 2410.97,
+      "base_price": 2410.97
+    },
+    {
+      "type": "Tesouro IPCA+",
+      "maturity": "2040-08-15",
+      "buy_rate_pct": 7.66,
+      "sell_rate_pct": 7.78,
+      "buy_price": 1697.78,
+      "sell_price": 1671.34,
+      "base_price": 1671.34
+    },
+    {
+      "type": "Tesouro IPCA+",
+      "maturity": "2045-05-15",
+      "buy_rate_pct": 7.45,
+      "sell_rate_pct": 7.57,
+      "buy_price": 1243.62,
+      "sell_price": 1217.81,
+      "base_price": 1217.81
+    },
+    {
+      "type": "Tesouro IPCA+",
+      "maturity": "2050-08-15",
+      "buy_rate_pct": 7.4,
+      "sell_rate_pct": 7.52,
+      "buy_price": 864.3,
+      "sell_price": 841.44,
+      "base_price": 841.44
+    },
+    {
+      "type": "Tesouro IPCA+ com Juros Semestrais",
+      "maturity": "2026-08-15",
+      "buy_rate_pct": 13.32,
+      "sell_rate_pct": 13.44,
+      "buy_price": 4879.9,
+      "sell_price": 4880.39,
+      "base_price": 4880.39
+    },
+    {
+      "type": "Tesouro IPCA+ com Juros Semestrais",
+      "maturity": "2030-08-15",
+      "buy_rate_pct": 8.12,
+      "sell_rate_pct": 8.24,
+      "buy_price": 4427.13,
+      "sell_price": 4548.89,
+      "base_price": 4548.89
+    },
+    {
+      "type": "Tesouro IPCA+ com Juros Semestrais",
+      "maturity": "2032-08-15",
+      "buy_rate_pct": 8.11,
+      "sell_rate_pct": 8.23,
+      "buy_price": 4299.63,
+      "sell_price": 4414.9,
+      "base_price": 4414.9
+    },
+    {
+      "type": "Tesouro IPCA+ com Juros Semestrais",
+      "maturity": "2035-05-15",
+      "buy_rate_pct": 8.0,
+      "sell_rate_pct": 8.12,
+      "buy_price": 4256.12,
+      "sell_price": 4223.94,
+      "base_price": 4223.94
+    },
+    {
+      "type": "Tesouro IPCA+ com Juros Semestrais",
+      "maturity": "2037-05-15",
+      "buy_rate_pct": 7.81,
+      "sell_rate_pct": 7.93,
+      "buy_price": 4229.55,
+      "sell_price": 4192.64,
+      "base_price": 4192.64
+    },
+    {
+      "type": "Tesouro IPCA+ com Juros Semestrais",
+      "maturity": "2040-08-15",
+      "buy_rate_pct": 7.75,
+      "sell_rate_pct": 7.87,
+      "buy_price": 4075.88,
+      "sell_price": 4173.48,
+      "base_price": 4173.48
+    },
+    {
+      "type": "Tesouro IPCA+ com Juros Semestrais",
+      "maturity": "2045-05-15",
+      "buy_rate_pct": 7.61,
+      "sell_rate_pct": 7.73,
+      "buy_price": 4094.67,
+      "sell_price": 4045.65,
+      "base_price": 4045.65
+    },
+    {
+      "type": "Tesouro IPCA+ com Juros Semestrais",
+      "maturity": "2050-08-15",
+      "buy_rate_pct": 7.57,
+      "sell_rate_pct": 7.69,
+      "buy_price": 3963.8,
+      "sell_price": 4050.64,
+      "base_price": 4050.64
+    },
+    {
+      "type": "Tesouro IPCA+ com Juros Semestrais",
+      "maturity": "2055-05-15",
+      "buy_rate_pct": 7.48,
+      "sell_rate_pct": 7.6,
+      "buy_price": 4027.73,
+      "sell_price": 3971.16,
+      "base_price": 3971.16
+    },
+    {
+      "type": "Tesouro IPCA+ com Juros Semestrais",
+      "maturity": "2060-08-15",
+      "buy_rate_pct": 7.48,
+      "sell_rate_pct": 7.6,
+      "buy_price": 3921.17,
+      "sell_price": 4003.16,
+      "base_price": 4003.16
+    },
+    {
+      "type": "Tesouro Prefixado",
+      "maturity": "2027-01-01",
+      "buy_rate_pct": 13.52,
+      "sell_rate_pct": 13.64,
+      "buy_price": 953.79,
+      "sell_price": 952.94,
+      "base_price": 952.94
+    },
+    {
+      "type": "Tesouro Prefixado",
+      "maturity": "2028-01-01",
+      "buy_rate_pct": 13.89,
+      "sell_rate_pct": 14.01,
+      "buy_price": 836.89,
+      "sell_price": 835.24,
+      "base_price": 835.24
+    },
+    {
+      "type": "Tesouro Prefixado",
+      "maturity": "2029-01-01",
+      "buy_rate_pct": 14.25,
+      "sell_rate_pct": 14.37,
+      "buy_price": 730.89,
+      "sell_price": 728.7,
+      "base_price": 728.7
+    },
+    {
+      "type": "Tesouro Prefixado",
+      "maturity": "2031-01-01",
+      "buy_rate_pct": 14.53,
+      "sell_rate_pct": 14.65,
+      "buy_price": 554.9,
+      "sell_price": 552.08,
+      "base_price": 552.08
+    },
+    {
+      "type": "Tesouro Prefixado",
+      "maturity": "2032-01-01",
+      "buy_rate_pct": 14.64,
+      "sell_rate_pct": 14.76,
+      "buy_price": 482.02,
+      "sell_price": 479.07,
+      "base_price": 479.07
+    },
+    {
+      "type": "Tesouro Prefixado com Juros Semestrais",
+      "maturity": "2027-01-01",
+      "buy_rate_pct": 13.48,
+      "sell_rate_pct": 13.6,
+      "buy_price": 1000.48,
+      "sell_price": 999.58,
+      "base_price": 999.58
+    },
+    {
+      "type": "Tesouro Prefixado com Juros Semestrais",
+      "maturity": "2029-01-01",
+      "buy_rate_pct": 14.13,
+      "sell_rate_pct": 14.25,
+      "buy_price": 937.38,
+      "sell_price": 934.79,
+      "base_price": 934.79
+    },
+    {
+      "type": "Tesouro Prefixado com Juros Semestrais",
+      "maturity": "2031-01-01",
+      "buy_rate_pct": 14.55,
+      "sell_rate_pct": 14.67,
+      "buy_price": 878.42,
+      "sell_price": 874.71,
+      "base_price": 874.71
+    },
+    {
+      "type": "Tesouro Prefixado com Juros Semestrais",
+      "maturity": "2033-01-01",
+      "buy_rate_pct": 14.68,
+      "sell_rate_pct": 14.8,
+      "buy_price": 833.81,
+      "sell_price": 829.34,
+      "base_price": 829.34
+    },
+    {
+      "type": "Tesouro Prefixado com Juros Semestrais",
+      "maturity": "2035-01-01",
+      "buy_rate_pct": 14.7,
+      "sell_rate_pct": 14.82,
+      "buy_price": 802.7,
+      "sell_price": 797.71,
+      "base_price": 797.71
+    },
+    {
+      "type": "Tesouro Prefixado com Juros Semestrais",
+      "maturity": "2037-01-01",
+      "buy_rate_pct": 14.68,
+      "sell_rate_pct": 14.8,
+      "buy_price": 779.95,
+      "sell_price": 774.6,
+      "base_price": 774.6
+    },
+    {
+      "type": "Tesouro Renda+ Aposentadoria Extra",
+      "maturity": "2049-12-15",
+      "buy_rate_pct": 7.69,
+      "sell_rate_pct": 7.81,
+      "buy_price": 1936.59,
+      "sell_price": 1912.83,
+      "base_price": 1912.83
+    },
+    {
+      "type": "Tesouro Renda+ Aposentadoria Extra",
+      "maturity": "2054-12-15",
+      "buy_rate_pct": 7.53,
+      "sell_rate_pct": 7.65,
+      "buy_price": 1372.19,
+      "sell_price": 1347.78,
+      "base_price": 1347.78
+    },
+    {
+      "type": "Tesouro Renda+ Aposentadoria Extra",
+      "maturity": "2059-12-15",
+      "buy_rate_pct": 7.4,
+      "sell_rate_pct": 7.52,
+      "buy_price": 981.04,
+      "sell_price": 958.2,
+      "base_price": 958.2
+    },
+    {
+      "type": "Tesouro Renda+ Aposentadoria Extra",
+      "maturity": "2064-12-15",
+      "buy_rate_pct": 7.31,
+      "sell_rate_pct": 7.43,
+      "buy_price": 703.26,
+      "sell_price": 683.05,
+      "base_price": 683.05
+    },
+    {
+      "type": "Tesouro Renda+ Aposentadoria Extra",
+      "maturity": "2069-12-15",
+      "buy_rate_pct": 7.25,
+      "sell_rate_pct": 7.37,
+      "buy_price": 503.91,
+      "sell_price": 486.7,
+      "base_price": 486.7
+    },
+    {
+      "type": "Tesouro Renda+ Aposentadoria Extra",
+      "maturity": "2074-12-15",
+      "buy_rate_pct": 7.22,
+      "sell_rate_pct": 7.34,
+      "buy_price": 359.45,
+      "sell_price": 345.24,
+      "base_price": 345.24
+    },
+    {
+      "type": "Tesouro Renda+ Aposentadoria Extra",
+      "maturity": "2079-12-15",
+      "buy_rate_pct": 7.23,
+      "sell_rate_pct": 7.35,
+      "buy_price": 253.21,
+      "sell_price": 241.85,
+      "base_price": 241.85
+    },
+    {
+      "type": "Tesouro Renda+ Aposentadoria Extra",
+      "maturity": "2084-12-15",
+      "buy_rate_pct": 7.23,
+      "sell_rate_pct": 7.35,
+      "buy_price": 178.98,
+      "sell_price": 170.01,
+      "base_price": 170.01
+    },
+    {
+      "type": "Tesouro Selic",
+      "maturity": "2027-03-01",
+      "buy_rate_pct": -0.0,
+      "sell_rate_pct": 0.01,
+      "buy_price": 19671.29,
+      "sell_price": 19660.02,
+      "base_price": 19660.02
+    },
+    {
+      "type": "Tesouro Selic",
+      "maturity": "2028-03-01",
+      "buy_rate_pct": 0.01,
+      "sell_rate_pct": 0.02,
+      "buy_price": 19666.82,
+      "sell_price": 19653.59,
+      "base_price": 19653.59
+    },
+    {
+      "type": "Tesouro Selic",
+      "maturity": "2029-03-01",
+      "buy_rate_pct": 0.03,
+      "sell_rate_pct": 0.04,
+      "buy_price": 19654.84,
+      "sell_price": 19639.67,
+      "base_price": 19639.67
+    },
+    {
+      "type": "Tesouro Selic",
+      "maturity": "2031-03-01",
+      "buy_rate_pct": 0.07,
+      "sell_rate_pct": 0.08,
+      "buy_price": 19605.74,
+      "sell_price": 19586.68,
+      "base_price": 19586.68
+    }
+  ]
+}
