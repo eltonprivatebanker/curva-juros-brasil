@@ -118,28 +118,41 @@
     host.innerHTML="";
     const pts=points.filter(p=>Number.isFinite(p.x)&&Number.isFinite(p.y)).sort((a,b)=>a.x-b.x);
     if(pts.length<2){host.innerHTML='<div class="emptyState">O gráfico aparecerá após termos pelo menos dois pregões no histórico.</div>';return;}
-    const width=Math.max(480,host.clientWidth||620),height=280,pad={l:70,r:22,t:20,b:44};
+    const width=Math.max(500,host.clientWidth||650),height=238,pad={l:84,r:18,t:14,b:38};
     const xmin=pts[0].x,xmax=pts.at(-1).x,y0=Math.min(...pts.map(p=>p.y)),y1=Math.max(...pts.map(p=>p.y));
-    const margin=(y1-y0||Math.abs(y0)*.02||1)*.14,ymin=y0-margin,ymax=y1+margin;
+    const margin=(y1-y0||Math.abs(y0)*.02||1)*.10,ymin=y0-margin,ymax=y1+margin;
     const sx=x=>pad.l+(x-xmin)/(xmax-xmin||1)*(width-pad.l-pad.r);
     const sy=y=>height-pad.b-(y-ymin)/(ymax-ymin||1)*(height-pad.t-pad.b);
-    const svg=svgEl("svg",{viewBox:`0 0 ${width} ${height}`});
+    const svg=svgEl("svg",{viewBox:`0 0 ${width} ${height}`,role:"img"});
     niceTicks(ymin,ymax,4).forEach(y=>{
-      const yy=sy(y);svg.append(svgEl("line",{x1:pad.l,x2:width-pad.r,y1:yy,y2:yy,class:"grid"}));
-      const t=svgEl("text",{x:pad.l-9,y:yy+4,"text-anchor":"end"});
-      t.textContent=unit==="money" ? `R$ ${Math.round(y).toLocaleString("pt-BR")}` : `${y.toFixed(2)}%`;
+      const yy=sy(y);
+      svg.append(svgEl("line",{x1:pad.l,x2:width-pad.r,y1:yy,y2:yy,class:"grid historyGridLine"}));
+      const t=svgEl("text",{x:pad.l-12,y:yy+4,"text-anchor":"end",class:"historyAxisLabel"});
+      t.textContent=unit==="money"
+        ? `R$ ${Math.round(y).toLocaleString("pt-BR")}`
+        : `${y.toFixed(2)}%`;
       svg.append(t);
     });
-    [0,.25,.5,.75,1].forEach(f=>{
-      const x=xmin+(xmax-xmin)*f,xx=sx(x);
-      const d=new Date(x);const t=svgEl("text",{x:xx,y:height-15,"text-anchor":"middle"});
+    const tickFractions=[0,.25,.5,.75,1];
+    tickFractions.forEach((f,i)=>{
+      const x=xmin+(xmax-xmin)*f,xx=sx(x),d=new Date(x);
+      const anchor=i===0?"start":i===tickFractions.length-1?"end":"middle";
+      const tx=i===0?xx+2:i===tickFractions.length-1?xx-2:xx;
+      const t=svgEl("text",{x:tx,y:height-12,"text-anchor":anchor,class:"historyAxisLabel historyXAxisLabel"});
       t.textContent=`${String(d.getUTCDate()).padStart(2,"0")}/${String(d.getUTCMonth()+1).padStart(2,"0")}`;
       svg.append(t);
     });
-    svg.append(svgEl("path",{d:pts.map((p,i)=>`${i?"L":"M"} ${sx(p.x)} ${sy(p.y)}`).join(" "),class:"marketLine",stroke:"#69b7ff"}));
-    pts.forEach(p=>{
-      const c=svgEl("circle",{cx:sx(p.x),cy:sy(p.y),r:3,fill:"#69b7ff",class:"marketPoint"});
-      const tt=svgEl("title");tt.textContent=`${fd(p.date)} · ${unit==="money"?fm(p.y):fp(p.y)}`;c.append(tt);svg.append(c);
+    svg.append(svgEl("path",{
+      d:pts.map((p,i)=>`${i?"L":"M"} ${sx(p.x)} ${sy(p.y)}`).join(" "),
+      class:"historyLine",stroke:"#69b7ff"
+    }));
+    const stride=Math.max(1,Math.ceil(pts.length/55));
+    pts.forEach((p,i)=>{
+      if(i%stride!==0 && i!==pts.length-1)return;
+      const c=svgEl("circle",{cx:sx(p.x),cy:sy(p.y),r:2.15,fill:"#69b7ff",class:"historyPoint"});
+      const tt=svgEl("title");
+      tt.textContent=`${fd(p.date)} · ${unit==="money"?fm(p.y):fp(p.y)}`;
+      c.append(tt);svg.append(c);
     });
     host.append(svg);
   }
@@ -247,12 +260,46 @@
       wrap.after(note);
     }
     if(!q("tesouroHistoryPanel")){
-      const sec=document.createElement("section");sec.id="tesouroHistoryPanel";sec.className="panel historyPanel";
-      sec.innerHTML=`<div class="panelHead"><div><p class="eyebrow">HISTÓRICO DO TÍTULO</p><h2>Taxa × preço</h2><p class="sectionSubtitle">Acompanhe taxa e preço do mesmo título no tempo. A relação inversa vale mantendo as demais variáveis constantes; em títulos indexados, carrego, indexador e passagem do tempo também alteram o preço.</p></div><div id="tesouroHistoryStatus" class="muted">—</div></div>
-        <div class="historyControls"><label class="historySelect">Título<select id="tesouroHistoryTitle"></select></label><div id="tesouroHistorySummary" class="historySummary"></div></div>
-        <div class="historyGrid"><div class="historyBox"><h3>Taxa de compra</h3><div id="tesouroRateHistory" class="historyChart"></div></div>
-        <div class="historyBox"><h3>Preço de compra</h3><div id="tesouroPriceHistory" class="historyChart"></div></div></div>
-        <div id="tesouroHistoryNote" class="modelNote"></div>`;
+      const sec=document.createElement("section");sec.id="tesouroHistoryPanel";sec.className="panel historyPanel historyPanelV212";
+      sec.innerHTML=`
+        <div class="historyTop">
+          <div class="historyHeading">
+            <p class="eyebrow">HISTÓRICO DO TÍTULO</p>
+            <div class="historyTitleRow">
+              <h2 id="tesouroHistoryActiveTitle">Taxa × preço</h2>
+              <span id="tesouroHistoryStatus" class="historyCountPill">—</span>
+            </div>
+            <p id="tesouroHistoryPeriod" class="sectionSubtitle">Selecione um título para acompanhar sua trajetória.</p>
+          </div>
+          <label class="historySelect historySelectCompact">
+            <span>Trocar título</span>
+            <select id="tesouroHistoryTitle"></select>
+          </label>
+        </div>
+
+        <div id="tesouroHistoryKpis" class="historyKpis"></div>
+
+        <div class="historyGrid historyGridCompact">
+          <div class="historyBox historyBoxCompact">
+            <div class="historyBoxHead">
+              <div><span>Taxa de compra</span><strong id="tesouroHistoryRateNow">—</strong></div>
+              <span id="tesouroHistoryRateDelta" class="historyMiniDelta">—</span>
+            </div>
+            <div id="tesouroRateHistory" class="historyChart historyChartCompact"></div>
+          </div>
+          <div class="historyBox historyBoxCompact">
+            <div class="historyBoxHead">
+              <div><span>Preço de compra</span><strong id="tesouroHistoryPriceNow">—</strong></div>
+              <span id="tesouroHistoryPriceDelta" class="historyMiniDelta">—</span>
+            </div>
+            <div id="tesouroPriceHistory" class="historyChart historyChartCompact"></div>
+          </div>
+        </div>
+
+        <div class="historyReading">
+          <p class="eyebrow">LEITURA DO PERÍODO</p>
+          <p id="tesouroHistoryReading">—</p>
+        </div>`;
       panel.after(sec);
       q("tesouroHistoryTitle").addEventListener("change",renderTitleHistory);
     }
@@ -352,8 +399,8 @@
     const key=sel.value,entries=[...(S.t?.entries||[])].sort((a,b)=>a.date.localeCompare(b.date)).slice(-260);
     const selectedNow=(S.tesouroCurrent?.data?.titles||[]).find(t=>titleKey(t)===key);
     const label=selectedNow?`${selectedNow.type} · ${fd(selectedNow.maturity)}`:sel.options[sel.selectedIndex]?.text||"Título";
-    const countLabel=entries.length===1?"1 pregão disponível":`${entries.length} pregões disponíveis`;
-    q("tesouroHistoryStatus").textContent=`${countLabel} · ${label}`;
+    q("tesouroHistoryActiveTitle").textContent=label;
+
     const results=await Promise.allSettled(entries.map(e=>getJson(e.path)));
     const rate=[],price=[];
     results.forEach((res,i)=>{
@@ -363,20 +410,56 @@
       if(finite(t.buy_rate_pct))rate.push({x,y:+t.buy_rate_pct,date:entries[i].date});
       if(finite(t.buy_price))price.push({x,y:+t.buy_price,date:entries[i].date});
     });
+
     const firstR=rate[0],lastR=rate.at(-1),firstP=price[0],lastP=price.at(-1);
     const dbp=firstR&&lastR?(lastR.y-firstR.y)*100:NaN;
     const dp=firstP&&lastP&&firstP.y?((lastP.y/firstP.y)-1)*100:NaN;
     const start=firstR?.date||firstP?.date,end=lastR?.date||lastP?.date;
-    q("tesouroHistorySummary").innerHTML=
-      `<span>Período <strong>${start&&end?`${fd(start)} → ${fd(end)}`:"—"}</strong></span>`+
-      `<span>Taxa <strong>${firstR&&lastR?`${formattedTitleRate(selectedNow||{type:""},firstR.y)} → ${formattedTitleRate(selectedNow||{type:""},lastR.y)}`:"—"}</strong></span>`+
-      `<span>Δ taxa <strong class="${deltaClass(dbp)}">${fb(dbp)}</strong></span>`+
-      `<span>Preço <strong>${firstP&&lastP?`${fm(firstP.y)} → ${fm(lastP.y)}`:"—"}</strong></span>`+
-      `<span>Δ preço <strong>${fdeltaPct(dp)}</strong></span>`;
+    const observed=Math.max(rate.length,price.length);
+    q("tesouroHistoryStatus").textContent=observed===1?"1 pregão":`${observed} pregões`;
+    q("tesouroHistoryPeriod").textContent=start&&end
+      ? `${fd(start)} → ${fd(end)} · evolução do mesmo título`
+      : "Histórico insuficiente.";
+
+    const rateInitial=firstR?formattedTitleRate(selectedNow||{type:""},firstR.y):"—";
+    const rateFinal=lastR?formattedTitleRate(selectedNow||{type:""},lastR.y):"—";
+    const priceInitial=firstP?fm(firstP.y):"—";
+    const priceFinal=lastP?fm(lastP.y):"—";
+
+    q("tesouroHistoryKpis").innerHTML=`
+      <div class="historyKpi"><span>Taxa inicial</span><strong>${rateInitial}</strong><small>${firstR?fd(firstR.date):"—"}</small></div>
+      <div class="historyKpi"><span>Taxa final</span><strong>${rateFinal}</strong><small>${lastR?fd(lastR.date):"—"}</small></div>
+      <div class="historyKpi"><span>Δ taxa</span><strong class="${deltaClass(dbp)}">${fb(dbp)}</strong><small>no período</small></div>
+      <div class="historyKpi"><span>Preço inicial</span><strong>${priceInitial}</strong><small>${firstP?fd(firstP.date):"—"}</small></div>
+      <div class="historyKpi"><span>Preço final</span><strong>${priceFinal}</strong><small>${lastP?fd(lastP.date):"—"}</small></div>
+      <div class="historyKpi"><span>Δ preço</span><strong class="${deltaClass(-dp)}">${fdeltaPct(dp)}</strong><small>no período</small></div>`;
+
+    q("tesouroHistoryRateNow").textContent=rateFinal;
+    q("tesouroHistoryRateDelta").textContent=fb(dbp);
+    q("tesouroHistoryRateDelta").className=`historyMiniDelta ${deltaClass(dbp)}`;
+    q("tesouroHistoryPriceNow").textContent=priceFinal;
+    q("tesouroHistoryPriceDelta").textContent=fdeltaPct(dp);
+    q("tesouroHistoryPriceDelta").className=`historyMiniDelta ${deltaClass(-dp)}`;
+
     const c=selectedNow?category(selectedNow.type):"";
-    q("tesouroHistoryNote").innerHTML=(["ipca","renda","educa","igpm"].includes(c))
-      ? `<strong>Importante:</strong> neste título indexado, o preço nominal ao longo do tempo não reflete apenas a variação da taxa real. Ele também incorpora atualização do indexador/VNA, carrego e redução do prazo até o vencimento. Por isso, taxa maior no fim do período não obriga o preço final a ser muito menor que o inicial.`
-      : `<strong>Como ler:</strong> para um prefixado, uma alta da taxa de mercado pressiona o preço para baixo, tudo o mais constante. Ao longo do tempo, porém, o carrego e a redução do prazo até o vencimento também influenciam o preço.`;
+    const rateVerb=Number.isFinite(dbp)?(dbp>1?"subiu":dbp<-1?"caiu":"ficou praticamente estável"):"variou";
+    const priceVerb=Number.isFinite(dp)?(dp>.05?"subiu":dp<-.05?"caiu":"ficou praticamente estável"):"variou";
+    let extra="";
+    if(c==="prefixado"){
+      if(Number.isFinite(dbp)&&Number.isFinite(dp)&&Math.sign(dbp)===Math.sign(dp)&&Math.abs(dbp)>1&&Math.abs(dp)>.05){
+        extra=" Como a janela é longa, o preço final também incorpora carrego e encurtamento do prazo; por isso a comparação entre início e fim não isola apenas a marcação a mercado.";
+      }else{
+        extra=" Em um prefixado, taxa e preço tendem a se mover em sentidos opostos quando as demais variáveis permanecem constantes; carrego e passagem do tempo também influenciam a trajetória.";
+      }
+    }else if(["ipca","renda","educa","igpm"].includes(c)){
+      extra=" Em títulos indexados, o preço nominal também incorpora atualização do indexador/VNA, carrego e redução do prazo, então a variação do preço não deve ser atribuída apenas à mudança da taxa real.";
+    }else if(c==="selic"){
+      extra=" No Tesouro Selic, o preço é fortemente influenciado pelo acúmulo da Selic e a taxa exibida representa o ágio/deságio adicional do título.";
+    }
+
+    q("tesouroHistoryReading").textContent=
+      `${start&&end?`De ${fd(start)} a ${fd(end)}, `:""}a taxa ${rateVerb} ${Number.isFinite(dbp)?`(${fb(dbp)})`:""} e o preço ${priceVerb} ${Number.isFinite(dp)?`(${fdeltaPct(dp)})`:""}.${extra}`;
+
     S.lastHistory={rate,price};renderHistoryCharts(S.lastHistory);
   }
   function renderHistoryCharts(h){
