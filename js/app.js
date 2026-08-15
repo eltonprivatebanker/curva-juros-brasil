@@ -7,9 +7,20 @@ const state = {
   pairs: [],
   showAllContracts: false,
   activePreset: '1d',
+  evolutionActive: new Set(),
+  snapshotCache: {},
 };
 
 const DAY_MS = 86400000;
+const EVOLUTION_PRESETS = [
+  { key: '5d', label: '1 semana' },
+  { key: '1m', label: '1 mês' },
+  { key: '3m', label: '3 meses' },
+  { key: '6m', label: '6 meses' },
+  { key: '1y', label: '1 ano' },
+];
+const EVOLUTION_DEFAULTS = ['5d', '1m', '3m', '6m'];
+const EVOLUTION_COLORS = ['#69b7ff', '#ffb86b', '#7de2d1', '#ff7b87', '#c4a7ff', '#9de266'];
 
 const fmtPct = (v) =>
   `${Number(v).toLocaleString('pt-BR', { minimumFractionDigits: 2, maximumFractionDigits: 3 })}%`;
@@ -66,11 +77,17 @@ function sortedEntries() {
 }
 
 async function loadSnapshot(date) {
+  if (state.snapshotCache[date]) return state.snapshotCache[date];
   const entry = entryFor(date);
   if (!entry) throw new Error(`Snapshot não encontrado: ${date}`);
-  const r = await fetch(entry.path, { cache: 'no-store' });
-  if (!r.ok) throw new Error(`Falha ao abrir ${entry.path}`);
-  return r.json();
+
+  const promise = fetch(entry.path, { cache: 'no-store' }).then((r) => {
+    if (!r.ok) throw new Error(`Falha ao abrir ${entry.path}`);
+    return r.json();
+  });
+
+  state.snapshotCache[date] = promise;
+  return promise;
 }
 
 function closestOnOrBefore(target, beforeDate = null) {
@@ -103,6 +120,38 @@ function updatePresetAvailability() {
     button.disabled = !target;
     button.title = target ? `Comparar com ${fmtDate(target)}` : 'Histórico ainda insuficiente para este atalho';
     button.classList.toggle('active', !!target && $('compareDate').value === target);
+  });
+}
+
+function syncEvolutionSelection(currentDate) {
+  const available = new Set(
+    EVOLUTION_PRESETS
+      .map((item) => [item.key, resolvePreset(item.key, currentDate)])
+      .filter(([, date]) => !!date)
+      .map(([key]) => key)
+  );
+
+  for (const key of [...state.evolutionActive]) {
+    if (!available.has(key)) state.evolutionActive.delete(key);
+  }
+
+  if (!state.evolutionActive.size) {
+    for (const key of EVOLUTION_DEFAULTS) {
+      if (available.has(key)) state.evolutionActive.add(key);
+    }
+  }
+}
+
+function updateEvolutionAvailability() {
+  const currentDate = $('currentDate').value;
+  syncEvolutionSelection(currentDate);
+
+  document.querySelectorAll('[data-evo]').forEach((button) => {
+    const key = button.dataset.evo;
+    const target = resolvePreset(key, currentDate);
+    button.disabled = !target;
+    button.title = target ? `Mostrar curva de ${fmtDate(target)}` : 'Histórico ainda insuficiente para esta janela';
+    button.classList.toggle('active', state.evolutionActive.has(key));
   });
 }
 
@@ -144,11 +193,14 @@ function setupDates() {
     compare.value = entries[Math.max(0, pos - 1)].date;
   }
 
+  syncEvolutionSelection(current.value);
+
   current.addEventListener('change', () => {
     updateCompareOptions();
     applyPreset('1d', false);
     state.showAllContracts = false;
     updatePresetAvailability();
+    updateEvolutionAvailability();
     render();
   });
 
@@ -162,12 +214,27 @@ function setupDates() {
     button.addEventListener('click', () => applyPreset(button.dataset.preset));
   });
 
+  document.querySelectorAll('[data-evo]').forEach((button) => {
+    button.addEventListener('click', () => {
+      const key = button.dataset.evo;
+      if (button.disabled) return;
+      if (state.evolutionActive.has(key)) {
+        state.evolutionActive.delete(key);
+      } else {
+        state.evolutionActive.add(key);
+      }
+      updateEvolutionAvailability();
+      render();
+    });
+  });
+
   $('toggleTable').addEventListener('click', () => {
     state.showAllContracts = !state.showAllContracts;
     renderTable(state.pairs);
   });
 
   updatePresetAvailability();
+  updateEvolutionAvailability();
 }
 
 function pairCurves(current, compare) {
@@ -201,7 +268,7 @@ function buckets(pairs) {
 }
 
 function regionLabel(key) {
-  return { short: 'curto prazo', mid: 'miolo da curva', long: 'ponta longa' }[key] || key;
+  return { short: 'curto', mid: 'miolo da curva', long: 'ponta longa' }[key] || key;
 }
 
 function direction(value, threshold = 1) {
@@ -251,21 +318,15 @@ function movementSummary(pairs) {
     short, mid, long,
     strongestRegion: strongestRegion[0],
     strongestValue: strongestRegion[1],
-    counts: {
-      short: bs.short.length,
-      mid: bs.mid.length,
-      long: bs.long.length,
-    },
   };
 }
 
-function movementPhrase(value, article = '') {
-  if (!Number.isFinite(value)) return `${article}sem dados`.trim();
-
+function movementPhrase(value) {
+  if (!Number.isFinite(value)) return 'sem dados';
   const abs = Math.abs(value);
-  if (value > 1) return `${article}abriu ${fmtBp(abs).replace('+', '')}`.trim();
-  if (value < -1) return `${article}fechou ${fmtBp(abs).replace('+', '')}`.trim();
-  return `${article}ficou praticamente estável (${fmtBp(value)})`.trim();
+  if (value > 1) return `abriu ${fmtBp(abs).replace('+', '')}`;
+  if (value < -1) return `fechou ${fmtBp(abs).replace('+', '')}`;
+  return `ficou praticamente estável (${fmtBp(value)})`;
 }
 
 function describe(m, currentDate, compareDate) {
@@ -278,22 +339,14 @@ function describe(m, currentDate, compareDate) {
         ? `as taxas recuaram, em média, ${fmtBp(Math.abs(m.avg)).replace('+', '')}`
         : `as taxas ficaram próximas da estabilidade, com movimento médio de ${fmtBp(m.avg)}`;
 
-  const shortText = Number.isFinite(m.short)
-    ? `o curto ${movementPhrase(m.short)}`
-    : null;
-  const midText = Number.isFinite(m.mid)
-    ? `o miolo ${movementPhrase(m.mid)}`
-    : null;
-  const longText = Number.isFinite(m.long)
-    ? `a ponta longa ${movementPhrase(m.long)}`
-    : null;
+  const parts = [
+    Number.isFinite(m.short) ? `o curto ${movementPhrase(m.short)}` : null,
+    Number.isFinite(m.mid) ? `o miolo ${movementPhrase(m.mid)}` : null,
+    Number.isFinite(m.long) ? `a ponta longa ${movementPhrase(m.long)}` : null,
+  ].filter(Boolean);
 
-  const regionParts = [shortText, midText, longText].filter(Boolean);
-  const regionSentence = regionParts.length
-    ? ` Por faixa, ${regionParts.join('; ')}.`
-    : '';
-
-  const concentration = m.strongestRegion && Number.isFinite(m.strongestValue)
+  const regionSentence = parts.length ? ` Por faixa, ${parts.join('; ')}.` : '';
+  const concentration = m.strongestRegion
     ? ` O movimento foi mais intenso ${m.strongestRegion === 'long' ? 'na' : 'no'} ${regionLabel(m.strongestRegion)}.`
     : '';
 
@@ -419,20 +472,13 @@ function niceTicks(min, max, count = 5) {
   return out;
 }
 
-function renderChart(current, compare) {
-  const host = $('chart');
-  host.innerHTML = '';
-  const width = Math.max(720, host.clientWidth || 1000);
-  const height = 390;
+function buildChartScales(seriesList, host, height = 390) {
   const pad = { l: 58, r: 22, t: 22, b: 46 };
-
-  const all = [...current.contracts, ...compare.contracts]
+  const width = Math.max(720, host.clientWidth || 1000);
+  const all = seriesList.flatMap((s) => s.contracts || [])
     .filter((c) => Number.isFinite(c.business_days) && Number.isFinite(c.rate_pct));
 
-  if (!all.length) {
-    host.innerHTML = '<div class="error">Sem dados suficientes para o gráfico.</div>';
-    return;
-  }
+  if (!all.length) return null;
 
   const xMin = Math.min(...all.map((c) => c.business_days));
   const xMax = Math.max(...all.map((c) => c.business_days));
@@ -442,7 +488,11 @@ function renderChart(current, compare) {
   const sx = (x) => pad.l + (x - xMin) / (xMax - xMin || 1) * (width - pad.l - pad.r);
   const sy = (y) => height - pad.b - (y - yMin) / (yMax - yMin || 1) * (height - pad.t - pad.b);
 
-  const svg = svgEl('svg', { viewBox: `0 0 ${width} ${height}`, role: 'img' });
+  return { width, height, pad, xMin, xMax, yMin, yMax, sx, sy };
+}
+
+function renderAxes(svg, scales) {
+  const { width, height, pad, xMin, xMax, yMin, yMax, sx, sy } = scales;
 
   for (const y of niceTicks(yMin, yMax, 5)) {
     const yy = sy(y);
@@ -467,34 +517,133 @@ function renderChart(current, compare) {
     y1: height - pad.b, y2: height - pad.b,
     class: 'axis'
   }));
+}
 
-  const plot = (contracts, lineClass, pointClass) => {
-    const pts = contracts
-      .filter((c) => Number.isFinite(c.business_days) && Number.isFinite(c.rate_pct))
-      .sort((a, b) => a.business_days - b.business_days);
+function plotSeries(svg, contracts, scales, options = {}) {
+  const pts = contracts
+    .filter((c) => Number.isFinite(c.business_days) && Number.isFinite(c.rate_pct))
+    .sort((a, b) => a.business_days - b.business_days);
 
-    if (!pts.length) return;
+  if (!pts.length) return;
 
-    const d = pts.map((p, i) => `${i ? 'L' : 'M'} ${sx(p.business_days)} ${sy(p.rate_pct)}`).join(' ');
-    svg.append(svgEl('path', { d, class: lineClass }));
+  const { sx, sy } = scales;
+  const d = pts.map((p, i) => `${i ? 'L' : 'M'} ${sx(p.business_days)} ${sy(p.rate_pct)}`).join(' ');
+  const path = svgEl('path', { d, class: options.className || 'seriesLine' });
+  if (options.stroke) path.setAttribute('stroke', options.stroke);
+  if (options.strokeWidth) path.setAttribute('stroke-width', options.strokeWidth);
+  if (options.dasharray) path.setAttribute('stroke-dasharray', options.dasharray);
+  if (options.opacity) path.setAttribute('opacity', options.opacity);
+  svg.append(path);
 
+  if (options.showPoints) {
     for (const p of pts) {
       const c = svgEl('circle', {
         cx: sx(p.business_days),
         cy: sy(p.rate_pct),
-        r: 4.5,
-        class: pointClass
+        r: options.pointRadius || 4.5,
+        class: options.pointClass || 'seriesPoint'
       });
+      if (options.stroke) c.setAttribute('fill', options.stroke);
       const title = svgEl('title');
       title.textContent = `${p.ticker}: ${fmtPct(p.rate_pct)} · ${p.business_days} DU`;
       c.append(title);
       svg.append(c);
     }
-  };
+  }
+}
 
-  plot(compare.contracts, 'prevLine', 'prevPoint');
-  plot(current.contracts, 'currentLine', 'currentPoint');
+function renderChart(current, compare) {
+  const host = $('chart');
+  host.innerHTML = '';
+  const scales = buildChartScales([{ contracts: current.contracts }, { contracts: compare.contracts }], host);
+  if (!scales) {
+    host.innerHTML = '<div class="error">Sem dados suficientes para o gráfico.</div>';
+    return;
+  }
+
+  const svg = svgEl('svg', { viewBox: `0 0 ${scales.width} ${scales.height}`, role: 'img' });
+  renderAxes(svg, scales);
+  plotSeries(svg, compare.contracts, scales, {
+    className: 'prevLine',
+    stroke: '#7a8798',
+    strokeWidth: 2,
+    dasharray: '5 6',
+    showPoints: true,
+    pointClass: 'prevPoint',
+    pointRadius: 4.5
+  });
+  plotSeries(svg, current.contracts, scales, {
+    className: 'currentLine',
+    stroke: '#69b7ff',
+    strokeWidth: 3,
+    showPoints: true,
+    pointClass: 'currentPoint',
+    pointRadius: 4.5
+  });
+
   host.append(svg);
+}
+
+async function buildEvolutionSeries(currentDate) {
+  const currentSnapshot = await loadSnapshot(currentDate);
+  const series = [{
+    key: 'current',
+    label: 'Hoje',
+    date: currentDate,
+    color: EVOLUTION_COLORS[0],
+    current: true,
+    contracts: currentSnapshot.contracts
+  }];
+
+  const activeConfigs = EVOLUTION_PRESETS.filter((item) => state.evolutionActive.has(item.key));
+  const loaded = await Promise.all(activeConfigs.map(async (item, idx) => {
+    const date = resolvePreset(item.key, currentDate);
+    if (!date) return null;
+    const snap = await loadSnapshot(date);
+    return {
+      key: item.key,
+      label: item.label,
+      date,
+      color: EVOLUTION_COLORS[idx + 1] || EVOLUTION_COLORS[0],
+      current: false,
+      contracts: snap.contracts
+    };
+  }));
+
+  return series.concat(loaded.filter(Boolean));
+}
+
+function renderEvolutionLegend(series) {
+  $('evolutionLegend').innerHTML = series.map((item) =>
+    `<span><i class="legendLine" style="background:${item.color}"></i><strong>${item.label}</strong> ${fmtDate(item.date)}</span>`
+  ).join('');
+  $('evolutionCount').textContent = `${series.length} curva${series.length === 1 ? '' : 's'} no gráfico`;
+}
+
+function renderEvolutionChart(series) {
+  const host = $('evolutionChart');
+  host.innerHTML = '';
+  const scales = buildChartScales(series, host);
+  if (!scales) {
+    host.innerHTML = '<div class="error">Sem dados suficientes para o gráfico histórico.</div>';
+    return;
+  }
+
+  const svg = svgEl('svg', { viewBox: `0 0 ${scales.width} ${scales.height}`, role: 'img' });
+  renderAxes(svg, scales);
+
+  series.forEach((item, idx) => {
+    plotSeries(svg, item.contracts, scales, {
+      className: item.current ? 'seriesLine current' : 'seriesLine',
+      stroke: item.color,
+      strokeWidth: item.current ? 3.4 : 2.25,
+      opacity: item.current ? 1 : 0.95,
+      showPoints: false
+    });
+  });
+
+  host.append(svg);
+  renderEvolutionLegend(series);
 }
 
 async function render() {
@@ -506,9 +655,10 @@ async function render() {
       throw new Error('Escolha uma data de comparação anterior à curva atual.');
     }
 
-    const [current, compare] = await Promise.all([
+    const [current, compare, evolutionSeries] = await Promise.all([
       loadSnapshot(currentDate),
       loadSnapshot(compareDate),
+      buildEvolutionSeries(currentDate)
     ]);
 
     state.current = current;
@@ -520,14 +670,17 @@ async function render() {
     renderJanuary(pairs);
     renderTable(pairs);
     renderChart(current, compare);
+    renderEvolutionChart(evolutionSeries);
 
     $('legend').innerHTML =
       `<span><i></i>${fmtDate(currentDate)}</span><span class="prev"><i></i>${fmtDate(compareDate)}</span>`;
 
     updatePresetAvailability();
+    updateEvolutionAvailability();
   } catch (err) {
     console.error(err);
     $('chart').innerHTML = `<div class="error">${err.message}</div>`;
+    $('evolutionChart').innerHTML = `<div class="error">${err.message}</div>`;
   }
 }
 
@@ -552,7 +705,10 @@ async function boot() {
 }
 
 window.addEventListener('resize', () => {
-  if (state.current && state.compare) renderChart(state.current, state.compare);
+  if (state.current && state.compare) {
+    renderChart(state.current, state.compare);
+    buildEvolutionSeries($('currentDate').value).then(renderEvolutionChart).catch(console.error);
+  }
 });
 
 boot();

@@ -5,7 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <meta name="description" content="Painel didático de curva DI Futuro, movimentos em pontos-base e comparação entre pregões.">
   <title>Curva de Juros Brasil · DI Futuro</title>
-  <link rel="stylesheet" href="css/style.css?v=1.1.2">
+  <link rel="stylesheet" href="css/style.css?v=1.2.0">
 </head>
 <body>
   <main class="shell">
@@ -93,18 +93,6 @@
       </article>
     </section>
 
-    <section class="panel januaryPanel">
-      <div class="panelHead">
-        <div>
-          <p class="eyebrow">VÉRTICES DE REFERÊNCIA</p>
-          <h2>Contratos de janeiro</h2>
-          <p class="sectionSubtitle">Uma visão limpa dos principais pontos anuais da curva.</p>
-        </div>
-        <div id="januaryCount" class="muted">—</div>
-      </div>
-      <div id="januaryGrid" class="januaryGrid"></div>
-    </section>
-
     <section class="panel chartPanel">
       <div class="panelHead">
         <div>
@@ -115,6 +103,49 @@
       </div>
       <div id="chart" class="chart" aria-label="Gráfico da curva DI"></div>
       <p class="chartNote">O eixo horizontal usa dias úteis até o vencimento; assim, contratos diferentes ficam posicionados pelo prazo real restante.</p>
+    </section>
+
+    <section class="panel evolutionPanel">
+      <div class="panelHead">
+        <div>
+          <p class="eyebrow">EVOLUÇÃO DA CURVA</p>
+          <h2>Curvas sobrepostas no tempo</h2>
+          <p class="sectionSubtitle">Hoje é sempre exibido. Ative as janelas históricas para enxergar deslocamentos, inclinação e reprecificação da curva.</p>
+        </div>
+        <div id="evolutionLegend" class="legend"></div>
+      </div>
+
+      <div class="evoControls">
+        <div class="presetWrap">
+          <span class="presetLabel">Mostrar junto com a curva atual</span>
+          <div class="presetButtons evoButtons" id="evolutionButtons">
+            <button type="button" data-evo="5d">1 semana</button>
+            <button type="button" data-evo="1m">1 mês</button>
+            <button type="button" data-evo="3m">3 meses</button>
+            <button type="button" data-evo="6m">6 meses</button>
+            <button type="button" data-evo="1y">1 ano</button>
+          </div>
+        </div>
+        <div class="evoHint">
+          <div id="evolutionCount" class="muted">—</div>
+          <div class="muted">Leitura visual da curva ao longo do tempo.</div>
+        </div>
+      </div>
+
+      <div id="evolutionChart" class="chart evolutionChart" aria-label="Gráfico de evolução histórica da curva DI"></div>
+      <p class="chartNote">V1.2 usa os snapshots históricos disponíveis e sobrepõe as curvas por prazo remanescente em cada data. Numa próxima etapa, podemos acrescentar a curva normalizada por prazo constante (1 ano, 2 anos, 3 anos, 5 anos...).</p>
+    </section>
+
+    <section class="panel januaryPanel">
+      <div class="panelHead">
+        <div>
+          <p class="eyebrow">VÉRTICES DE REFERÊNCIA</p>
+          <h2>Contratos de janeiro</h2>
+          <p class="sectionSubtitle">Uma visão limpa dos principais pontos anuais da curva.</p>
+        </div>
+        <div id="januaryCount" class="muted">—</div>
+      </div>
+      <div id="januaryGrid" class="januaryGrid"></div>
     </section>
 
     <section class="panel">
@@ -147,13 +178,13 @@
     </section>
 
     <section class="panel notePanel">
-      <p><strong>V1.1.2:</strong> o painel abre em “último pregão × pregão anterior”, usa faixas fixas de prazo para curto/médio/longo e destaca os contratos de janeiro. Os atalhos históricos ficam disponíveis automaticamente quando houver dados suficientes.</p>
+      <p><strong>V1.2:</strong> além da comparação “atual × data escolhida”, o painel agora traz um gráfico de evolução da curva com janelas históricas sobrepostas. Isso ajuda a visualizar deslocamentos, steepening e flattening de forma mais intuitiva.</p>
     </section>
 
     <footer>
       Painel educacional de mercado. Taxas e movimentos não constituem recomendação de investimento.
     </footer>
   </main>
-  <script src="js/app.js?v=1.1.2" defer></script>
+  <script src="js/app.js?v=1.2.0" defer></script>
 </body>
 </html>

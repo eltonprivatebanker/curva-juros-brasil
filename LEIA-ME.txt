@@ -1,24 +1,25 @@
-CURVA DE JUROS BRASIL — V1.1.2
+CURVA DE JUROS BRASIL — V1.2
 
-Substitua apenas:
-- index.html
-- js/app.js
+Substitua estes 3 arquivos no repositório:
+
+1) index.html
+2) css/style.css
+3) js/app.js
 
 Não altere:
-- css/style.css
 - data/
 - scripts/
 - requirements.txt
 - .github/workflows/
 
-Ajustes:
-- narrativa automática mais natural em português;
-- "o curto abriu/fechou";
-- "o miolo abriu/fechou";
-- "a ponta longa abriu/fechou";
-- correção de "na ponta longa";
-- frase do maior movimento mais clara;
-- correção de maiúsculas/pontuação;
-- anti-cache atualizado para v1.1.2.
+Novidades:
+- nova seção "Evolução da curva";
+- várias curvas históricas sobrepostas;
+- botões para 1 semana, 1 mês, 3 meses, 6 meses e 1 ano;
+- legenda dinâmica com as datas exibidas;
+- narrativa textual natural mantida;
+- anti-cache atualizado para v1.2.0.
 
-Os cálculos e critérios de Curto/Médio/Longo não foram alterados.
+Observação:
+- nesta V1.2, a evolução usa os snapshots históricos existentes;
+- a versão futura pode incluir curva normalizada por prazo constante.
