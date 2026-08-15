@@ -55,6 +55,7 @@
         if (btn.dataset.tab==="anbima" && S.lastA) renderAnbimaChart(S.lastA);
         if (btn.dataset.tab==="conexoes" && S.lastC) renderConnectionChart(S.lastC);
         if (btn.dataset.tab==="tesouro" && S.lastHistory) renderHistoryCharts(S.lastHistory);
+        if (btn.dataset.tab==="decisao") renderDecision();
       });
     });
   }
@@ -562,6 +563,135 @@
     else q("basisText").textContent="Ainda não há data em comum entre DI e ANBIMA.";
   }
 
+
+  function annualPctOfCdi(cdiAnnual,pctCdi){
+    if(!Number.isFinite(cdiAnnual)||!Number.isFinite(pctCdi))return NaN;
+    const daily=Math.pow(1+cdiAnnual/100,1/252)-1;
+    return (Math.pow(1+(pctCdi/100)*daily,252)-1)*100;
+  }
+  function annualIpcaPlus(ipca,spread){
+    if(!Number.isFinite(ipca)||!Number.isFinite(spread))return NaN;
+    return ((1+ipca/100)*(1+spread/100)-1)*100;
+  }
+  function finalValue(amount,annualRate,du){
+    if(!Number.isFinite(amount)||!Number.isFinite(annualRate)||!Number.isFinite(du))return NaN;
+    return amount*Math.pow(1+annualRate/100,du/252);
+  }
+  function realRate(nominal,ipca){
+    if(!Number.isFinite(nominal)||!Number.isFinite(ipca))return NaN;
+    return ((1+nominal/100)/(1+ipca/100)-1)*100;
+  }
+  function cdiBreakevenForAnnualTarget(targetAnnual,pctCdi){
+    if(!Number.isFinite(targetAnnual)||!Number.isFinite(pctCdi)||pctCdi<=0)return NaN;
+    const targetDaily=Math.pow(1+targetAnnual/100,1/252)-1;
+    const cdiDaily=targetDaily/(pctCdi/100);
+    return (Math.pow(1+cdiDaily,252)-1)*100;
+  }
+  function ipcaBreakeven(targetNominal,spread){
+    if(!Number.isFinite(targetNominal)||!Number.isFinite(spread))return NaN;
+    return ((1+targetNominal/100)/(1+spread/100)-1)*100;
+  }
+  function pctInput(id){
+    const v=parseFloat(q(id)?.value);
+    return Number.isFinite(v)?v:NaN;
+  }
+  function moneyInput(id){
+    const v=parseFloat(q(id)?.value);
+    return Number.isFinite(v)?v:NaN;
+  }
+  function marketCurvesForDate(date){
+    const de=S.di?.entries?.find(x=>x.date===date),ae=S.a?.entries?.find(x=>x.date===date);
+    if(!de||!ae)return Promise.resolve(null);
+    return Promise.all([getJson(de.path),getJson(ae.path)]).then(([di,a])=>({di,a}));
+  }
+  function currentDecisionRefs(bundle,du){
+    if(!bundle)return null;
+    const diCurve=(bundle.di.contracts||[]).filter(x=>finite(x.business_days)&&finite(x.rate_pct)).map(x=>({du:+x.business_days,rate:+x.rate_pct}));
+    const pre=(bundle.a.curves||[]).filter(x=>finite(x.pre_pct)).map(x=>({du:+x.du,rate:+x.pre_pct}));
+    const real=(bundle.a.curves||[]).filter(x=>finite(x.ipca_pct)).map(x=>({du:+x.du,rate:+x.ipca_pct}));
+    const implied=(bundle.a.curves||[]).filter(x=>finite(x.implied_pct)).map(x=>({du:+x.du,rate:+x.implied_pct}));
+    return {di:flatForward(diCurve,du),pre:flatForward(pre,du),real:flatForward(real,du),implied:flatForward(implied,du)};
+  }
+  function setupDecisionDates(){
+    const diDates=new Set(S.di?.entries?.map(e=>e.date)||[]);
+    const common=(S.a?.entries||[]).filter(e=>diDates.has(e.date)).sort((a,b)=>b.date.localeCompare(a.date));
+    const sel=q("decisionDate"); if(!sel)return;
+    sel.innerHTML="";
+    common.forEach(e=>sel.add(new Option(fd(e.date),e.date)));
+    sel.disabled=!common.length;
+    if(common.length)sel.value=common[0].date;
+    sel.addEventListener("change",renderDecision);
+    ["rfAmount","rfHorizon","rfPctCdi","rfPre","rfIpcaSpread","rfCdiScenario","rfIpcaScenario"].forEach(id=>{
+      q(id)?.addEventListener("input",renderDecision);
+      q(id)?.addEventListener("change",renderDecision);
+    });
+    q("useMarketScenario")?.addEventListener("click",async()=>{
+      const d=sel.value,du=+q("rfHorizon").value,bundle=await marketCurvesForDate(d),refs=currentDecisionRefs(bundle,du);
+      if(refs){
+        if(Number.isFinite(refs.di))q("rfCdiScenario").value=refs.di.toFixed(2);
+        if(Number.isFinite(refs.implied))q("rfIpcaScenario").value=refs.implied.toFixed(2);
+      }
+      renderDecision();
+    });
+  }
+  async function renderDecision(){
+    if(!q("rfProductCards")||!q("decisionDate"))return;
+    const d=q("decisionDate").value;if(!d)return;
+    const du=+q("rfHorizon").value;
+    const amount=moneyInput("rfAmount"),pctCdi=pctInput("rfPctCdi"),preRate=pctInput("rfPre"),
+      ipcaSpread=pctInput("rfIpcaSpread"),cdiScenario=pctInput("rfCdiScenario"),ipcaScenario=pctInput("rfIpcaScenario");
+    const bundle=await marketCurvesForDate(d),refs=currentDecisionRefs(bundle,du);
+    if(!refs)return;
+
+    q("rfReferenceTitle").textContent=`Mesmo prazo · ${approx(du)} · ${du.toLocaleString("pt-BR")} DU`;
+    q("rfReferenceStatus").textContent=fd(d);
+    const preVsCurve=Number.isFinite(refs.pre)?(preRate-refs.pre)*100:NaN;
+    const realVsCurve=Number.isFinite(refs.real)?(ipcaSpread-refs.real)*100:NaN;
+    q("rfReferenceCards").innerHTML=`
+      <article><span>DI · referência</span><strong>${fp(refs.di)}</strong><small>flat forward</small></article>
+      <article><span>ANBIMA Pré</span><strong>${fp(refs.pre)}</strong><small>mesmo DU</small></article>
+      <article><span>ANBIMA juro real</span><strong>${fp(refs.real)}</strong><small>ETTJ IPCA</small></article>
+      <article><span>Inflação implícita</span><strong>${fp(refs.implied)}</strong><small>curva nominal × real</small></article>
+      <article><span>LCI Pré − ANBIMA</span><strong class="${deltaClass(preVsCurve)}">${fb(preVsCurve)}</strong><small>taxa/prazo; risco diferente</small></article>
+      <article><span>LCI IPCA+ − real</span><strong class="${deltaClass(realVsCurve)}">${fb(realVsCurve)}</strong><small>taxa/prazo; risco diferente</small></article>`;
+
+    const postAnnual=annualPctOfCdi(cdiScenario,pctCdi);
+    const ipcaNominal=annualIpcaPlus(ipcaScenario,ipcaSpread);
+    const postFinal=finalValue(amount,postAnnual,du),preFinal=finalValue(amount,preRate,du),ipcaFinal=finalValue(amount,ipcaNominal,du);
+    const products=[
+      {name:"LCI Pós",rate:postAnnual,rateLabel:`${pctCdi.toLocaleString("pt-BR",{maximumFractionDigits:2})}% do CDI`,final:postFinal,real:realRate(postAnnual,ipcaScenario),detail:`CDI médio usado: ${fp(cdiScenario,2)}`},
+      {name:"LCI Pré",rate:preRate,rateLabel:`${fp(preRate,2)} a.a.`,final:preFinal,real:realRate(preRate,ipcaScenario),detail:"taxa travada no cenário"},
+      {name:"LCI IPCA+",rate:ipcaNominal,rateLabel:`IPCA + ${fp(ipcaSpread,2)}`,final:ipcaFinal,real:ipcaSpread,detail:`IPCA médio usado: ${fp(ipcaScenario,2)}`}
+    ];
+    const validFinals=products.map(p=>p.final).filter(Number.isFinite),maxFinal=validFinals.length?Math.max(...validFinals):NaN;
+    q("rfProductCards").innerHTML=products.map(p=>`
+      <article class="rfProductCard ${Number.isFinite(maxFinal)&&Math.abs(p.final-maxFinal)<.01?"scenarioLeader":""}">
+        <div class="rfProductHead"><span>${p.name}</span>${Number.isFinite(maxFinal)&&Math.abs(p.final-maxFinal)<.01?'<em>maior valor no cenário</em>':""}</div>
+        <strong>${p.rateLabel}</strong>
+        <div class="rfProductValue">${fm(p.final)}</div>
+        <div class="rfProductMeta"><span>taxa nominal modelada <b>${fp(p.rate,2)}</b></span><span>retorno real modelado <b>${fp(p.real,2)}</b></span></div>
+        <small>${p.detail}</small>
+      </article>`).join("");
+
+    const cdiBE=cdiBreakevenForAnnualTarget(preRate,pctCdi);
+    const ipcaPreBE=ipcaBreakeven(preRate,ipcaSpread);
+    const ipcaPostBE=ipcaBreakeven(postAnnual,ipcaSpread);
+    q("rfBreakevens").innerHTML=`
+      <article><span>Pós empata com Pré</span><strong>CDI médio ${fp(cdiBE,2)}</strong><small>com LCI a ${pctCdi.toLocaleString("pt-BR",{maximumFractionDigits:2})}% do CDI</small></article>
+      <article><span>IPCA+ empata com Pré</span><strong>IPCA médio ${fp(ipcaPreBE,2)}</strong><small>mantida a taxa real de ${fp(ipcaSpread,2)}</small></article>
+      <article><span>IPCA+ empata com Pós</span><strong>IPCA médio ${fp(ipcaPostBE,2)}</strong><small>considerando CDI do cenário</small></article>`;
+
+    const postVsPre=postFinal-preFinal,ipcaVsPre=ipcaFinal-preFinal;
+    const sentencePost=postVsPre>0
+      ? `Com CDI médio de ${fp(cdiScenario,2)}, a LCI Pós modelada supera a Pré em ${fm(postVsPre)} no horizonte.`
+      : `Com CDI médio de ${fp(cdiScenario,2)}, a LCI Pré modelada supera a Pós em ${fm(Math.abs(postVsPre))} no horizonte.`;
+    const sentenceIpca=ipcaVsPre>0
+      ? `Com IPCA médio de ${fp(ipcaScenario,2)}, a LCI IPCA+ modelada supera a Pré em ${fm(ipcaVsPre)}.`
+      : `Com IPCA médio de ${fp(ipcaScenario,2)}, a LCI Pré modelada supera a IPCA+ em ${fm(Math.abs(ipcaVsPre))}.`;
+    q("rfScenarioReading").innerHTML=`<p class="eyebrow">LEITURA DO CENÁRIO</p><p>${sentencePost} ${sentenceIpca}</p>
+      <p class="rfCaution">Comparação matemática em cenário constante. Liquidez, carência, crédito, concentração, FGC e objetivo do cliente podem pesar mais que a diferença de retorno modelada.</p>`;
+  }
+
   function fixV2Copy(){
     const period=q("periodLabel");
     if(period&&period.textContent.includes("1 dia corridos"))period.textContent=period.textContent.replace("1 dia corridos","1 dia corrido");
@@ -578,7 +708,11 @@
     if(d.status==="fulfilled")S.di=d.value;if(a.status==="fulfilled")S.a=a.value;if(t.status==="fulfilled")S.t=t.value;
     if(S.a?.entries?.length){fillSelect(q("anbimaDate"),S.a,renderAnbima);await renderAnbima();}
     fillSelect(q("tesouroDate"),S.t,renderTesouro);await renderTesouro();
-    if(S.di&&S.a)setupConnectionDates();
+    if(S.di&&S.a){
+      setupConnectionDates();
+      setupDecisionDates();
+      renderDecision();
+    }
     fixV2Copy();
     const root=q("tab-di");if(root)new MutationObserver(fixV2Copy).observe(root,{subtree:true,childList:true,characterData:true});
   }
