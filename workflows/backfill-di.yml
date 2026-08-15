@@ -1,0 +1,54 @@
+name: Backfill histórico DI
+
+on:
+  workflow_dispatch:
+    inputs:
+      start:
+        description: "Data inicial (YYYY-MM-DD)"
+        required: true
+        default: "2022-01-03"
+      end:
+        description: "Data final (YYYY-MM-DD). Deixe vazio para hoje."
+        required: false
+        default: ""
+
+permissions:
+  contents: write
+
+jobs:
+  backfill:
+    runs-on: ubuntu-latest
+    timeout-minutes: 120
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+          cache: pip
+
+      - name: Dependências
+        run: pip install -r requirements.txt
+
+      - name: Baixar histórico
+        shell: bash
+        run: |
+          if [ -n "${{ inputs.end }}" ]; then
+            python scripts/update_di.py --start "${{ inputs.start }}" --end "${{ inputs.end }}"
+          else
+            python scripts/update_di.py --start "${{ inputs.start }}"
+          fi
+
+      - name: Commit do histórico
+        run: |
+          if git diff --quiet -- data/; then
+            echo "Sem mudanças."
+            exit 0
+          fi
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add data/
+          git commit -m "Backfill histórico DI desde ${{ inputs.start }}"
+          git push
