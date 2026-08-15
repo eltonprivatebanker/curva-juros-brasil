@@ -1,10 +1,10 @@
 (() => {
   const q = (id) => document.getElementById(id);
   const STANDARD_DU = [126, 252, 504, 756, 1260, 2520];
-  const CATEGORY_ORDER = ["all","prefixado","ipca","selic","renda","educa","outros"];
+  const CATEGORY_ORDER = ["all","prefixado","ipca","selic","renda","educa","igpm","outros"];
   const CATEGORY_LABEL = {
     all:"Todos", prefixado:"Prefixados", ipca:"IPCA+", selic:"Selic",
-    renda:"Renda+", educa:"Educa+", outros:"Outros"
+    renda:"Renda+", educa:"Educa+", igpm:"IGP-M+", outros:"Outros"
   };
   const S = {
     di:null, a:null, t:null, cache:new Map(),
@@ -168,6 +168,7 @@
     if(s.includes("renda+"))return"renda";
     if(s.includes("educa+"))return"educa";
     if(s.includes("selic"))return"selic";
+    if(s.includes("igpm")||s.includes("igp-m"))return"igpm";
     if(s.includes("ipca+"))return"ipca";
     return"outros";
   }
@@ -184,7 +185,7 @@
     const c=category(t.type);
     if(c==="selic")return"Selic + ";
     if(c==="ipca"||c==="renda"||c==="educa")return"IPCA + ";
-    if((t.type||"").toLowerCase().includes("igpm"))return"IGP-M + ";
+    if(c==="igpm"||(t.type||"").toLowerCase().includes("igpm"))return"IGP-M + ";
     return"";
   }
   function formattedTitleRate(t,v){
@@ -195,8 +196,8 @@
   }
   function rangeRateLabel(cat,min,max){
     if(!Number.isFinite(min)||!Number.isFinite(max))return"—";
-    const fake={type:CATEGORY_LABEL[cat]};
-    const prefix=cat==="selic"?"Selic + ":(["ipca","renda","educa"].includes(cat)?"IPCA + ":"");
+    min=Math.abs(min)<.005?0:min; max=Math.abs(max)<.005?0:max;
+    const prefix=cat==="selic"?"Selic + ":(["ipca","renda","educa"].includes(cat)?"IPCA + ":(cat==="igpm"?"IGP-M + ":""));
     if(Math.abs(max-min)<.005)return `${prefix}${min.toLocaleString("pt-BR",{minimumFractionDigits:2,maximumFractionDigits:2})}%`;
     return `${prefix}${min.toLocaleString("pt-BR",{minimumFractionDigits:2,maximumFractionDigits:2})}% → ${max.toLocaleString("pt-BR",{minimumFractionDigits:2,maximumFractionDigits:2})}%`;
   }
@@ -247,10 +248,11 @@
     }
     if(!q("tesouroHistoryPanel")){
       const sec=document.createElement("section");sec.id="tesouroHistoryPanel";sec.className="panel historyPanel";
-      sec.innerHTML=`<div class="panelHead"><div><p class="eyebrow">HISTÓRICO DO TÍTULO</p><h2>Taxa × preço</h2><p class="sectionSubtitle">Quando a taxa sobe, o preço do título prefixado ou indexado à inflação tende a cair — e vice-versa.</p></div><div id="tesouroHistoryStatus" class="muted">—</div></div>
+      sec.innerHTML=`<div class="panelHead"><div><p class="eyebrow">HISTÓRICO DO TÍTULO</p><h2>Taxa × preço</h2><p class="sectionSubtitle">Acompanhe taxa e preço do mesmo título no tempo. A relação inversa vale mantendo as demais variáveis constantes; em títulos indexados, carrego, indexador e passagem do tempo também alteram o preço.</p></div><div id="tesouroHistoryStatus" class="muted">—</div></div>
         <div class="historyControls"><label class="historySelect">Título<select id="tesouroHistoryTitle"></select></label><div id="tesouroHistorySummary" class="historySummary"></div></div>
         <div class="historyGrid"><div class="historyBox"><h3>Taxa de compra</h3><div id="tesouroRateHistory" class="historyChart"></div></div>
-        <div class="historyBox"><h3>Preço de compra</h3><div id="tesouroPriceHistory" class="historyChart"></div></div></div>`;
+        <div class="historyBox"><h3>Preço de compra</h3><div id="tesouroPriceHistory" class="historyChart"></div></div></div>
+        <div id="tesouroHistoryNote" class="modelNote"></div>`;
       panel.after(sec);
       q("tesouroHistoryTitle").addEventListener("change",renderTitleHistory);
     }
@@ -348,7 +350,10 @@
   async function renderTitleHistory(){
     const sel=q("tesouroHistoryTitle");if(!sel||!sel.value)return;
     const key=sel.value,entries=[...(S.t?.entries||[])].sort((a,b)=>a.date.localeCompare(b.date)).slice(-260);
-    q("tesouroHistoryStatus").textContent=`${entries.length} pregão${entries.length===1?"":"ões"} disponível${entries.length===1?"":"is"}`;
+    const selectedNow=(S.tesouroCurrent?.data?.titles||[]).find(t=>titleKey(t)===key);
+    const label=selectedNow?`${selectedNow.type} · ${fd(selectedNow.maturity)}`:sel.options[sel.selectedIndex]?.text||"Título";
+    const countLabel=entries.length===1?"1 pregão disponível":`${entries.length} pregões disponíveis`;
+    q("tesouroHistoryStatus").textContent=`${countLabel} · ${label}`;
     const results=await Promise.allSettled(entries.map(e=>getJson(e.path)));
     const rate=[],price=[];
     results.forEach((res,i)=>{
@@ -361,8 +366,17 @@
     const firstR=rate[0],lastR=rate.at(-1),firstP=price[0],lastP=price.at(-1);
     const dbp=firstR&&lastR?(lastR.y-firstR.y)*100:NaN;
     const dp=firstP&&lastP&&firstP.y?((lastP.y/firstP.y)-1)*100:NaN;
-    q("tesouroHistorySummary").innerHTML=`<span>Δ taxa no histórico <strong class="${deltaClass(dbp)}">${fb(dbp)}</strong></span>
-      <span>Δ preço <strong>${fdeltaPct(dp)}</strong></span>`;
+    const start=firstR?.date||firstP?.date,end=lastR?.date||lastP?.date;
+    q("tesouroHistorySummary").innerHTML=
+      `<span>Período <strong>${start&&end?`${fd(start)} → ${fd(end)}`:"—"}</strong></span>`+
+      `<span>Taxa <strong>${firstR&&lastR?`${formattedTitleRate(selectedNow||{type:""},firstR.y)} → ${formattedTitleRate(selectedNow||{type:""},lastR.y)}`:"—"}</strong></span>`+
+      `<span>Δ taxa <strong class="${deltaClass(dbp)}">${fb(dbp)}</strong></span>`+
+      `<span>Preço <strong>${firstP&&lastP?`${fm(firstP.y)} → ${fm(lastP.y)}`:"—"}</strong></span>`+
+      `<span>Δ preço <strong>${fdeltaPct(dp)}</strong></span>`;
+    const c=selectedNow?category(selectedNow.type):"";
+    q("tesouroHistoryNote").innerHTML=(["ipca","renda","educa","igpm"].includes(c))
+      ? `<strong>Importante:</strong> neste título indexado, o preço nominal ao longo do tempo não reflete apenas a variação da taxa real. Ele também incorpora atualização do indexador/VNA, carrego e redução do prazo até o vencimento. Por isso, taxa maior no fim do período não obriga o preço final a ser muito menor que o inicial.`
+      : `<strong>Como ler:</strong> para um prefixado, uma alta da taxa de mercado pressiona o preço para baixo, tudo o mais constante. Ao longo do tempo, porém, o carrego e a redução do prazo até o vencimento também influenciam o preço.`;
     S.lastHistory={rate,price};renderHistoryCharts(S.lastHistory);
   }
   function renderHistoryCharts(h){
