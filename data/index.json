@@ -1,0 +1,18 @@
+{
+  "schema_version": 1,
+  "mode": "demo",
+  "source": "Dados sintéticos para teste da interface",
+  "latest": "2026-08-14",
+  "entries": [
+    {
+      "date": "2026-08-13",
+      "path": "data/demo/2026-08-13.json",
+      "demo": true
+    },
+    {
+      "date": "2026-08-14",
+      "path": "data/demo/2026-08-14.json",
+      "demo": true
+    }
+  ]
+}

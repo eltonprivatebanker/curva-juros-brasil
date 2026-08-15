@@ -1,0 +1,18 @@
+{
+  "schema_version": 1,
+  "date": "2026-08-14",
+  "source": "Dados sintéticos para teste da interface",
+  "demo": true,
+  "contracts": [
+    {"ticker":"DI1V26","maturity":"2026-10-01","business_days":32,"rate":0.1395,"rate_pct":13.95},
+    {"ticker":"DI1F27","maturity":"2027-01-04","business_days":97,"rate":0.1375,"rate_pct":13.75},
+    {"ticker":"DI1J27","maturity":"2027-04-01","business_days":159,"rate":0.1359,"rate_pct":13.59},
+    {"ticker":"DI1N27","maturity":"2027-07-01","business_days":223,"rate":0.1350,"rate_pct":13.50},
+    {"ticker":"DI1F28","maturity":"2028-01-03","business_days":351,"rate":0.1360,"rate_pct":13.60},
+    {"ticker":"DI1F29","maturity":"2029-01-02","business_days":603,"rate":0.1410,"rate_pct":14.10},
+    {"ticker":"DI1F30","maturity":"2030-01-02","business_days":855,"rate":0.1455,"rate_pct":14.55},
+    {"ticker":"DI1F31","maturity":"2031-01-02","business_days":1107,"rate":0.1478,"rate_pct":14.78},
+    {"ticker":"DI1F32","maturity":"2032-01-02","business_days":1359,"rate":0.1488,"rate_pct":14.88},
+    {"ticker":"DI1F33","maturity":"2033-01-03","business_days":1611,"rate":0.1493,"rate_pct":14.93}
+  ]
+}

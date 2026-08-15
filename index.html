@@ -1,0 +1,109 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="Painel didático de curva DI Futuro, movimentos em pontos-base e comparação entre pregões.">
+  <title>Curva de Juros Brasil · DI Futuro</title>
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+  <main class="shell">
+    <header class="topbar">
+      <div>
+        <p class="eyebrow">CURVA DE JUROS · BRASIL</p>
+        <h1>DI Futuro</h1>
+        <p class="subtitle">Leia a curva, compare pregões e veja onde os juros abriram ou fecharam.</p>
+      </div>
+      <div class="sourceBox">
+        <span id="modeBadge" class="badge">carregando</span>
+        <span id="sourceText">—</span>
+      </div>
+    </header>
+
+    <section class="controls panel">
+      <label>
+        Curva atual
+        <select id="currentDate"></select>
+      </label>
+      <label>
+        Comparar com
+        <select id="compareDate"></select>
+      </label>
+      <div class="controlHint">Δ em <strong>bps</strong>: 1 bp = 0,01 p.p.</div>
+    </section>
+
+    <section class="heroGrid">
+      <article class="panel reading">
+        <div class="panelHead">
+          <div>
+            <p class="eyebrow">LEITURA DO PERÍODO</p>
+            <h2 id="movementTitle">—</h2>
+          </div>
+          <div id="movementPill" class="movementPill neutral">—</div>
+        </div>
+        <p id="movementText" class="readingText">Carregando as curvas…</p>
+        <div class="metrics">
+          <div><span>Curto</span><strong id="shortMove">—</strong></div>
+          <div><span>Médio</span><strong id="midMove">—</strong></div>
+          <div><span>Longo</span><strong id="longMove">—</strong></div>
+          <div><span>Maior movimento</span><strong id="largestMove">—</strong></div>
+        </div>
+      </article>
+
+      <article class="panel glossary">
+        <p class="eyebrow">COMO LER</p>
+        <div class="glossaryRow"><span class="dot down"></span><div><strong>Fechamento</strong><small>Taxas caíram.</small></div></div>
+        <div class="glossaryRow"><span class="dot up"></span><div><strong>Abertura</strong><small>Taxas subiram.</small></div></div>
+        <div class="glossaryRow"><span class="dot flat"></span><div><strong>Estável</strong><small>Movimento pequeno.</small></div></div>
+      </article>
+    </section>
+
+    <section class="panel chartPanel">
+      <div class="panelHead">
+        <div>
+          <p class="eyebrow">ESTRUTURA A TERMO</p>
+          <h2>Curva DI</h2>
+        </div>
+        <div id="legend" class="legend"></div>
+      </div>
+      <div id="chart" class="chart" aria-label="Gráfico da curva DI"></div>
+      <p class="chartNote">O eixo horizontal usa dias úteis até o vencimento; assim, contratos diferentes ficam posicionados pelo prazo real restante.</p>
+    </section>
+
+    <section class="panel">
+      <div class="panelHead">
+        <div>
+          <p class="eyebrow">VÉRTICES</p>
+          <h2>Movimento contrato a contrato</h2>
+        </div>
+        <div id="commonCount" class="muted">—</div>
+      </div>
+      <div class="tableWrap">
+        <table>
+          <thead>
+            <tr>
+              <th>Contrato</th>
+              <th>Vencimento</th>
+              <th>DU</th>
+              <th>Atual</th>
+              <th>Anterior</th>
+              <th>Δ bps</th>
+            </tr>
+          </thead>
+          <tbody id="curveTable"></tbody>
+        </table>
+      </div>
+    </section>
+
+    <section class="panel notePanel">
+      <p><strong>V1:</strong> a comparação é feita entre contratos DI1 presentes nas duas datas. Na próxima etapa, acrescentaremos a curva normalizada por prazo (6m, 1a, 2a, 3a, 5a…) para comparar períodos históricos de forma mais consistente.</p>
+    </section>
+
+    <footer>
+      Painel educacional de mercado. Taxas e movimentos não constituem recomendação de investimento.
+    </footer>
+  </main>
+  <script src="js/app.js" defer></script>
+</body>
+</html>
