@@ -1,0 +1,22 @@
+CURVA DE JUROS BRASIL — V1.1
+
+Substitua apenas estes 3 arquivos no repositório:
+
+1) index.html
+2) js/app.js
+3) css/style.css
+
+Não altere data/, scripts/, requirements.txt ou .github/workflows/.
+
+Principais mudanças:
+- abre por padrão no último pregão x pregão anterior;
+- atalhos 1D, 5 pregões, 1M, 3M, 6M e 1A;
+- atalhos sem histórico suficiente ficam desabilitados;
+- curto = até 252 DU;
+- médio = 253 a 756 DU;
+- longo = acima de 756 DU;
+- leitura automática por faixa de prazo;
+- contratos de janeiro em destaque;
+- tabela reduzida aos contratos de janeiro por padrão;
+- botão para exibir todos os contratos;
+- datas exibidas em formato brasileiro.

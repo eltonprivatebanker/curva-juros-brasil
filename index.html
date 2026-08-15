@@ -22,15 +22,33 @@
     </header>
 
     <section class="controls panel">
-      <label>
-        Curva atual
-        <select id="currentDate"></select>
-      </label>
-      <label>
-        Comparar com
-        <select id="compareDate"></select>
-      </label>
-      <div class="controlHint">Δ em <strong>bps</strong>: 1 bp = 0,01 p.p.</div>
+      <div class="dateControls">
+        <label>
+          Curva atual
+          <select id="currentDate"></select>
+        </label>
+        <label>
+          Comparar com
+          <select id="compareDate"></select>
+        </label>
+      </div>
+
+      <div class="presetWrap">
+        <span class="presetLabel">Atalhos</span>
+        <div class="presetButtons" id="presetButtons">
+          <button type="button" data-preset="1d">1D</button>
+          <button type="button" data-preset="5d">5 pregões</button>
+          <button type="button" data-preset="1m">1M</button>
+          <button type="button" data-preset="3m">3M</button>
+          <button type="button" data-preset="6m">6M</button>
+          <button type="button" data-preset="1y">1A</button>
+        </div>
+      </div>
+
+      <div class="controlHint">
+        <span id="periodLabel">—</span>
+        <span>Δ em <strong>bps</strong>: 1 bp = 0,01 p.p.</span>
+      </div>
     </section>
 
     <section class="heroGrid">
@@ -44,10 +62,22 @@
         </div>
         <p id="movementText" class="readingText">Carregando as curvas…</p>
         <div class="metrics">
-          <div><span>Curto</span><strong id="shortMove">—</strong></div>
-          <div><span>Médio</span><strong id="midMove">—</strong></div>
-          <div><span>Longo</span><strong id="longMove">—</strong></div>
-          <div><span>Maior movimento</span><strong id="largestMove">—</strong></div>
+          <div>
+            <span>Curto · até 252 DU</span>
+            <strong id="shortMove">—</strong>
+          </div>
+          <div>
+            <span>Médio · 253–756 DU</span>
+            <strong id="midMove">—</strong>
+          </div>
+          <div>
+            <span>Longo · acima de 756 DU</span>
+            <strong id="longMove">—</strong>
+          </div>
+          <div>
+            <span>Maior movimento</span>
+            <strong id="largestMove">—</strong>
+          </div>
         </div>
       </article>
 
@@ -56,7 +86,23 @@
         <div class="glossaryRow"><span class="dot down"></span><div><strong>Fechamento</strong><small>Taxas caíram.</small></div></div>
         <div class="glossaryRow"><span class="dot up"></span><div><strong>Abertura</strong><small>Taxas subiram.</small></div></div>
         <div class="glossaryRow"><span class="dot flat"></span><div><strong>Estável</strong><small>Movimento pequeno.</small></div></div>
+        <div class="bucketHelp">
+          <strong>Faixas do painel</strong>
+          <small>Curto, médio e longo são definidos pelo prazo em dias úteis, não pela quantidade de contratos.</small>
+        </div>
       </article>
+    </section>
+
+    <section class="panel januaryPanel">
+      <div class="panelHead">
+        <div>
+          <p class="eyebrow">VÉRTICES DE REFERÊNCIA</p>
+          <h2>Contratos de janeiro</h2>
+          <p class="sectionSubtitle">Uma visão limpa dos principais pontos anuais da curva.</p>
+        </div>
+        <div id="januaryCount" class="muted">—</div>
+      </div>
+      <div id="januaryGrid" class="januaryGrid"></div>
     </section>
 
     <section class="panel chartPanel">
@@ -76,8 +122,12 @@
         <div>
           <p class="eyebrow">VÉRTICES</p>
           <h2>Movimento contrato a contrato</h2>
+          <p class="sectionSubtitle" id="tableModeText">Exibindo inicialmente os contratos de janeiro.</p>
         </div>
-        <div id="commonCount" class="muted">—</div>
+        <div class="tableActions">
+          <div id="commonCount" class="muted">—</div>
+          <button type="button" id="toggleTable" class="secondaryButton">Ver todos os contratos</button>
+        </div>
       </div>
       <div class="tableWrap">
         <table>
@@ -97,7 +147,7 @@
     </section>
 
     <section class="panel notePanel">
-      <p><strong>V1:</strong> a comparação é feita entre contratos DI1 presentes nas duas datas. Na próxima etapa, acrescentaremos a curva normalizada por prazo (6m, 1a, 2a, 3a, 5a…) para comparar períodos históricos de forma mais consistente.</p>
+      <p><strong>V1.1:</strong> o painel abre em “último pregão × pregão anterior”, usa faixas fixas de prazo para curto/médio/longo e destaca os contratos de janeiro. Os atalhos históricos ficam disponíveis automaticamente quando houver dados suficientes.</p>
     </section>
 
     <footer>
