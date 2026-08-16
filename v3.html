@@ -4,13 +4,13 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <meta name="description" content="Painel didático de curva DI Futuro, movimentos em pontos-base e comparação entre pregões.">
-  <title>Juros Brasil · V3.0 Teste</title>
+  <title>Juros Brasil · V3.1 Teste</title>
   <link rel="stylesheet" href="css/style.css?v=1.2.0">
   <link rel="stylesheet" href="css/v2.css?v=2.3.0">
   <link rel="stylesheet" href="css/evolution-v2.css?v=2.3.5">
   <link rel="stylesheet" href="css/term-structure-v2.css?v=2.3.7">
   <link rel="stylesheet" href="css/anbima-v2.css?v=2.3.9">
-  <link rel="stylesheet" href="css/v3.css?v=3.0.0">
+  <link rel="stylesheet" href="css/v3.css?v=3.1.0">
 </head>
 <body>
   <main class="shell">
@@ -27,16 +27,115 @@
     </header>
 
     <nav class="mainTabs panel" aria-label="Áreas do painel">
-      <button type="button" class="tabButton active" data-tab="di">DI Futuro</button>
-      <button type="button" class="tabButton" data-tab="anbima">ANBIMA</button>
+      <button type="button" class="tabButton active" data-tab="resumo">Resumo</button>
+      <button type="button" class="tabButton" data-tab="di">Juros futuros</button>
+      <button type="button" class="tabButton" data-tab="anbima">Curva soberana</button>
       <button type="button" class="tabButton" data-tab="tesouro">Tesouro Direto</button>
-      <button type="button" class="tabButton" data-tab="conexoes">Conexões</button>
-      <button type="button" class="tabButton scenarioTabButton" data-tab="cenarios">Cenários</button>
+      <button type="button" class="tabButton" data-tab="conexoes">Comparar curvas</button>
+      <button type="button" class="tabButton scenarioTabButton" data-tab="cenarios">Histórico e cenários</button>
       <button type="button" class="tabButton" data-tab="aprender">Aprender</button>
-      <button type="button" class="tabButton decisionTabButton" data-tab="decisao">Decisão RF</button>
+      <button type="button" class="tabButton decisionTabButton" data-tab="decisao">Comparar renda fixa</button>
+
+      <div class="v31ModeSwitch" aria-label="Nível de detalhe do painel">
+        <span>Modo</span>
+        <button type="button" class="active" data-v31-mode="essential">Essencial</button>
+        <button type="button" data-v31-mode="technical">Técnico</button>
+      </div>
     </nav>
 
-    <div id="tab-di" class="tabPane active">
+
+    <div id="tab-resumo" class="tabPane active">
+      <section class="panel v31SummaryHero">
+        <div class="v31SummaryTop">
+          <div>
+            <p class="eyebrow">COMECE POR AQUI</p>
+            <h2>O mercado de juros em 30 segundos</h2>
+            <p class="sectionSubtitle">Primeiro a conclusão. Depois, se quiser, você abre o detalhe técnico de cada tema.</p>
+          </div>
+          <div id="v31SummaryDate" class="v31SummaryDate">Carregando dados…</div>
+        </div>
+
+        <div class="v31SummaryGrid">
+          <article class="v31SummaryCard" data-v31-goto="di">
+            <span>1 · O que aconteceu?</span>
+            <strong id="v31MoveMain">Carregando…</strong>
+            <small id="v31MoveMeta">Comparando o último pregão com o anterior.</small>
+            <button type="button">Entender os juros futuros →</button>
+          </article>
+
+          <article class="v31SummaryCard" data-v31-goto="di">
+            <span>2 · Onde aconteceu?</span>
+            <strong id="v31WhereMain">Carregando…</strong>
+            <small id="v31WhereMeta">Curto, miolo e longo usam os mesmos prazos constantes.</small>
+            <button type="button">Ver onde a curva mexeu →</button>
+          </article>
+
+          <article class="v31SummaryCard" data-v31-goto="anbima">
+            <span>3 · Quanto o mercado cobra?</span>
+            <strong id="v31SovMain">Carregando…</strong>
+            <small id="v31SovMeta">Pré, juro real e inflação implícita no mesmo prazo.</small>
+            <button type="button">Abrir a curva soberana →</button>
+          </article>
+
+          <article class="v31SummaryCard" data-v31-goto="cenarios">
+            <span>4 · Isso parece alto ou baixo?</span>
+            <strong id="v31HistoryMain">Contexto histórico</strong>
+            <small id="v31HistoryMeta">Compare o nível atual com P25, mediana e P75 do mesmo horizonte.</small>
+            <button type="button">Comparar com o histórico →</button>
+          </article>
+
+          <article class="v31SummaryCard v31SummaryCardDecision" data-v31-goto="decisao">
+            <span>5 · E para renda fixa?</span>
+            <strong>Pós × Pré × IPCA+</strong>
+            <small>Coloque as alternativas no mesmo prazo e cenário antes de comparar.</small>
+            <button type="button">Comparar renda fixa →</button>
+          </article>
+        </div>
+      </section>
+
+      <section class="panel v31StoryPanel">
+        <div class="panelHead">
+          <div>
+            <p class="eyebrow">COMO NAVEGAR</p>
+            <h2>Da curva para a decisão</h2>
+            <p class="sectionSubtitle">O painel segue uma sequência. Você não precisa entender tudo de uma vez.</p>
+          </div>
+        </div>
+
+        <div class="v31StoryFlow">
+          <button type="button" data-v31-goto="di">
+            <b>1</b><span><strong>Juros futuros</strong><small>Os juros abriram ou fecharam? Em quais prazos?</small></span>
+          </button>
+          <i>→</i>
+          <button type="button" data-v31-goto="anbima">
+            <b>2</b><span><strong>Curva soberana</strong><small>Qual o nível de taxa nominal, juro real e inflação implícita?</small></span>
+          </button>
+          <i>→</i>
+          <button type="button" data-v31-goto="tesouro">
+            <b>3</b><span><strong>Tesouro Direto</strong><small>Quais taxas estão sendo ofertadas nos títulos públicos?</small></span>
+          </button>
+          <i>→</i>
+          <button type="button" data-v31-goto="cenarios">
+            <b>4</b><span><strong>Histórico</strong><small>O nível atual está alto ou baixo comparado ao passado?</small></span>
+          </button>
+          <i>→</i>
+          <button type="button" data-v31-goto="decisao">
+            <b>5</b><span><strong>Renda fixa</strong><small>Como Pós, Pré e IPCA+ se comportam no mesmo cenário?</small></span>
+          </button>
+        </div>
+      </section>
+
+      <section class="panel v31LegendPanel">
+        <p class="eyebrow">TRÊS IDEIAS PARA NÃO SE PERDER</p>
+        <div class="v31LegendGrid">
+          <div><strong>Taxa subiu = abertura</strong><span>O mercado passou a exigir uma taxa maior naquele prazo.</span></div>
+          <div><strong>Taxa caiu = fechamento</strong><span>O mercado passou a aceitar uma taxa menor naquele prazo.</span></div>
+          <div><strong>Curva não é previsão</strong><span>Ela mostra preços e taxas negociados hoje; não garante o CDI ou a inflação futuros.</span></div>
+        </div>
+      </section>
+    </div>
+
+    <div id="tab-di" class="tabPane">
     <section class="controls panel">
       <div class="dateControls">
         <label>
@@ -675,7 +774,7 @@
     </div>
 
     <footer>
-      Painel educacional de mercado. Taxas e movimentos não constituem recomendação de investimento. <span class="v3Build">V3.0 · teste</span>
+      Painel educacional de mercado. Taxas e movimentos não constituem recomendação de investimento. <span class="v3Build">V3.1 · teste</span>
     </footer>
   </main>
   <script src="js/app.js?v=1.2.0" defer></script>
@@ -683,6 +782,6 @@
   <script src="js/term-structure-v2.js?v=2.3.8" defer></script>
   <script src="js/market.js?v=2.3.4" defer></script>
   <script src="js/anbima-v2.js?v=2.3.9" defer></script>
-  <script src="js/v3.js?v=3.0.0" defer></script>
+  <script src="js/v3.js?v=3.1.0" defer></script>
 </body>
 </html>

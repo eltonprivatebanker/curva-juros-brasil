@@ -1,106 +1,130 @@
-# Juros Brasil · V3.0 Teste
+# Juros Brasil · V3.1 Teste
 
-A `v3.html` é uma página paralela. A `v2.html` permanece intacta.
+A V3.1 continua paralela à V2. A página principal e a `v2.html` permanecem intactas.
 
-## O que entra na V3.0
+## Objetivo da V3.1
 
-### DI Futuro
-A leitura principal passa a usar os mesmos vértices normalizados do gráfico:
+Fazer o painel ser compreensível antes de ser técnico.
 
-- 6M
-- 1A
-- 2A
-- 3A
-- 5A
-- 7A
-- 10A
+A lógica passa a ser:
 
-Metodologia: flat-forward no log do fator de desconto, base 252 DU.
+**conclusão → explicação → gráfico → detalhe técnico**
 
-As faixas ficam:
-- curto: 6M–1A
-- médio: 2A–3A
-- longo: 5A–10A
+## 1. Nova aba Resumo
 
-Isso evita misturar médias de contratos com vértices constantes.
+É a página inicial da V3.1.
 
-### Evolução da Curva DI
-Também passa a usar flat-forward e inclui 6M na leitura.
+Ela responde cinco perguntas:
 
-Objetivo: eliminar a inconsistência em que 6M podia fechar na comparação diária e a evolução ainda dizer que todos os vértices estavam acima.
+1. O que aconteceu com os juros?
+2. Onde a curva mais mexeu?
+3. Quanto o mercado está cobrando em Pré, juro real e inflação implícita?
+4. Como posicionar o nível atual no histórico?
+5. Como levar isso para a comparação Pós × Pré × IPCA+?
 
-### Contratos de janeiro
-A V3 mostra 7 pontos distribuídos ao longo da curva por padrão.
+Os cards são clicáveis e levam para a aba correspondente.
 
-Botão:
-`Ver todos os contratos de janeiro`
+## 2. Navegação renomeada
 
-### Decisão RF
-Nova ordem:
-1. Entradas
-2. Resultado do cenário
-3. Referências de mercado
-4. Contexto histórico
-5. Pontos de equilíbrio / checklist
+- Resumo
+- Juros futuros
+- Curva soberana
+- Tesouro Direto
+- Comparar curvas
+- Histórico e cenários
+- Aprender
+- Comparar renda fixa
 
-`maior valor no cenário` vira visualmente:
-`maior montante modelado`
+A ideia é que o nome da aba já explique sua função.
 
-### Tesouro Direto
-Ao abrir a aba pela primeira vez, a V3 seleciona `Prefixados` em vez de mostrar todos os 60 títulos.
+## 3. “Esta aba responde…”
 
-Os filtros existentes continuam disponíveis.
+Cada área recebe uma pergunta-guia no topo.
 
-### Cabeçalho
-A fonte passa a mudar conforme a aba:
-- DI: B3
-- ANBIMA: ANBIMA
-- Tesouro: Tesouro Nacional
-- Conexões: multifonte
-- Cenários: BCB + B3
-- Decisão: B3 + ANBIMA + BCB
+Exemplos:
 
-### ANBIMA
-`Real` passa visualmente para `Juro real`.
+**Juros futuros**
+> Os juros abriram ou fecharam — e em quais prazos?
 
-Também fica explícito que inflação implícita é uma referência derivada das curvas, não uma projeção garantida.
+**Curva soberana**
+> Quanto o mercado exige em taxa nominal, juro real e inflação implícita?
 
-### Build
-A caixa grande de versão deixa o corpo da página.
-A versão fica discreta no rodapé.
+**Comparar curvas**
+> DI, ANBIMA e Tesouro estão contando a mesma história?
 
-## Arquivos
+**Histórico e cenários**
+> O nível atual é alto ou baixo comparado ao histórico?
 
-Adicionar apenas:
+**Comparar renda fixa**
+> Como Pós, Pré e IPCA+ se comparam no mesmo horizonte?
+
+## 4. Modo Essencial × Técnico
+
+O painel abre em **Essencial**.
+
+### Essencial
+Esconde alguns blocos de detalhe:
+- tabela contrato a contrato do DI;
+- tabela completa da ANBIMA;
+- parâmetros/metodologia técnica;
+- tabela detalhada do Tesouro;
+- tabela detalhada de basis;
+- trajetória forward;
+- matriz histórica completa.
+
+### Técnico
+Mostra tudo.
+
+A preferência fica salva no navegador.
+
+## 5. Resumo automático
+
+A página inicial lê os próprios arquivos de dados do projeto.
+
+DI:
+- último pregão × anterior;
+- flat-forward;
+- 6M, 1A, 2A, 3A, 5A, 7A e 10A;
+- classificação de abertura/fechamento;
+- identifica a região de maior movimento.
+
+ANBIMA:
+- usa 5A como referência principal quando disponível;
+- mostra Pré, juro real e inflação implícita.
+
+Histórico:
+- mostra o DI 5A no primeiro carregamento;
+- quando a aba de cenários já tiver dados renderizados, o resumo pode indicar se está acima ou abaixo da mediana.
+
+## Arquivos desta etapa
+
+Substituir apenas os mesmos 4 arquivos da V3:
+
 - `v3.html`
 - `css/v3.css`
 - `js/v3.js`
 - `V3-TESTE.md`
 
-Nenhum arquivo da V2 precisa ser substituído.
+A V2 não muda.
 
-## URL de teste
+## URL
 
 `https://eltonprivatebanker.github.io/curva-juros-brasil/v3.html`
 
-## Testes prioritários
+## Teste visual prioritário
 
-1. DI: 13/02/2026 → 14/08/2026
-   - 6M deve aparecer em fechamento;
-   - a leitura deve dizer predomínio de abertura, não abertura em todos.
+Ao abrir a V3.1, a primeira tela deve ser **Resumo**.
 
-2. Evolução com 6 meses
-   - deve ser coerente com os mesmos 7 vértices e com o 6M.
+O usuário deve conseguir responder, sem abrir nenhuma tabela:
 
-3. Contratos de janeiro
-   - 7 aparecem inicialmente;
-   - o botão expande todos.
+- juros abriram ou fecharam?
+- onde mais mexeram?
+- qual referência de Pré / juro real / inflação implícita?
+- onde buscar o contexto histórico?
+- onde comparar Pós, Pré e IPCA+?
 
-4. Tesouro
-   - primeira abertura seleciona Prefixados.
+Depois altere:
 
-5. Decisão RF
-   - Resultado aparece logo após Entradas.
+`Modo Essencial → Técnico`
 
-6. Navegação
-   - a fonte do cabeçalho muda conforme a aba.
+e confirme que as tabelas e blocos de profundidade reaparecem.
