@@ -4,7 +4,7 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <meta name="description" content="Painel didático de curva DI Futuro, movimentos em pontos-base e comparação entre pregões.">
-  <title>Juros Brasil · V2.3-A.2 Teste</title>
+  <title>Juros Brasil · V2.3-B Teste</title>
   <link rel="stylesheet" href="css/style.css?v=1.2.0">
   <link rel="stylesheet" href="css/v2.css?v=2.3.0">
 </head>
@@ -456,11 +456,11 @@
           <label>CDI equivalente · cenário
             <div class="inputSuffix"><input id="rfCdiScenario" type="number" min="0" max="50" step="0.01" value="13.90"><span>% a.a.</span></div>
           </label>
-          <label>IPCA médio · cenário
+          <label>IPCA equivalente · cenário
             <div class="inputSuffix"><input id="rfIpcaScenario" type="number" min="-5" max="30" step="0.01" value="5.00"><span>% a.a.</span></div>
           </label>
         </div>
-        <p class="decisionHint">Por padrão, a ferramenta abre em cenário de mercado. Na LCI Pós, a V2.3-A usa a trajetória forward implícita da curva DI; o campo de CDI mostra a taxa equivalente do horizonte. Se CDI ou IPCA forem editados manualmente, passa para cenário personalizado. Curva não é previsão.</p>
+        <p class="decisionHint">Por padrão, a ferramenta abre em cenário de mercado. Na LCI Pós, a trajetória forward implícita da curva DI é aplicada trecho a trecho; os campos de CDI e IPCA mostram taxas equivalentes do horizonte. Se CDI ou IPCA forem editados manualmente, passa para cenário personalizado. Curva não é previsão.</p>
       </section>
 
       <section class="panel marketReferencePanel">
@@ -472,6 +472,26 @@
           <div id="rfReferenceStatus" class="muted">—</div>
         </div>
         <div id="rfReferenceCards" class="rfReferenceCards"></div>
+      </section>
+
+      <section class="panel decisionHistoryPanel">
+        <div class="panelHead">
+          <div>
+            <p class="eyebrow">CONTEXTO HISTÓRICO</p>
+            <h2 id="rfHistoryTitle">CDI realizado × curva atual · —</h2>
+            <p class="sectionSubtitle">Posicione a referência DI atual dentro da distribuição histórica do mesmo horizonte. O histórico é contexto, não previsão.</p>
+          </div>
+          <label class="inlineSelect">Base histórica
+            <select id="decisionHistoryRegime">
+              <option value="full">Histórico completo · desde 1986</option>
+              <option value="real">Plano Real · desde jul/1994</option>
+              <option value="targets" selected>Regime de metas · desde jul/1999</option>
+              <option value="recent">Histórico recente · desde 2005</option>
+            </select>
+          </label>
+        </div>
+        <div id="rfHistoryCards" class="rfReferenceCards"></div>
+        <div id="rfHistoryReading" class="rfReading"></div>
       </section>
 
       <section class="panel">
@@ -508,7 +528,7 @@
     </div>
 
     <section class="panel notePanel">
-      <p><strong>V2.3-A.2 teste:</strong> acrescenta P25/P75 à leitura histórica e melhora o eixo temporal do gráfico com anos, preservando os filtros de regime e a trajetória forward implícita.</p>
+      <p><strong>V2.3-B teste:</strong> integra o contexto histórico diretamente à Decisão RF, mostra a posição da curva DI frente a P25/mediana/P75 e padroniza as nomenclaturas para taxas equivalentes.</p>
     </section>
 
     <footer>
@@ -516,6 +536,6 @@
     </footer>
   </main>
   <script src="js/app.js?v=1.2.0" defer></script>
-  <script src="js/market.js?v=2.3.2" defer></script>
+  <script src="js/market.js?v=2.3.3" defer></script>
 </body>
 </html>
