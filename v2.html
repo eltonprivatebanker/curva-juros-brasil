@@ -4,7 +4,7 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <meta name="description" content="Painel didático de curva DI Futuro, movimentos em pontos-base e comparação entre pregões.">
-  <title>Juros Brasil · V2.3-B Teste</title>
+  <title>Juros Brasil · V2.3-B.1 Teste</title>
   <link rel="stylesheet" href="css/style.css?v=1.2.0">
   <link rel="stylesheet" href="css/v2.css?v=2.3.0">
 </head>
@@ -426,7 +426,12 @@
             <p class="eyebrow">ENTRADAS</p>
             <h2>Condições disponíveis para o cliente</h2>
           </div>
-          <button type="button" id="useMarketScenario" class="secondaryButton">Usar cenário de mercado</button>
+          <label class="inlineSelect">Cenário de projeção
+            <select id="rfScenarioMode">
+              <option value="market" selected>Mercado · DI + ANBIMA</option>
+              <option value="custom">Personalizado</option>
+            </select>
+          </label>
         </div>
 
         <div class="decisionInputs">
@@ -460,7 +465,8 @@
             <div class="inputSuffix"><input id="rfIpcaScenario" type="number" min="-5" max="30" step="0.01" value="5.00"><span>% a.a.</span></div>
           </label>
         </div>
-        <p class="decisionHint">Por padrão, a ferramenta abre em cenário de mercado. Na LCI Pós, a trajetória forward implícita da curva DI é aplicada trecho a trecho; os campos de CDI e IPCA mostram taxas equivalentes do horizonte. Se CDI ou IPCA forem editados manualmente, passa para cenário personalizado. Curva não é previsão.</p>
+        <p class="decisionHint">Escolha explicitamente o cenário usado no cálculo. Em <strong>Mercado · DI + ANBIMA</strong>, CDI e IPCA são preenchidos pelas curvas e ficam bloqueados para edição. Em <strong>Personalizado</strong>, os dois campos são liberados para você informar suas próprias premissas. Curva não é previsão.</p>
+        <div id="rfScenarioSource" class="rfReading"></div>
       </section>
 
       <section class="panel marketReferencePanel">
@@ -528,7 +534,7 @@
     </div>
 
     <section class="panel notePanel">
-      <p><strong>V2.3-B teste:</strong> integra o contexto histórico diretamente à Decisão RF, mostra a posição da curva DI frente a P25/mediana/P75 e padroniza as nomenclaturas para taxas equivalentes.</p>
+      <p><strong>V2.3-B.1 teste:</strong> torna explícito o cenário de projeção usado na Decisão RF, mostra as fontes de CDI/IPCA e separa claramente cenário de cálculo de contexto histórico.</p>
     </section>
 
     <footer>
@@ -536,6 +542,6 @@
     </footer>
   </main>
   <script src="js/app.js?v=1.2.0" defer></script>
-  <script src="js/market.js?v=2.3.3" defer></script>
+  <script src="js/market.js?v=2.3.4" defer></script>
 </body>
 </html>
