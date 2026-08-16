@@ -1,0 +1,165 @@
+/* V2.3-B.2.3 · ANBIMA */
+.anbimaReadingPanel .readingText {
+  margin-top: 2px;
+  font-size: .96rem;
+  line-height: 1.58;
+}
+
+.anbimaCardsV2 .marketCard {
+  min-height: 132px;
+}
+
+.anbimaCardsV2 .marketCard small:first-child {
+  font-weight: 800;
+  letter-spacing: .035em;
+}
+
+.anbimaCardsV2 .marketCard strong {
+  margin-top: 5px;
+}
+
+.anbimaCardsV2 .anbimaDu {
+  display: block;
+  margin-top: 8px;
+  font-size: .68rem;
+  color: var(--muted, #9fb2c6);
+}
+
+.anbimaChartHead {
+  align-items: flex-start;
+  gap: 24px;
+}
+
+.anbimaChartHead .legend {
+  max-width: 52%;
+  justify-content: flex-end;
+}
+
+.anbimaToolbar {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-end;
+  gap: 18px;
+  margin: 10px 0 8px;
+}
+
+.anbimaModeToggle {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 7px;
+  margin-top: 7px;
+}
+
+.anbimaModeToggle button {
+  border: 1px solid #29445d;
+  background: #0c1d2e;
+  color: #b9ccde;
+  border-radius: 9px;
+  padding: 8px 12px;
+  font: inherit;
+  font-size: .82rem;
+  font-weight: 750;
+  cursor: pointer;
+}
+
+.anbimaModeToggle button.active {
+  background: #1c3f61;
+  border-color: #4a7297;
+  color: #fff;
+}
+
+.anbimaChartV2 svg text.anbimaAxisLabel {
+  fill: #91a7bd;
+}
+
+.anbimaChartV2 svg text.anbimaTenorLabel {
+  fill: #a9bdd1;
+  font-weight: 700;
+}
+
+.anbimaKeyPoints {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0,1fr));
+  gap: 10px;
+}
+
+.anbimaKeyPoints article {
+  min-width: 0;
+  padding: 13px 14px;
+  border: 1px solid rgba(255,255,255,.075);
+  border-radius: 12px;
+  background: rgba(255,255,255,.025);
+}
+
+.anbimaKeyPoints span {
+  display: block;
+  color: var(--muted, #9fb2c6);
+  font-size: .73rem;
+  font-weight: 700;
+}
+
+.anbimaKeyPoints strong {
+  display: block;
+  margin-top: 5px;
+  font-size: 1.02rem;
+}
+
+.anbimaKeyPoints small {
+  display: block;
+  margin-top: 4px;
+  color: var(--muted, #9fb2c6);
+  line-height: 1.35;
+}
+
+.anbimaTablePanel .tableActions {
+  align-items: center;
+}
+
+.anbimaMethodPanel {
+  padding-top: 15px;
+  padding-bottom: 15px;
+}
+
+.anbimaMethodDetails > summary {
+  cursor: pointer;
+  width: fit-content;
+  color: #8fc8ff;
+  font-size: .9rem;
+  font-weight: 750;
+  user-select: none;
+}
+
+.anbimaMethodBody {
+  margin-top: 15px;
+}
+
+.anbimaMethodBody .tableWrap {
+  margin-top: 12px;
+}
+
+@media (max-width: 980px) {
+  .anbimaKeyPoints {
+    grid-template-columns: repeat(2, minmax(0,1fr));
+  }
+}
+
+@media (max-width: 760px) {
+  .anbimaChartHead,
+  .anbimaToolbar {
+    display: block;
+  }
+  .anbimaChartHead .legend {
+    max-width: none;
+    margin-top: 12px;
+    justify-content: flex-start;
+  }
+  #anbimaModeHint {
+    margin-top: 9px;
+  }
+}
+
+@media (max-width: 560px) {
+  .anbimaKeyPoints {
+    grid-template-columns: 1fr;
+  }
+}
