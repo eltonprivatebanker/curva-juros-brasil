@@ -9,7 +9,8 @@
   const S = {
     di:null, a:null, t:null, cache:new Map(),
     lastA:null, lastC:null, lastHistory:null,
-    tesouroFilter:"all", tesouroCurrent:null
+    tesouroFilter:"all", tesouroCurrent:null,
+    decisionMarketMode:false
   };
 
   const finite = (v) => v !== null && v !== undefined && v !== "" && Number.isFinite(Number(v));
@@ -612,6 +613,30 @@
     const implied=(bundle.a.curves||[]).filter(x=>finite(x.implied_pct)).map(x=>({du:+x.du,rate:+x.implied_pct}));
     return {di:flatForward(diCurve,du),pre:flatForward(pre,du),real:flatForward(real,du),implied:flatForward(implied,du)};
   }
+  async function applyMarketScenario(){
+    const sel=q("decisionDate");
+    if(!sel||!sel.value)return;
+    const du=+q("rfHorizon").value;
+    const bundle=await marketCurvesForDate(sel.value),refs=currentDecisionRefs(bundle,du);
+    if(refs){
+      if(Number.isFinite(refs.di))q("rfCdiScenario").value=refs.di.toFixed(2);
+      if(Number.isFinite(refs.implied))q("rfIpcaScenario").value=refs.implied.toFixed(2);
+    }
+  }
+  function updateDecisionModeUi(){
+    const btn=q("useMarketScenario");
+    if(!btn)return;
+    btn.textContent=S.decisionMarketMode?"Cenário de mercado · ativo":"Usar cenário de mercado";
+    btn.classList.toggle("active",S.decisionMarketMode);
+    btn.title=S.decisionMarketMode
+      ?"CDI e IPCA acompanham automaticamente a data e o prazo selecionados."
+      :"Preenche CDI e IPCA com referências da curva para o prazo selecionado.";
+  }
+  async function refreshDecisionForContext(){
+    if(S.decisionMarketMode)await applyMarketScenario();
+    updateDecisionModeUi();
+    await renderDecision();
+  }
   function setupDecisionDates(){
     const diDates=new Set(S.di?.entries?.map(e=>e.date)||[]);
     const common=(S.a?.entries||[]).filter(e=>diDates.has(e.date)).sort((a,b)=>b.date.localeCompare(a.date));
@@ -620,19 +645,37 @@
     common.forEach(e=>sel.add(new Option(fd(e.date),e.date)));
     sel.disabled=!common.length;
     if(common.length)sel.value=common[0].date;
-    sel.addEventListener("change",renderDecision);
-    ["rfAmount","rfHorizon","rfPctCdi","rfPre","rfIpcaSpread","rfCdiScenario","rfIpcaScenario"].forEach(id=>{
+
+    sel.addEventListener("change",refreshDecisionForContext);
+
+    ["rfAmount","rfPctCdi","rfPre","rfIpcaSpread"].forEach(id=>{
       q(id)?.addEventListener("input",renderDecision);
       q(id)?.addEventListener("change",renderDecision);
     });
-    q("useMarketScenario")?.addEventListener("click",async()=>{
-      const d=sel.value,du=+q("rfHorizon").value,bundle=await marketCurvesForDate(d),refs=currentDecisionRefs(bundle,du);
-      if(refs){
-        if(Number.isFinite(refs.di))q("rfCdiScenario").value=refs.di.toFixed(2);
-        if(Number.isFinite(refs.implied))q("rfIpcaScenario").value=refs.implied.toFixed(2);
-      }
-      renderDecision();
+
+    q("rfHorizon")?.addEventListener("change",refreshDecisionForContext);
+
+    ["rfCdiScenario","rfIpcaScenario"].forEach(id=>{
+      q(id)?.addEventListener("input",()=>{
+        S.decisionMarketMode=false;
+        updateDecisionModeUi();
+        renderDecision();
+      });
+      q(id)?.addEventListener("change",()=>{
+        S.decisionMarketMode=false;
+        updateDecisionModeUi();
+        renderDecision();
+      });
     });
+
+    q("useMarketScenario")?.addEventListener("click",async()=>{
+      S.decisionMarketMode=true;
+      await applyMarketScenario();
+      updateDecisionModeUi();
+      await renderDecision();
+    });
+
+    updateDecisionModeUi();
   }
   async function renderDecision(){
     if(!q("rfProductCards")||!q("decisionDate"))return;
@@ -688,8 +731,11 @@
     const sentenceIpca=ipcaVsPre>0
       ? `Com IPCA médio de ${fp(ipcaScenario,2)}, a LCI IPCA+ modelada supera a Pré em ${fm(ipcaVsPre)}.`
       : `Com IPCA médio de ${fp(ipcaScenario,2)}, a LCI Pré modelada supera a IPCA+ em ${fm(Math.abs(ipcaVsPre))}.`;
+    const modeText=S.decisionMarketMode
+      ? `Cenário de mercado ativo: CDI e IPCA acompanham automaticamente ${approx(du)} / ${du.toLocaleString("pt-BR")} DU na data ${fd(d)}.`
+      : "Cenário personalizado: CDI e IPCA foram informados manualmente.";
     q("rfScenarioReading").innerHTML=`<p class="eyebrow">LEITURA DO CENÁRIO</p><p>${sentencePost} ${sentenceIpca}</p>
-      <p class="rfCaution">Comparação matemática em cenário constante. Liquidez, carência, crédito, concentração, FGC e objetivo do cliente podem pesar mais que a diferença de retorno modelada.</p>`;
+      <p class="rfCaution">${modeText} A curva é referência de mercado, não previsão. Liquidez, carência, crédito, concentração, FGC e objetivo do cliente podem pesar mais que a diferença de retorno modelada.</p>`;
   }
 
   function fixV2Copy(){
