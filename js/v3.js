@@ -350,7 +350,7 @@
 
   const SOURCE_BY_TAB={
     resumo:["RESUMO","B3 + ANBIMA + Tesouro Nacional + BCB"],
-    di:["B3 · LIVE","DI Futuro · B3 / PYield"],
+    di:["B3 · DI1","DI Futuro · contratos de juros negociados na B3"],
     anbima:["ANBIMA","ETTJ · curva nominal, real e implícita"],
     tesouro:["TESOURO","Tesouro Nacional · taxas e preços"],
     conexoes:["MULTIFONTE","B3 + ANBIMA + Tesouro Nacional"],
@@ -486,12 +486,12 @@
 
   const QUESTIONS={
     di:{
-      q:"Os juros abriram ou fecharam — e em quais prazos?",
-      h:"Comece pela leitura do período e pelo gráfico normalizado. Contratos individuais ficam no modo Técnico."
+      q:"O que são as taxas DI — e por que elas mudam?",
+      h:"Primeiro entenda quem negocia DI1 e como a Curva DI é formada; depois veja se os juros abriram ou fecharam em cada prazo."
     },
     anbima:{
-      q:"Quanto o mercado exige em taxa nominal, juro real e inflação implícita?",
-      h:"Use primeiro os sete prazos principais. Inflação implícita é uma relação entre curvas, não uma previsão garantida."
+      q:"O que é ETTJ — e quanto o mercado exige em cada prazo?",
+      h:"ETTJ significa Estrutura a Termo da Taxa de Juros. Primeiro entenda a curva; depois compare juros nominais, juro real e inflação implícita."
     },
     tesouro:{
       q:"Quais taxas o Tesouro está oferecendo — e como elas mudaram?",
@@ -695,5 +695,51 @@
     document.addEventListener("DOMContentLoaded",boot);
   }else{
     boot();
+  }
+})();
+
+
+/* ==========================================================
+   Juros Brasil · V3.2 — semântica educacional
+   ========================================================== */
+(() => {
+  function replaceTextNodes(root, from, to) {
+    if(!root)return;
+    const walker=document.createTreeWalker(root,NodeFilter.SHOW_TEXT);
+    const nodes=[];
+    while(walker.nextNode())nodes.push(walker.currentNode);
+    nodes.forEach(n=>{
+      if((n.nodeValue||"").includes(from)){
+        n.nodeValue=n.nodeValue.split(from).join(to);
+      }
+    });
+  }
+
+  function applyEducationSemantics() {
+    const legend=document.getElementById("anbimaLegend");
+    replaceTextNodes(legend,"ETTJ Pré","Juros nominais (ETTJ Pré)");
+
+    const summary=document.getElementById("v31SovMeta");
+    replaceTextNodes(summary,"Juro real","Juro real");
+  }
+
+  function bootV32() {
+    applyEducationSemantics();
+
+    const legend=document.getElementById("anbimaLegend");
+    if(legend){
+      new MutationObserver(applyEducationSemantics)
+        .observe(legend,{childList:true,subtree:true,characterData:true});
+    }
+
+    document.querySelectorAll("[data-tab]").forEach(btn=>{
+      btn.addEventListener("click",()=>setTimeout(applyEducationSemantics,80));
+    });
+  }
+
+  if(document.readyState==="loading"){
+    document.addEventListener("DOMContentLoaded",bootV32);
+  }else{
+    bootV32();
   }
 })();
