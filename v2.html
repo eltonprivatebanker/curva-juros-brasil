@@ -4,10 +4,11 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <meta name="description" content="Painel didático de curva DI Futuro, movimentos em pontos-base e comparação entre pregões.">
-  <title>Juros Brasil · V2.3-B.2.1 Teste</title>
+  <title>Juros Brasil · V2.3-B.2.2 Teste</title>
   <link rel="stylesheet" href="css/style.css?v=1.2.0">
   <link rel="stylesheet" href="css/v2.css?v=2.3.0">
   <link rel="stylesheet" href="css/evolution-v2.css?v=2.3.5">
+  <link rel="stylesheet" href="css/term-structure-v2.css?v=2.3.7">
 </head>
 <body>
   <main class="shell">
@@ -106,16 +107,46 @@
       </article>
     </section>
 
-    <section class="panel chartPanel">
-      <div class="panelHead">
+    <section class="panel chartPanel termStructurePanel">
+      <div class="panelHead termStructureHead">
         <div>
           <p class="eyebrow">ESTRUTURA A TERMO</p>
-          <h2>Curva DI</h2>
+          <h2>Curva DI · Atual × comparação</h2>
+          <p id="termSubtitle" class="sectionSubtitle">Como as taxas mudaram entre os dois pregões selecionados.</p>
         </div>
         <div id="legend" class="legend"></div>
       </div>
-      <div id="chart" class="chart" aria-label="Gráfico da curva DI"></div>
-      <p class="chartNote">O eixo horizontal usa dias úteis até o vencimento; assim, contratos diferentes ficam posicionados pelo prazo real restante.</p>
+
+      <div class="termInsight" role="status" aria-live="polite">
+        <span>LEITURA AUTOMÁTICA</span>
+        <strong id="termReading">Carregando a comparação da curva…</strong>
+      </div>
+
+      <div class="termToolbar">
+        <div>
+          <span class="presetLabel">Visualização</span>
+          <div class="termViewToggle" role="group" aria-label="Visualização da curva DI">
+            <button type="button" class="active" data-term-mode="contracts">Contratos DI1</button>
+            <button type="button" data-term-mode="normalized">Prazos normalizados</button>
+          </div>
+        </div>
+        <div id="termModeHint" class="muted">Contratos negociados posicionados pelo prazo remanescente real.</div>
+      </div>
+
+      <div id="chart" class="chart termStructureChart" aria-label="Gráfico da curva DI atual e de comparação"></div>
+
+      <div class="termMoveBlock">
+        <div>
+          <p class="eyebrow">MOVIMENTO POR PRAZO</p>
+          <p class="sectionSubtitle">Diferença entre as curvas em vértices constantes. Positivo = abertura; negativo = fechamento.</p>
+        </div>
+        <div id="termBpsGrid" class="termBpsGrid"></div>
+      </div>
+
+      <details class="methodologyDetails termMethodology">
+        <summary>ⓘ Metodologia</summary>
+        <p><strong>Contratos DI1</strong> preserva todos os vencimentos negociados e os posiciona pelo prazo remanescente real. <strong>Prazos normalizados</strong> compara 6M, 1A, 2A, 3A, 5A, 7A e 10A usando interpolação flat-forward no log do fator de desconto, em base 252 dias úteis. A interpolação ocorre somente entre contratos observados; não há extrapolação.</p>
+      </details>
     </section>
 
     <section class="panel evolutionPanel evolutionPanelV2">
@@ -545,7 +576,7 @@
     </div>
 
     <section class="panel notePanel">
-      <p><strong>V2.3-B.2.1 teste:</strong> normaliza a Evolução da Curva DI nos mesmos vértices de 6M a 10A, fazendo as séries históricas terminarem no mesmo horizonte comparável.</p>
+      <p><strong>V2.3-B.2.2 teste:</strong> aprimora a Curva DI diária com leitura automática, visualização por contratos ou prazos normalizados e movimento por prazo em bps.</p>
     </section>
 
     <footer>
@@ -554,6 +585,7 @@
   </main>
   <script src="js/app.js?v=1.2.0" defer></script>
   <script src="js/evolution-v2.js?v=2.3.6" defer></script>
+  <script src="js/term-structure-v2.js?v=2.3.7" defer></script>
   <script src="js/market.js?v=2.3.4" defer></script>
 </body>
 </html>
