@@ -1,0 +1,688 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="Painel didático de curva DI Futuro, movimentos em pontos-base e comparação entre pregões.">
+  <title>Juros Brasil · V3.0 Teste</title>
+  <link rel="stylesheet" href="css/style.css?v=1.2.0">
+  <link rel="stylesheet" href="css/v2.css?v=2.3.0">
+  <link rel="stylesheet" href="css/evolution-v2.css?v=2.3.5">
+  <link rel="stylesheet" href="css/term-structure-v2.css?v=2.3.7">
+  <link rel="stylesheet" href="css/anbima-v2.css?v=2.3.9">
+  <link rel="stylesheet" href="css/v3.css?v=3.0.0">
+</head>
+<body>
+  <main class="shell">
+    <header class="topbar">
+      <div>
+        <p class="eyebrow">CURVAS DE JUROS · BRASIL</p>
+        <h1>Juros Brasil</h1>
+        <p class="subtitle">DI Futuro, curva soberana ANBIMA, Tesouro Direto e conexões entre mercados.</p>
+      </div>
+      <div class="sourceBox">
+        <span id="modeBadge" class="badge">carregando</span>
+        <span id="sourceText">—</span>
+      </div>
+    </header>
+
+    <nav class="mainTabs panel" aria-label="Áreas do painel">
+      <button type="button" class="tabButton active" data-tab="di">DI Futuro</button>
+      <button type="button" class="tabButton" data-tab="anbima">ANBIMA</button>
+      <button type="button" class="tabButton" data-tab="tesouro">Tesouro Direto</button>
+      <button type="button" class="tabButton" data-tab="conexoes">Conexões</button>
+      <button type="button" class="tabButton scenarioTabButton" data-tab="cenarios">Cenários</button>
+      <button type="button" class="tabButton" data-tab="aprender">Aprender</button>
+      <button type="button" class="tabButton decisionTabButton" data-tab="decisao">Decisão RF</button>
+    </nav>
+
+    <div id="tab-di" class="tabPane active">
+    <section class="controls panel">
+      <div class="dateControls">
+        <label>
+          Curva atual
+          <select id="currentDate"></select>
+        </label>
+        <label>
+          Comparar com
+          <select id="compareDate"></select>
+        </label>
+      </div>
+
+      <div class="presetWrap">
+        <span class="presetLabel">Atalhos</span>
+        <div class="presetButtons" id="presetButtons">
+          <button type="button" data-preset="1d">1D</button>
+          <button type="button" data-preset="5d">5 pregões</button>
+          <button type="button" data-preset="1m">1M</button>
+          <button type="button" data-preset="3m">3M</button>
+          <button type="button" data-preset="6m">6M</button>
+          <button type="button" data-preset="1y">1A</button>
+        </div>
+      </div>
+
+      <div class="controlHint">
+        <span id="periodLabel">—</span>
+        <span>Δ em <strong>bps</strong>: 1 bp = 0,01 p.p.</span>
+      </div>
+    </section>
+
+    <section class="heroGrid">
+      <article class="panel reading">
+        <div class="panelHead">
+          <div>
+            <p class="eyebrow">LEITURA DO PERÍODO</p>
+            <h2 id="movementTitle">—</h2>
+          </div>
+          <div id="movementPill" class="movementPill neutral">—</div>
+        </div>
+        <p id="movementText" class="readingText">Carregando as curvas…</p>
+        <div class="metrics">
+          <div>
+            <span>Curto · 6M–1A</span>
+            <strong id="shortMove">—</strong>
+          </div>
+          <div>
+            <span>Médio · 2A–3A</span>
+            <strong id="midMove">—</strong>
+          </div>
+          <div>
+            <span>Longo · 5A–10A</span>
+            <strong id="longMove">—</strong>
+          </div>
+          <div>
+            <span>Maior movimento</span>
+            <strong id="largestMove">—</strong>
+          </div>
+        </div>
+      </article>
+
+      <article class="panel glossary">
+        <p class="eyebrow">COMO LER</p>
+        <div class="glossaryRow"><span class="dot down"></span><div><strong>Fechamento</strong><small>Taxas caíram.</small></div></div>
+        <div class="glossaryRow"><span class="dot up"></span><div><strong>Abertura</strong><small>Taxas subiram.</small></div></div>
+        <div class="glossaryRow"><span class="dot flat"></span><div><strong>Estável</strong><small>Movimento pequeno.</small></div></div>
+        <div class="bucketHelp">
+          <strong>Faixas do painel</strong>
+          <small>Curto, médio e longo são definidos pelo prazo em dias úteis, não pela quantidade de contratos.</small>
+        </div>
+      </article>
+    </section>
+
+    <section class="panel chartPanel termStructurePanel">
+      <div class="panelHead termStructureHead">
+        <div>
+          <p class="eyebrow">ESTRUTURA A TERMO</p>
+          <h2>Curva DI · Atual × comparação</h2>
+          <p id="termSubtitle" class="sectionSubtitle">Como as taxas mudaram entre os dois pregões selecionados.</p>
+        </div>
+        <div id="legend" class="legend"></div>
+      </div>
+
+      <div class="termInsight" role="status" aria-live="polite">
+        <span>LEITURA AUTOMÁTICA</span>
+        <strong id="termReading">Carregando a comparação da curva…</strong>
+      </div>
+
+      <div class="termToolbar">
+        <div>
+          <span class="presetLabel">Visualização</span>
+          <div class="termViewToggle" role="group" aria-label="Visualização da curva DI">
+            <button type="button" data-term-mode="contracts">Contratos DI1</button>
+            <button type="button" class="active" data-term-mode="normalized">Prazos normalizados</button>
+          </div>
+        </div>
+        <div id="termModeHint" class="muted">Mesmos vértices em todas as datas: 6M, 1A, 2A, 3A, 5A, 7A e 10A.</div>
+      </div>
+
+      <div id="chart" class="chart termStructureChart" aria-label="Gráfico da curva DI atual e de comparação"></div>
+
+      <div class="termMoveBlock">
+        <div>
+          <p class="eyebrow">MOVIMENTO POR PRAZO</p>
+          <p class="sectionSubtitle">Diferença entre as curvas em vértices constantes. Positivo = abertura; negativo = fechamento.</p>
+        </div>
+        <div id="termBpsGrid" class="termBpsGrid"></div>
+      </div>
+
+      <details class="methodologyDetails termMethodology">
+        <summary>ⓘ Metodologia</summary>
+        <p><strong>Contratos DI1</strong> preserva todos os vencimentos negociados e os posiciona pelo prazo remanescente real. <strong>Prazos normalizados</strong> compara 6M, 1A, 2A, 3A, 5A, 7A e 10A usando interpolação flat-forward no log do fator de desconto, em base 252 dias úteis. A interpolação ocorre somente entre contratos observados; não há extrapolação.</p>
+      </details>
+    </section>
+
+    <section class="panel evolutionPanel evolutionPanelV2">
+      <div class="panelHead evolutionHead">
+        <div>
+          <p class="eyebrow">EVOLUÇÃO DA CURVA DI</p>
+          <h2>Como a estrutura de juros mudou no tempo</h2>
+          <p class="sectionSubtitle">Compare a curva atual com janelas históricas e identifique deslocamentos, inclinação e reprecificação por prazo.</p>
+        </div>
+        <div id="evolutionLegend" class="legend evolutionLegendV2"></div>
+      </div>
+
+      <div class="evolutionInsight" role="status" aria-live="polite">
+        <span>LEITURA AUTOMÁTICA</span>
+        <strong id="evolutionReading">Carregando a comparação histórica…</strong>
+      </div>
+
+      <div class="evoControls evolutionControlsV2">
+        <div class="presetWrap">
+          <span class="presetLabel">Comparar com</span>
+          <div class="presetButtons evoButtons" id="evolutionButtons">
+            <button type="button" data-evo="5d">1 semana</button>
+            <button type="button" data-evo="1m">1 mês</button>
+            <button type="button" data-evo="3m">3 meses</button>
+            <button type="button" data-evo="6m">6 meses</button>
+            <button type="button" data-evo="1y">1 ano</button>
+          </div>
+        </div>
+        <div class="evoHint">
+          <div id="evolutionCount" class="muted">—</div>
+          <div class="muted">A curva atual permanece sempre visível.</div>
+        </div>
+      </div>
+
+      <div id="evolutionChart" class="chart evolutionChart evolutionChartV2" aria-label="Gráfico de evolução histórica da curva DI"></div>
+      <p class="chartNote">As curvas são normalizadas nos mesmos vértices de prazo: 6M, 1A, 2A, 3A, 5A, 7A e 10A. O detalhe em dias úteis permanece nos tooltips.</p>
+
+      <details class="methodologyDetails">
+        <summary>ⓘ Metodologia</summary>
+        <p>As curvas partem dos snapshots de contratos DI1 de cada pregão e são interpoladas apenas dentro da área observada para os vértices padronizados 6M, 1A, 2A, 3A, 5A, 7A e 10A. Assim, datas diferentes são comparadas nos mesmos prazos constantes. Não há extrapolação além da área disponível; a leitura é descritiva e não representa previsão.</p>
+      </details>
+    </section>
+
+    <section class="panel januaryPanel">
+      <div class="panelHead">
+        <div>
+          <p class="eyebrow">VÉRTICES DE REFERÊNCIA</p>
+          <h2>Contratos de janeiro</h2>
+          <p class="sectionSubtitle">Uma visão limpa dos principais pontos anuais da curva.</p>
+        </div>
+        <div id="januaryCount" class="muted">—</div>
+      </div>
+      <div id="januaryGrid" class="januaryGrid"></div>
+    </section>
+
+    <section class="panel">
+      <div class="panelHead">
+        <div>
+          <p class="eyebrow">VÉRTICES</p>
+          <h2>Movimento contrato a contrato</h2>
+          <p class="sectionSubtitle" id="tableModeText">Exibindo inicialmente os contratos de janeiro.</p>
+        </div>
+        <div class="tableActions">
+          <div id="commonCount" class="muted">—</div>
+          <button type="button" id="toggleTable" class="secondaryButton">Ver todos os contratos</button>
+        </div>
+      </div>
+      <div class="tableWrap">
+        <table>
+          <thead>
+            <tr>
+              <th>Contrato</th>
+              <th>Vencimento</th>
+              <th>DU</th>
+              <th>Atual</th>
+              <th>Anterior</th>
+              <th>Δ bps</th>
+            </tr>
+          </thead>
+          <tbody id="curveTable"></tbody>
+        </table>
+      </div>
+    </section>
+
+    </div>
+
+    <div id="tab-anbima" class="tabPane">
+      <section class="sectionIntro panel anbimaIntro">
+        <div>
+          <p class="eyebrow">CURVA SOBERANA · ANBIMA</p>
+          <h2>ETTJ Prefixada, juro real e inflação implícita</h2>
+          <p class="sectionSubtitle">Leia a curva nominal, a curva real e a inflação implícita no mesmo horizonte.</p>
+        </div>
+        <label class="inlineSelect">Data<select id="anbimaDate"></select></label>
+      </section>
+
+      <section class="panel anbimaReadingPanel">
+        <div class="panelHead">
+          <div>
+            <p class="eyebrow">LEITURA DA CURVA</p>
+            <h2>O que a estrutura está mostrando?</h2>
+          </div>
+          <div id="anbimaStatus" class="muted">—</div>
+        </div>
+        <p id="anbimaReading" class="readingText">Carregando a curva ANBIMA…</p>
+      </section>
+
+      <section class="panel marketStatus anbimaSnapshot">
+        <div class="panelHead">
+          <div>
+            <p class="eyebrow">VÉRTICES PRINCIPAIS</p>
+            <h2>Retrato da curva ANBIMA</h2>
+            <p class="sectionSubtitle">Prazo primeiro; dias úteis ficam como referência técnica. Inflação implícita é preço relativo entre as curvas, não uma projeção garantida.</p>
+          </div>
+        </div>
+        <div id="anbimaCards" class="marketCards anbimaCardsV2"></div>
+      </section>
+
+      <section class="panel chartPanel anbimaChartPanel">
+        <div class="panelHead anbimaChartHead">
+          <div>
+            <p class="eyebrow">ESTRUTURA A TERMO</p>
+            <h2 id="anbimaChartTitle">Comparável até 10A</h2>
+            <p id="anbimaChartSubtitle" class="sectionSubtitle">Pré, juro real e inflação implícita no trecho em que as três séries coexistem.</p>
+          </div>
+          <div id="anbimaLegend" class="legend"></div>
+        </div>
+
+        <div class="anbimaToolbar">
+          <div>
+            <span class="presetLabel">Visualização</span>
+            <div class="anbimaModeToggle" role="group" aria-label="Visualização da curva ANBIMA">
+              <button type="button" class="active" data-anbima-mode="compare">Comparável até 10A</button>
+              <button type="button" data-anbima-mode="real-long">Juro real longo</button>
+            </div>
+          </div>
+          <div id="anbimaModeHint" class="muted">As três séries são comparadas somente até 10 anos.</div>
+        </div>
+
+        <div id="anbimaChart" class="chart anbimaChartV2"></div>
+      </section>
+
+      <section class="panel anbimaKeyPanel">
+        <div class="panelHead">
+          <div>
+            <p class="eyebrow">PONTOS-CHAVE</p>
+            <h2>Onde estão os principais níveis?</h2>
+          </div>
+        </div>
+        <div id="anbimaKeyPoints" class="anbimaKeyPoints"></div>
+      </section>
+
+      <section class="panel anbimaTablePanel">
+        <div class="panelHead">
+          <div>
+            <p class="eyebrow">ESTRUTURA A TERMO</p>
+            <h2>Vértices da curva</h2>
+            <p id="anbimaTableNote" class="sectionSubtitle">Exibindo os sete horizontes principais.</p>
+          </div>
+          <div class="tableActions">
+            <div id="anbimaTableCount" class="muted">—</div>
+            <button type="button" id="anbimaTableToggle" class="secondaryButton">Ver estrutura completa</button>
+          </div>
+        </div>
+        <div class="tableWrap">
+          <table>
+            <thead>
+              <tr><th>Prazo</th><th>DU</th><th>ETTJ Pré</th><th>Juro real</th><th>Inflação implícita</th></tr>
+            </thead>
+            <tbody id="anbimaTable"></tbody>
+          </table>
+        </div>
+      </section>
+
+      <section class="panel parameterPanel anbimaMethodPanel">
+        <details class="anbimaMethodDetails">
+          <summary>ⓘ Metodologia e parâmetros Svensson</summary>
+          <div class="anbimaMethodBody">
+            <p id="anbimaPrecision" class="sectionSubtitle"></p>
+            <p class="sectionSubtitle">Os parâmetros abaixo descrevem o ajuste da estrutura a termo. Para leitura de mercado, os vértices e as curvas acima são a referência principal.</p>
+            <div class="tableWrap">
+              <table>
+                <thead><tr><th>Curva</th><th>Beta 1</th><th>Beta 2</th><th>Beta 3</th><th>Beta 4</th><th>Lambda 1</th><th>Lambda 2</th></tr></thead>
+                <tbody id="anbimaParams"></tbody>
+              </table>
+            </div>
+          </div>
+        </details>
+      </section>
+    </div>
+
+    <div id="tab-tesouro" class="tabPane">
+      <section class="sectionIntro panel"><div><p class="eyebrow">TÍTULOS PÚBLICOS · TESOURO DIRETO</p><h2>Taxas e preços dos títulos ofertados</h2><p class="sectionSubtitle">Fonte oficial do Tesouro Nacional.</p></div><label class="inlineSelect">Data<select id="tesouroDate"></select></label></section>
+      <section id="tesouroPending" class="panel pendingPanel"><p class="eyebrow">PRIMEIRO TESTE</p><h2>Aguardando a primeira coleta do Tesouro Direto</h2><p>Depois de subir os arquivos, rode <strong>Actions → Atualizar Tesouro Direto → Run workflow</strong>. A aba será preenchida automaticamente.</p></section>
+      <div id="tesouroContent" class="hidden"><section class="panel marketStatus"><div class="panelHead"><div><p class="eyebrow">MERCADO</p><h2>Taxas do Tesouro Direto</h2></div><div id="tesouroStatus" class="muted">—</div></div><div id="tesouroCards" class="marketCards"></div></section><section class="panel"><div class="panelHead"><div><p class="eyebrow">TÍTULOS</p><h2>Taxas e preços</h2></div></div><div class="tableWrap"><table><thead><tr><th>Título</th><th>Vencimento</th><th>Taxa compra</th><th>Preço compra</th><th>Taxa venda</th><th>Preço venda</th></tr></thead><tbody id="tesouroTable"></tbody></table></div></section></div>
+    </div>
+
+    <div id="tab-conexoes" class="tabPane">
+      <section class="sectionIntro panel"><div><p class="eyebrow">CONEXÕES DE MERCADO</p><h2>DI Futuro × ETTJ Prefixada ANBIMA</h2><p class="sectionSubtitle">O DI é interpolado nos mesmos vértices da ANBIMA.</p></div><label class="inlineSelect">Data em comum<select id="connectionDate"></select></label></section>
+      <section class="panel reading"><div class="panelHead"><div><p class="eyebrow">LEITURA DO BASIS</p><h2 id="basisTitle">—</h2></div><div id="basisStatus" class="muted">—</div></div><p id="basisText" class="readingText">Carregando…</p></section>
+      <section class="panel chartPanel"><div class="panelHead"><div><p class="eyebrow">CURVAS NORMALIZADAS</p><h2>DI interpolado × ANBIMA Pré</h2></div><div id="connectionLegend" class="legend"></div></div><div id="connectionChart" class="chart"></div></section>
+      <section class="panel"><div class="panelHead"><div><p class="eyebrow">BASIS</p><h2>ANBIMA Pré − DI</h2><p class="sectionSubtitle">Diferença em pontos-base; não representa spread de crédito.</p></div></div><div id="basisBars" class="basisBars"></div><div class="tableWrap"><table><thead><tr><th>Vértice</th><th>Prazo</th><th>DI interpolado</th><th>ANBIMA Pré</th><th>Basis</th></tr></thead><tbody id="basisTable"></tbody></table></div></section>
+    </div>
+
+
+
+    <div id="tab-cenarios" class="tabPane">
+      <section class="sectionIntro panel scenarioIntro">
+        <div>
+          <p class="eyebrow">PASSADO × MERCADO</p>
+          <h2>Cenários de referência</h2>
+          <p class="sectionSubtitle">Compare CDI realizado em janelas históricas com a taxa equivalente e a trajetória forward implícita na curva DI atual.</p>
+        </div>
+        <div class="scenarioSelectors">
+          <label class="inlineSelect">Data da curva<select id="scenarioDate"></select></label>
+          <label class="inlineSelect">Base histórica
+            <select id="scenarioRegime">
+              <option value="full">Histórico completo · desde 1986</option>
+              <option value="real">Plano Real · desde jul/1994</option>
+              <option value="targets" selected>Regime de metas · desde jul/1999</option>
+              <option value="recent">Histórico recente · desde 2005</option>
+            </select>
+          </label>
+          <label class="inlineSelect">Horizonte
+            <select id="scenarioHorizon">
+              <option value="126">6 meses · 126 DU</option>
+              <option value="252">1 ano · 252 DU</option>
+              <option value="504">2 anos · 504 DU</option>
+              <option value="756">3 anos · 756 DU</option>
+              <option value="1260" selected>5 anos · 1.260 DU</option>
+              <option value="1764">7 anos · 1.764 DU</option>
+              <option value="2520">10 anos · 2.520 DU</option>
+            </select>
+          </label>
+        </div>
+      </section>
+
+      <section id="cdiPending" class="panel pendingPanel">
+        <p class="eyebrow">CDI HISTÓRICO</p>
+        <h2>Aguardando a primeira coleta do Banco Central</h2>
+        <p>Depois de subir os arquivos, rode <strong>Actions → Atualizar CDI histórico → Run workflow</strong>. O workflow criará <code>data/cdi/index.json</code> e esta área será preenchida automaticamente.</p>
+      </section>
+
+      <div id="scenarioContent" class="hidden">
+        <section class="panel scenarioSnapshot">
+          <div class="panelHead">
+            <div>
+              <p class="eyebrow">CENÁRIOS DE REFERÊNCIA</p>
+              <h2 id="scenarioTitle">—</h2>
+              <p class="sectionSubtitle">Histórico é realizado; curva DI é preço de mercado hoje. A base histórica selecionada filtra apenas janelas inteiramente contidas no regime. Nenhum dos dois é previsão garantida.</p>
+            </div>
+            <div id="scenarioStatus" class="muted">—</div>
+          </div>
+          <div id="scenarioCards" class="scenarioCards"></div>
+          <div id="scenarioReading" class="rfReading"></div>
+        </section>
+
+        <section class="panel scenarioForwardPanel">
+          <div class="panelHead">
+            <div>
+              <p class="eyebrow">TRAJETÓRIA IMPLÍCITA</p>
+              <h2>Como a curva chega à taxa equivalente?</h2>
+              <p class="sectionSubtitle">Forward anual equivalente de cada trecho, extraído dos fatores de desconto da curva DI interpolada.</p>
+            </div>
+          </div>
+          <div class="tableWrap">
+            <table>
+              <thead><tr><th>Trecho</th><th>DU do trecho</th><th>Forward implícito</th><th>Taxa zero no fim</th></tr></thead>
+              <tbody id="scenarioForwardTable"></tbody>
+            </table>
+          </div>
+          <p class="modelNote">A composição dos forwards reproduz a taxa equivalente do horizonte. Para produtos a % do CDI, a V2.3-A aplica o percentual em cada trecho da trajetória, em vez de repetir uma única taxa por todo o período.</p>
+        </section>
+
+        <section class="panel scenarioHistoryPanel">
+          <div class="panelHead">
+            <div>
+              <p class="eyebrow">HISTÓRICO</p>
+              <h2 id="scenarioHistoryTitle">CDI equivalente em janelas móveis</h2>
+              <p class="sectionSubtitle">Cada ponto responde: “qual foi a taxa anual equivalente do CDI nos N dias úteis terminados nesta data?”.</p>
+            </div>
+          </div>
+          <div id="scenarioHistoryChart" class="historyChartCompact scenarioHistoryChart"></div>
+        </section>
+
+        <section class="panel scenarioMatrixPanel">
+          <div class="panelHead">
+            <div>
+              <p class="eyebrow">VISÃO COMPLETA</p>
+              <h2>Todos os horizontes</h2>
+              <p class="sectionSubtitle">Última janela realizada, distribuição histórica e referência da curva DI na data selecionada.</p>
+            </div>
+          </div>
+          <div class="tableWrap">
+            <table>
+              <thead><tr><th>Horizonte</th><th>Última janela</th><th>P25</th><th>Mediana</th><th>P75</th><th>Mínima</th><th>Máxima</th><th>Curva DI</th><th>DI − mediana</th></tr></thead>
+              <tbody id="scenarioMatrix"></tbody>
+            </table>
+          </div>
+        </section>
+      </div>
+
+      <section class="panel scenarioNext">
+        <div>
+          <p class="eyebrow">PRÓXIMA CAMADA · V2.4</p>
+          <h2>Boletim Focus</h2>
+          <p>Na próxima etapa, Selic e IPCA do Focus entram como trajetória de consenso, respeitando o fato de que a Selic publicada no Focus é uma expectativa de fim de período e não um “CDI médio” pronto.</p>
+        </div>
+      </section>
+    </div>
+
+    <div id="tab-aprender" class="tabPane">
+      <section class="sectionIntro panel learnIntro">
+        <div>
+          <p class="eyebrow">GUIA PRÁTICO</p>
+          <h2>Da curva para a decisão</h2>
+          <p class="sectionSubtitle">Uma leitura simples para conectar DI, ANBIMA, renda fixa, fundos e ativos de risco.</p>
+        </div>
+        <div class="learnBadge">educacional · sem recomendação automática</div>
+      </section>
+
+      <section class="panel">
+        <div class="panelHead">
+          <div>
+            <p class="eyebrow">CURVA EM 60 SEGUNDOS</p>
+            <h2>O que está mexendo?</h2>
+          </div>
+        </div>
+        <div class="learningSteps">
+          <article class="learnStep"><span>1</span><div><strong>DI futuro</strong><p>É uma referência negociada para juros DI em prazos futuros. Taxa para cima = abertura; taxa para baixo = fechamento.</p></div></article>
+          <article class="learnStep"><span>2</span><div><strong>Onde mexeu?</strong><p>Curto, miolo e longo podem andar de formas diferentes. Isso ajuda a separar política monetária próxima de prêmio de prazo.</p></div></article>
+          <article class="learnStep"><span>3</span><div><strong>Pré ou pós?</strong><p>O pós acompanha o CDI realizado; o prefixado trava uma taxa nominal; o IPCA+ trava uma taxa real sobre a inflação.</p></div></article>
+          <article class="learnStep"><span>4</span><div><strong>Marcação a mercado</strong><p>Quanto maior a duration, maior tende a ser a sensibilidade do preço a mudanças na curva, mantendo as demais variáveis constantes.</p></div></article>
+        </div>
+      </section>
+
+      <section class="panel impactPanel">
+        <div class="panelHead">
+          <div>
+            <p class="eyebrow">MAPA DE IMPACTOS</p>
+            <h2>Se a curva mexer, o que observar?</h2>
+            <p class="sectionSubtitle">Relações direcionais típicas, não regras fixas.</p>
+          </div>
+        </div>
+        <div class="impactGrid">
+          <article class="impactCard">
+            <div class="impactHead up"><span>↑</span><strong>Curva abre</strong></div>
+            <ul>
+              <li><b>Novos prefixados:</b> tendem a aparecer com taxas maiores.</li>
+              <li><b>Prefixados já emitidos / fundos de duration:</b> preços podem sofrer.</li>
+              <li><b>Bolsa e IFIX:</b> taxa de desconto maior pode pressionar valuation.</li>
+              <li><b>Pós-CDI:</b> continua dependendo do CDI efetivamente realizado.</li>
+            </ul>
+          </article>
+          <article class="impactCard">
+            <div class="impactHead down"><span>↓</span><strong>Curva fecha</strong></div>
+            <ul>
+              <li><b>Novos prefixados:</b> tendem a vir com taxas menores.</li>
+              <li><b>Prefixados já emitidos / fundos de duration:</b> podem se beneficiar da marcação.</li>
+              <li><b>Bolsa e IFIX:</b> menor taxa de desconto pode ajudar valuation.</li>
+              <li><b>Pós-CDI:</b> pode perder atratividade relativa se o CDI realizado cair.</li>
+            </ul>
+          </article>
+          <article class="impactCard">
+            <div class="impactHead real"><span>π</span><strong>Juro real / inflação</strong></div>
+            <ul>
+              <li><b>ETTJ IPCA:</b> ajuda a enxergar o juro real exigido pelo mercado.</li>
+              <li><b>Inflação implícita:</b> liga curva nominal e curva real.</li>
+              <li><b>LCI IPCA+:</b> compare a taxa real contratada com a curva real do mesmo prazo.</li>
+              <li><b>Prazo longo:</b> pequenas mudanças de taxa podem gerar grande oscilação de preço.</li>
+            </ul>
+          </article>
+        </div>
+      </section>
+
+      <section class="panel fundGuide">
+        <div class="panelHead">
+          <div>
+            <p class="eyebrow">FUNDOS DE INVESTIMENTO</p>
+            <h2>Como a curva chega até o fundo?</h2>
+          </div>
+        </div>
+        <div class="fundMap">
+          <div><strong>DI / Selic</strong><span>Fundos muito curtos / caixa</span><p>Menor sensibilidade à ponta longa; o resultado tende a acompanhar mais de perto a taxa realizada, descontadas taxas e demais posições.</p></div>
+          <div><strong>Pré / duration</strong><span>Renda fixa ativa</span><p>Fechamento de curva pode gerar marcação positiva; abertura pode pressionar. O tamanho do efeito depende da duration e das posições.</p></div>
+          <div><strong>IPCA+</strong><span>Inflação / IMA-B</span><p>Juro real é central. Fundos longos podem oscilar bastante mesmo com proteção inflacionária no horizonte.</p></div>
+          <div><strong>Crédito</strong><span>Spread + curva</span><p>Além dos juros, entra o spread de crédito. Curva e percepção de risco podem se mover ao mesmo tempo ou em direções diferentes.</p></div>
+        </div>
+      </section>
+
+      <section class="panel correlationPreview">
+        <div>
+          <p class="eyebrow">PRÓXIMA CAMADA</p>
+          <h2>Juros futuros × Bolsa × IFIX</h2>
+          <p>O próximo módulo pode calcular correlação móvel entre variações do DI 2A/5A/10A e retornos de Ibovespa/IFIX. A ideia é medir o que aconteceu em cada janela, em vez de assumir que “juros caem = bolsa sobe” sempre.</p>
+        </div>
+        <div class="correlationMock">
+          <span>DI 5A × IBOV</span><strong>correlação móvel</strong><small>20 · 60 · 120 pregões</small>
+        </div>
+      </section>
+    </div>
+
+    <div id="tab-decisao" class="tabPane">
+      <section class="sectionIntro panel decisionIntro">
+        <div>
+          <p class="eyebrow">DECISÃO DE RENDA FIXA</p>
+          <h2>LCI Pós × Pré × IPCA+</h2>
+          <p class="sectionSubtitle">Compare cenários, pontos de equilíbrio e referências de mercado. A ferramenta não substitui suitability, liquidez, risco de crédito ou condições da emissão.</p>
+        </div>
+        <label class="inlineSelect">Data de referência<select id="decisionDate"></select></label>
+      </section>
+
+      <section class="panel decisionFormPanel">
+        <div class="panelHead">
+          <div>
+            <p class="eyebrow">ENTRADAS</p>
+            <h2>Condições disponíveis para o cliente</h2>
+          </div>
+          <label class="inlineSelect">Cenário de projeção
+            <select id="rfScenarioMode">
+              <option value="market" selected>Mercado · DI + ANBIMA</option>
+              <option value="custom">Personalizado</option>
+            </select>
+          </label>
+        </div>
+
+        <div class="decisionInputs">
+          <label>Valor da aplicação
+            <div class="inputPrefix"><span>R$</span><input id="rfAmount" type="number" min="1000" step="1000" value="100000"></div>
+          </label>
+          <label>Horizonte
+            <select id="rfHorizon">
+              <option value="126">6 meses · 126 DU</option>
+              <option value="252" selected>1 ano · 252 DU</option>
+              <option value="504">2 anos · 504 DU</option>
+              <option value="756">3 anos · 756 DU</option>
+              <option value="1260">5 anos · 1.260 DU</option>
+              <option value="1764">7 anos · 1.764 DU</option>
+              <option value="2520">10 anos · 2.520 DU</option>
+            </select>
+          </label>
+          <label>LCI Pós
+            <div class="inputSuffix"><input id="rfPctCdi" type="number" min="1" max="150" step="0.01" value="90"><span>% do CDI</span></div>
+          </label>
+          <label>LCI Pré
+            <div class="inputSuffix"><input id="rfPre" type="number" min="0" max="50" step="0.01" value="13.08"><span>% a.a.</span></div>
+          </label>
+          <label>LCI IPCA+
+            <div class="inputSuffix"><input id="rfIpcaSpread" type="number" min="0" max="30" step="0.01" value="7.00"><span>% a.a.</span></div>
+          </label>
+          <label>CDI equivalente · cenário
+            <div class="inputSuffix"><input id="rfCdiScenario" type="number" min="0" max="50" step="0.01" value="13.90"><span>% a.a.</span></div>
+          </label>
+          <label>IPCA equivalente · cenário
+            <div class="inputSuffix"><input id="rfIpcaScenario" type="number" min="-5" max="30" step="0.01" value="5.00"><span>% a.a.</span></div>
+          </label>
+        </div>
+        <p class="decisionHint">Escolha explicitamente o cenário usado no cálculo. Em <strong>Mercado · DI + ANBIMA</strong>, CDI e IPCA são preenchidos pelas curvas e ficam bloqueados para edição. Em <strong>Personalizado</strong>, os dois campos são liberados para você informar suas próprias premissas. Curva não é previsão.</p>
+        <div id="rfScenarioSource" class="rfReading"></div>
+      </section>
+
+      <section class="panel marketReferencePanel">
+        <div class="panelHead">
+          <div>
+            <p class="eyebrow">REFERÊNCIAS DE MERCADO</p>
+            <h2 id="rfReferenceTitle">Mesmo prazo · —</h2>
+          </div>
+          <div id="rfReferenceStatus" class="muted">—</div>
+        </div>
+        <div id="rfReferenceCards" class="rfReferenceCards"></div>
+      </section>
+
+      <section class="panel decisionHistoryPanel">
+        <div class="panelHead">
+          <div>
+            <p class="eyebrow">CONTEXTO HISTÓRICO</p>
+            <h2 id="rfHistoryTitle">CDI realizado × curva atual · —</h2>
+            <p class="sectionSubtitle">Posicione a referência DI atual dentro da distribuição histórica do mesmo horizonte. O histórico é contexto, não previsão.</p>
+          </div>
+          <label class="inlineSelect">Base histórica
+            <select id="decisionHistoryRegime">
+              <option value="full">Histórico completo · desde 1986</option>
+              <option value="real">Plano Real · desde jul/1994</option>
+              <option value="targets" selected>Regime de metas · desde jul/1999</option>
+              <option value="recent">Histórico recente · desde 2005</option>
+            </select>
+          </label>
+        </div>
+        <div id="rfHistoryCards" class="rfReferenceCards"></div>
+        <div id="rfHistoryReading" class="rfReading"></div>
+      </section>
+
+      <section class="panel">
+        <div class="panelHead">
+          <div>
+            <p class="eyebrow">RESULTADO DO CENÁRIO</p>
+            <h2>Quanto cada estrutura entrega no modelo?</h2>
+          </div>
+        </div>
+        <div id="rfProductCards" class="rfProductCards"></div>
+        <div id="rfScenarioReading" class="rfReading"></div>
+      </section>
+
+      <section class="decisionSplit">
+        <section class="panel">
+          <div class="panelHead"><div><p class="eyebrow">PONTOS DE EQUILÍBRIO</p><h2>Quando uma estrutura empata com a outra?</h2></div></div>
+          <div id="rfBreakevens" class="breakevenGrid"></div>
+        </section>
+        <section class="panel">
+          <div class="panelHead"><div><p class="eyebrow">ANTES DE ORIENTAR</p><h2>Checklist do atendimento</h2></div></div>
+          <div class="clientChecklist">
+            <label><input type="checkbox"> Horizonte do recurso está claro?</label>
+            <label><input type="checkbox"> A carência/liquidez é compatível?</label>
+            <label><input type="checkbox"> Concentração por emissor/FGC foi avaliada?</label>
+            <label><input type="checkbox"> Cliente entende pré, pós e IPCA+?</label>
+            <label><input type="checkbox"> Cenário é compatível com o perfil e objetivo?</label>
+          </div>
+        </section>
+      </section>
+
+      <section class="panel decisionFootnote">
+        <p><strong>Importante:</strong> LCI para pessoa física é tratada aqui como isenta de IR sobre os rendimentos. O comparador não considera resgate antecipado, mercado secundário, custos, risco de crédito, reinvestimento, mudanças tributárias futuras nem particularidades contratuais. Confira sempre as condições da emissão.</p>
+      </section>
+    </div>
+
+    <footer>
+      Painel educacional de mercado. Taxas e movimentos não constituem recomendação de investimento. <span class="v3Build">V3.0 · teste</span>
+    </footer>
+  </main>
+  <script src="js/app.js?v=1.2.0" defer></script>
+  <script src="js/evolution-v2.js?v=2.3.6" defer></script>
+  <script src="js/term-structure-v2.js?v=2.3.8" defer></script>
+  <script src="js/market.js?v=2.3.4" defer></script>
+  <script src="js/anbima-v2.js?v=2.3.9" defer></script>
+  <script src="js/v3.js?v=3.0.0" defer></script>
+</body>
+</html>
