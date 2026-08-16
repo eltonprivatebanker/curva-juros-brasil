@@ -388,3 +388,533 @@ body.v31-essential .v31Technical {
     grid-template-columns: 1fr;
   }
 }
+
+
+/* ========================================================
+   V3.2 · camada educacional
+   ======================================================== */
+
+.v32ConceptHero,
+.v32EttjPanel,
+.v32GlossaryPanel {
+  border-color: rgba(105,183,255,.16);
+}
+
+.v32ConceptHead {
+  display:flex;
+  align-items:flex-start;
+  justify-content:space-between;
+  gap:18px;
+}
+
+.v32ConceptHead h2 {
+  margin-bottom:5px;
+}
+
+.v32ConceptTag {
+  flex:0 0 auto;
+  padding:6px 9px;
+  border:1px solid rgba(105,183,255,.22);
+  border-radius:999px;
+  background:rgba(105,183,255,.06);
+  color:#9bd0ff;
+  font-size:.7rem;
+  font-weight:850;
+  letter-spacing:.055em;
+}
+
+.v32MarketFlow {
+  display:grid;
+  grid-template-columns:1fr auto 1fr auto 1fr auto 1fr;
+  gap:8px;
+  align-items:stretch;
+  margin-top:17px;
+}
+
+.v32MarketFlow > div {
+  min-width:0;
+  padding:12px;
+  border:1px solid rgba(255,255,255,.065);
+  border-radius:11px;
+  background:rgba(255,255,255,.02);
+}
+
+.v32MarketFlow > i {
+  align-self:center;
+  color:#58718a;
+  font-style:normal;
+}
+
+.v32MarketFlow strong,
+.v32MarketFlow small {
+  display:block;
+}
+
+.v32MarketFlow strong {
+  font-size:.8rem;
+}
+
+.v32MarketFlow small {
+  margin-top:4px;
+  color:var(--muted,#9fb2c6);
+  font-size:.69rem;
+  line-height:1.38;
+}
+
+.v32ExplainGrid,
+.v32EttjGrid {
+  display:grid;
+  grid-template-columns:repeat(4,minmax(0,1fr));
+  gap:9px;
+  margin-top:12px;
+}
+
+.v32EttjGrid {
+  grid-template-columns:repeat(3,minmax(0,1fr));
+}
+
+.v32ExplainGrid article,
+.v32EttjGrid article {
+  min-width:0;
+  padding:13px 14px;
+  border:1px solid rgba(255,255,255,.07);
+  border-radius:11px;
+  background:rgba(255,255,255,.018);
+}
+
+.v32ExplainGrid span,
+.v32EttjGrid span {
+  display:block;
+  color:#7dbcf4;
+  font-size:.64rem;
+  font-weight:850;
+  letter-spacing:.065em;
+}
+
+.v32ExplainGrid strong,
+.v32EttjGrid strong {
+  display:block;
+  margin-top:6px;
+  font-size:.87rem;
+  line-height:1.35;
+}
+
+.v32ExplainGrid p,
+.v32EttjGrid p {
+  margin:7px 0 0;
+  color:var(--muted,#9fb2c6);
+  font-size:.72rem;
+  line-height:1.48;
+}
+
+.v32RateChain {
+  display:grid;
+  grid-template-columns:1fr auto 1fr auto 1fr;
+  gap:8px;
+  align-items:center;
+  margin-top:12px;
+  padding:11px 12px;
+  border:1px solid rgba(56,211,159,.12);
+  border-radius:11px;
+  background:rgba(56,211,159,.025);
+}
+
+.v32RateChain > div {
+  min-width:0;
+}
+
+.v32RateChain > i {
+  color:#658199;
+  font-style:normal;
+}
+
+.v32RateChain span,
+.v32RateChain strong,
+.v32RateChain small {
+  display:block;
+}
+
+.v32RateChain span {
+  color:var(--muted,#9fb2c6);
+  font-size:.65rem;
+}
+
+.v32RateChain strong {
+  margin-top:2px;
+  font-size:.84rem;
+}
+
+.v32RateChain small {
+  margin-top:2px;
+  color:var(--muted,#9fb2c6);
+  font-size:.66rem;
+}
+
+.v32InterpretBox {
+  display:grid;
+  grid-template-columns:repeat(3,minmax(0,1fr));
+  gap:9px;
+  margin-top:12px;
+}
+
+.v32InterpretBox > div {
+  padding:12px 13px;
+  border-left:2px solid #3c5e7c;
+  background:rgba(255,255,255,.018);
+}
+
+.v32InterpretBox span,
+.v32InterpretBox strong {
+  display:block;
+}
+
+.v32InterpretBox span {
+  color:#8fc8ff;
+  font-size:.63rem;
+  font-weight:850;
+  letter-spacing:.065em;
+}
+
+.v32InterpretBox strong {
+  margin-top:4px;
+  font-size:.82rem;
+}
+
+.v32InterpretBox p {
+  margin:4px 0 0;
+  color:var(--muted,#9fb2c6);
+  font-size:.7rem;
+  line-height:1.43;
+}
+
+.v32TechnicalBox {
+  margin-top:12px;
+  padding-top:10px;
+  border-top:1px solid rgba(255,255,255,.07);
+}
+
+.v32TechnicalBox summary {
+  cursor:pointer;
+  color:#8fc8ff;
+  font-size:.77rem;
+  font-weight:750;
+}
+
+.v32TechnicalGrid {
+  display:grid;
+  grid-template-columns:repeat(4,minmax(0,1fr));
+  gap:8px;
+  margin-top:10px;
+}
+
+.v32TechnicalGrid > div {
+  padding:10px 11px;
+  border:1px solid rgba(255,255,255,.06);
+  border-radius:9px;
+}
+
+.v32TechnicalGrid strong {
+  display:block;
+  font-size:.75rem;
+}
+
+.v32TechnicalGrid p {
+  margin:4px 0 0;
+  color:var(--muted,#9fb2c6);
+  font-size:.68rem;
+  line-height:1.42;
+}
+
+.v32SourceLine {
+  display:flex;
+  align-items:center;
+  gap:6px;
+  margin-top:12px;
+  color:var(--muted,#9fb2c6);
+  font-size:.67rem;
+}
+
+.v32SourceLine a {
+  color:#8fc8ff;
+  text-decoration:none;
+}
+
+.v32SourceLine a:hover {
+  text-decoration:underline;
+}
+
+.v32SimpleFormula {
+  margin-top:12px;
+  padding:11px 13px;
+  border-radius:10px;
+  background:rgba(105,183,255,.035);
+  border:1px solid rgba(105,183,255,.11);
+}
+
+.v32SimpleFormula span,
+.v32SimpleFormula small {
+  display:block;
+}
+
+.v32SimpleFormula span {
+  color:#8fc8ff;
+  font-size:.65rem;
+  font-weight:800;
+  text-transform:uppercase;
+  letter-spacing:.06em;
+}
+
+.v32SimpleFormula div {
+  margin-top:5px;
+  font-size:.8rem;
+}
+
+.v32SimpleFormula small {
+  margin-top:5px;
+  color:var(--muted,#9fb2c6);
+  line-height:1.4;
+}
+
+.v32GlossaryGrid {
+  display:grid;
+  grid-template-columns:repeat(2,minmax(0,1fr));
+  gap:8px;
+}
+
+.v32GlossaryGrid article {
+  display:grid;
+  grid-template-columns:auto 1fr;
+  grid-template-areas:
+    "title chip"
+    "text text";
+  align-items:center;
+  justify-content:start;
+  gap:4px 8px;
+  padding:11px 12px;
+  border:1px solid rgba(255,255,255,.065);
+  border-radius:10px;
+  background:rgba(255,255,255,.018);
+}
+
+.v32GlossaryGrid strong {
+  grid-area:title;
+  font-size:.78rem;
+}
+
+.v32GlossaryGrid span {
+  grid-area:chip;
+  justify-self:start;
+  padding:2px 6px;
+  border-radius:999px;
+  background:rgba(105,183,255,.065);
+  color:#8fc8ff;
+  font-size:.61rem;
+  font-weight:750;
+}
+
+.v32GlossaryGrid p {
+  grid-area:text;
+  margin:2px 0 0;
+  color:var(--muted,#9fb2c6);
+  font-size:.7rem;
+  line-height:1.43;
+}
+
+@media (max-width:1050px) {
+  .v32ExplainGrid {
+    grid-template-columns:repeat(2,minmax(0,1fr));
+  }
+  .v32TechnicalGrid {
+    grid-template-columns:repeat(2,minmax(0,1fr));
+  }
+}
+
+@media (max-width:820px) {
+  .v32MarketFlow {
+    grid-template-columns:1fr;
+  }
+  .v32MarketFlow > i {
+    display:none;
+  }
+  .v32EttjGrid,
+  .v32InterpretBox,
+  .v32RateChain {
+    grid-template-columns:1fr;
+  }
+  .v32RateChain > i {
+    display:none;
+  }
+}
+
+@media (max-width:620px) {
+  .v32ConceptHead {
+    display:block;
+  }
+  .v32ConceptTag {
+    display:inline-flex;
+    margin-top:9px;
+  }
+  .v32ExplainGrid,
+  .v32TechnicalGrid,
+  .v32GlossaryGrid {
+    grid-template-columns:1fr;
+  }
+}
+
+
+/* ========================================================
+   V3.2.3 · semântica neutra para MOVIMENTOS DE TAXA
+   Laranja = abertura | Azul/ciano = fechamento | Cinza = estável
+   Verde/vermelho continuam reservados para ganho/perda quando aplicável.
+   ======================================================== */
+
+:root {
+  --rate-open: #ffb86b;
+  --rate-open-bg: rgba(255,184,107,.12);
+  --rate-close: #69b7ff;
+  --rate-close-bg: rgba(105,183,255,.12);
+  --rate-flat: #8fa4bd;
+  --rate-flat-bg: rgba(143,164,189,.12);
+}
+
+/* DI · leitura, cards de janeiro e movimento por prazo */
+#tab-di .delta.pos,
+#tab-di .deltaUp {
+  color: var(--rate-open) !important;
+}
+
+#tab-di .delta.neg,
+#tab-di .deltaDown {
+  color: var(--rate-close) !important;
+}
+
+#tab-di .delta.flat,
+#tab-di .deltaFlat {
+  color: var(--rate-flat) !important;
+}
+
+#tab-di .movementPill.open {
+  color: var(--rate-open) !important;
+  background: var(--rate-open-bg) !important;
+  border: 1px solid rgba(255,184,107,.20);
+}
+
+#tab-di .movementPill.close {
+  color: var(--rate-close) !important;
+  background: var(--rate-close-bg) !important;
+  border: 1px solid rgba(105,183,255,.20);
+}
+
+#tab-di .movementPill.neutral {
+  color: var(--rate-flat) !important;
+  background: var(--rate-flat-bg) !important;
+}
+
+/* Glossário herdado da V2, quando visível no modo técnico */
+#tab-di .dot.up {
+  background: var(--rate-open) !important;
+  box-shadow: 0 0 0 6px rgba(255,184,107,.08) !important;
+}
+#tab-di .dot.down {
+  background: var(--rate-close) !important;
+  box-shadow: 0 0 0 6px rgba(105,183,255,.08) !important;
+}
+
+/* Explicação educacional: a própria caixa segue a mesma linguagem */
+#tab-di .v32InterpretBox > div:nth-child(1) {
+  border-left-color: var(--rate-open);
+}
+#tab-di .v32InterpretBox > div:nth-child(1) > span {
+  color: var(--rate-open);
+}
+#tab-di .v32InterpretBox > div:nth-child(2) {
+  border-left-color: var(--rate-close);
+}
+#tab-di .v32InterpretBox > div:nth-child(2) > span {
+  color: var(--rate-close);
+}
+
+/* Aba Aprender: "curva abre" e "curva fecha" também são direção, não julgamento */
+#tab-aprender .impactHead.up span {
+  color: var(--rate-open) !important;
+  background: var(--rate-open-bg) !important;
+}
+#tab-aprender .impactHead.down span {
+  color: var(--rate-close) !important;
+  background: var(--rate-close-bg) !important;
+}
+
+/*
+ Tesouro:
+ coluna 6 = Δ taxa.
+ A coluna Δ preço NÃO é alterada; ela mantém a semântica de valorização/desvalorização.
+*/
+#tab-tesouro #tesouroTable td:nth-child(6) .deltaUp {
+  color: var(--rate-open) !important;
+}
+#tab-tesouro #tesouroTable td:nth-child(6) .deltaDown {
+  color: var(--rate-close) !important;
+}
+#tab-tesouro #tesouroTable td:nth-child(6) .deltaFlat {
+  color: var(--rate-flat) !important;
+}
+
+/* Histórico do Tesouro: primeiro gráfico/box é taxa; preço permanece com cores próprias */
+#tab-tesouro .historyGridCompact .historyBoxCompact:first-child .deltaUp,
+#tab-tesouro .historyGridCompact .historyBoxCompact:first-child .historyMiniDelta.deltaUp {
+  color: var(--rate-open) !important;
+}
+#tab-tesouro .historyGridCompact .historyBoxCompact:first-child .deltaDown,
+#tab-tesouro .historyGridCompact .historyBoxCompact:first-child .historyMiniDelta.deltaDown {
+  color: var(--rate-close) !important;
+}
+
+/* Legenda explícita da convenção */
+.v323ColorKey {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 8px 16px;
+  margin-top: 12px;
+  padding: 10px 12px;
+  border: 1px solid rgba(255,255,255,.065);
+  border-radius: 10px;
+  background: rgba(255,255,255,.018);
+  color: var(--muted,#9fb2c6);
+  font-size: .69rem;
+}
+
+.v323ColorKey > span {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+}
+
+.v323ColorKey > span strong {
+  color: var(--text,#eef5ff);
+  font-size: .7rem;
+}
+
+.v323ColorKey > small {
+  margin-left: auto;
+  color: var(--muted,#9fb2c6);
+  font-size: .66rem;
+}
+
+.v323ColorKey i {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  display: inline-block;
+}
+
+.v323OpenDot { background: var(--rate-open); }
+.v323CloseDot { background: var(--rate-close); }
+.v323FlatDot { background: var(--rate-flat); }
+
+@media (max-width: 760px) {
+  .v323ColorKey > small {
+    width: 100%;
+    margin-left: 0;
+  }
+}
