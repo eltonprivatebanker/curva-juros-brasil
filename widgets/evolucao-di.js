@@ -12,7 +12,7 @@
   const TENORS = [
     {du:126,label:"6M"},{du:252,label:"1A"},{du:504,label:"2A"},
     {du:756,label:"3A"},{du:1260,label:"5A"},{du:1764,label:"7A"},
-    {du:2520,label:"10A"},{du:3780,label:"15A"}
+    {du:2520,label:"10A"}
   ];
   const READING_DU = [252,504,756,1260,1764,2520];
   const state = { index:null, active:new Set(["5d","1m","3m","6m"]), cache:new Map(), series:[] };
@@ -90,9 +90,22 @@
     const w=(target-l.du)/(r.du-l.du);
     return l.rate+w*(r.rate-l.rate);
   }
+  function normalizeContracts(contracts){
+    return TENORS.map(t=>{
+      const rate=interpolate(contracts,t.du);
+      return Number.isFinite(rate)
+        ? {ticker:t.label,maturity:t.label,business_days:t.du,rate_pct:rate}
+        : null;
+    }).filter(Boolean);
+  }
+  function normalizedSeries(series){
+    return (series||[]).map(s=>({...s,contracts:normalizeContracts(s.contracts)}));
+  }
+
   const avg = xs => { const a=xs.filter(Number.isFinite); return a.length?a.reduce((x,y)=>x+y,0)/a.length:NaN; };
 
   function reading(series){
+    series=normalizedSeries(series);
     if(series.length<2)return "Selecione ao menos uma janela histórica.";
     const cur=series[0],ref=series.at(-1);
     const rows=READING_DU.map(du=>{
@@ -139,21 +152,25 @@
 
   function renderChart(series){
     const host=$("widgetChart");host.innerHTML="";
-    const all=series.flatMap(s=>s.contracts||[]).filter(c=>Number.isFinite(c.business_days)&&Number.isFinite(c.rate_pct));
+    const normalized=normalizedSeries(series);
+    const valid=normalized.filter(s=>(s.contracts||[]).length>=2);
+    const all=valid.flatMap(s=>s.contracts||[]).filter(c=>Number.isFinite(c.business_days)&&Number.isFinite(c.rate_pct));
     if(!all.length){host.innerHTML='<div class="empty">Sem dados suficientes.</div>';return;}
+
     const width=Math.max(720,host.clientWidth||900),height=365,pad={l:58,r:20,t:16,b:44};
-    const xmin=Math.min(...all.map(c=>c.business_days)),xmax=Math.max(...all.map(c=>c.business_days));
+    const xmin=126,xmax=2520;
     const ymin=Math.min(...all.map(c=>c.rate_pct))-.08,ymax=Math.max(...all.map(c=>c.rate_pct))+.08;
     const sx=x=>pad.l+(x-xmin)/(xmax-xmin||1)*(width-pad.l-pad.r);
     const sy=y=>height-pad.b-(y-ymin)/(ymax-ymin||1)*(height-pad.t-pad.b);
-    const svg=svgEl("svg",{viewBox:`0 0 ${width} ${height}`,role:"img"});
+    const svg=svgEl("svg",{viewBox:`0 0 ${width} ${height}`,role:"img","aria-label":"Curvas DI normalizadas de 6 meses a 10 anos"});
 
     niceTicks(ymin,ymax,5).forEach(y=>{
       const yy=sy(y);
       svg.append(svgEl("line",{x1:pad.l,x2:width-pad.r,y1:yy,y2:yy,class:"grid"}));
       const t=svgEl("text",{x:pad.l-9,y:yy+4,"text-anchor":"end",class:"axisText"});t.textContent=`${y.toFixed(2)}%`;svg.append(t);
     });
-    TENORS.filter(t=>t.du>=xmin&&t.du<=xmax).forEach(tick=>{
+
+    TENORS.forEach(tick=>{
       const xx=sx(tick.du);
       svg.append(svgEl("line",{x1:xx,x2:xx,y1:pad.t,y2:height-pad.b,class:"grid"}));
       const t=svgEl("text",{x:xx,y:height-17,"text-anchor":"middle",class:"tenorText"});
@@ -162,11 +179,27 @@
     });
     svg.append(svgEl("line",{x1:pad.l,x2:width-pad.r,y1:height-pad.b,y2:height-pad.b,class:"axis"}));
 
-    series.forEach(s=>{
-      const pts=(s.contracts||[]).filter(c=>Number.isFinite(c.business_days)&&Number.isFinite(c.rate_pct)).sort((a,b)=>a.business_days-b.business_days);
+    valid.forEach(s=>{
+      const pts=s.contracts;
       if(!pts.length)return;
       const path=svgEl("path",{d:pts.map((p,i)=>`${i?"L":"M"} ${sx(p.business_days)} ${sy(p.rate_pct)}`).join(" "),class:"curve"});
-      path.setAttribute("stroke",s.color);path.setAttribute("stroke-width",s.current?"3.5":"2.1");path.setAttribute("opacity",s.current?"1":".78");svg.append(path);
+      path.setAttribute("stroke",s.color);
+      path.setAttribute("stroke-width",s.current?"3.5":"2.1");
+      path.setAttribute("opacity",s.current?"1":".78");
+      svg.append(path);
+
+      pts.forEach(p=>{
+        const c=svgEl("circle",{
+          cx:sx(p.business_days),cy:sy(p.rate_pct),
+          r:s.current?"4":"3",
+          fill:s.color,
+          opacity:s.current?"1":".9"
+        });
+        const tt=svgEl("title");
+        tt.textContent=`${s.label} · ${p.ticker} · ${p.business_days.toLocaleString("pt-BR")} DU · ${p.rate_pct.toLocaleString("pt-BR",{minimumFractionDigits:2,maximumFractionDigits:3})}%`;
+        c.append(tt);
+        svg.append(c);
+      });
     });
     host.append(svg);
   }

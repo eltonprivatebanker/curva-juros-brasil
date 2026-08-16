@@ -55,3 +55,8 @@ window.addEventListener("message", (event) => {
 });
 </script>
 ```
+
+
+## V1.0.1
+
+O gráfico foi normalizado nos vértices 6M, 1A, 2A, 3A, 5A, 7A e 10A. Todas as séries usam os mesmos prazos e o eixo termina em 10A. Não há extrapolação além da área observada de cada snapshot.
