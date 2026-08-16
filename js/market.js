@@ -116,7 +116,7 @@
     host.append(svg);
   }
 
-  function timeSeriesChart(hostId,points,unit="pct") {
+  function timeSeriesChart(hostId,points,unit="pct",xMode="date") {
     const host=q(hostId); if(!host)return;
     host.innerHTML="";
     const pts=points.filter(p=>Number.isFinite(p.x)&&Number.isFinite(p.y)).sort((a,b)=>a.x-b.x);
@@ -142,7 +142,9 @@
       const anchor=i===0?"start":i===tickFractions.length-1?"end":"middle";
       const tx=i===0?xx+2:i===tickFractions.length-1?xx-2:xx;
       const t=svgEl("text",{x:tx,y:height-12,"text-anchor":anchor,class:"historyAxisLabel historyXAxisLabel"});
-      t.textContent=`${String(d.getUTCDate()).padStart(2,"0")}/${String(d.getUTCMonth()+1).padStart(2,"0")}`;
+      t.textContent=xMode==="year"
+        ? String(d.getUTCFullYear())
+        : `${String(d.getUTCDate()).padStart(2,"0")}/${String(d.getUTCMonth()+1).padStart(2,"0")}`;
       svg.append(t);
     });
     svg.append(svgEl("path",{
@@ -677,7 +679,7 @@
     q("scenarioCards").innerHTML=`
       <article><span>CDI realizado · última janela</span><strong>${fp(latest.annual_equivalent_pct,2)}</strong><small>${fd(latest.start)} → ${fd(latest.end)} · acumulado ${fp(latest.accumulated_pct,2)}</small></article>
       <article><span>Mediana · ${regimeMeta.label}</span><strong>${fp(dist.median_pct,2)}</strong><small>${Number(dist.count||0).toLocaleString("pt-BR")} janelas completas de ${approx(du)}</small></article>
-      <article><span>Faixa · ${regimeMeta.label}</span><strong>${fp(dist.min_pct,2)} → ${fp(dist.max_pct,2)}</strong><small>mínima → máxima das janelas filtradas</small></article>
+      <article><span>Faixa central · P25–P75</span><strong>${fp(dist.p25_pct,2)} → ${fp(dist.p75_pct,2)}</strong><small>extremos: ${fp(dist.min_pct,2)} → ${fp(dist.max_pct,2)}</small></article>
       <article><span>Curva DI · equivalente</span><strong>${fp(zero,2)}</strong><small>taxa zero interpolada no horizonte</small></article>
       <article><span>DI − última janela</span><strong class="${deltaClass(curveVsLatest)}">${fb(curveVsLatest)}</strong><small>mercado hoje × realizado recente</small></article>
       <article><span>DI − mediana histórica</span><strong class="${deltaClass(curveVsMedian)}">${fb(curveVsMedian)}</strong><small>mercado hoje × distribuição histórica</small></article>`;
@@ -687,7 +689,10 @@
         : curveVsMedian>0?"acima da mediana histórica":"abaixo da mediana histórica"
       :"sem comparação disponível";
     const regimeStart=regimeMeta.start?fd(regimeMeta.start):"—";
-    q("scenarioReading").innerHTML=`<p class="eyebrow">COMO LER</p><p>Para ${approx(du)}, a curva DI está ${relative}. A comparação histórica usa <strong>${regimeMeta.label}</strong>: somente janelas iniciadas em ${regimeStart} ou depois. O CDI realizado mostra o que ocorreu; a curva DI mostra o preço de equilíbrio negociado hoje. Não trate nenhum deles como previsão garantida do CDI futuro.</p>`;
+    const quartileText=finite(dist.p25_pct)&&finite(dist.p75_pct)
+      ? ` O miolo de 50% das observações ficou entre <strong>${fp(dist.p25_pct,2)}</strong> e <strong>${fp(dist.p75_pct,2)}</strong>.`
+      : "";
+    q("scenarioReading").innerHTML=`<p class="eyebrow">COMO LER</p><p>Para ${approx(du)}, a curva DI está ${relative}. A comparação histórica usa <strong>${regimeMeta.label}</strong>: somente janelas iniciadas em ${regimeStart} ou depois.${quartileText} O CDI realizado mostra o que ocorreu; a curva DI mostra o preço de equilíbrio negociado hoje. Não trate nenhum deles como previsão garantida do CDI futuro.</p>`;
 
     const path=impliedForwardPath(curve,du);
     q("scenarioForwardTable").innerHTML=path.map(r=>`
@@ -701,7 +706,7 @@
       date:p.date
     })).filter(p=>Number.isFinite(p.x)&&Number.isFinite(p.y));
     q("scenarioHistoryTitle").textContent=`CDI equivalente · ${approx(du)} · ${regimeMeta.label}`;
-    timeSeriesChart("scenarioHistoryChart",points,"pct");
+    timeSeriesChart("scenarioHistoryChart",points,"pct","year");
 
     const matrixRows=[];
     for(const x of STANDARD_DU){
@@ -713,7 +718,9 @@
       matrixRows.push({
         du:x,
         latest:+vw.latest.annual_equivalent_pct,
+        p25:+vw.distribution.p25_pct,
         median:med,
+        p75:+vw.distribution.p75_pct,
         min:+vw.distribution.min_pct,
         max:+vw.distribution.max_pct,
         di:z,
@@ -722,7 +729,8 @@
     }
     q("scenarioMatrix").innerHTML=matrixRows.map(r=>`
       <tr><td><strong>${approx(r.du)}</strong><span class="maturitySoon">${r.du.toLocaleString("pt-BR")} DU</span></td>
-      <td>${fp(r.latest,2)}</td><td>${fp(r.median,2)}</td><td>${fp(r.min,2)}</td><td>${fp(r.max,2)}</td>
+      <td>${fp(r.latest,2)}</td><td>${fp(r.p25,2)}</td><td>${fp(r.median,2)}</td><td>${fp(r.p75,2)}</td>
+      <td>${fp(r.min,2)}</td><td>${fp(r.max,2)}</td>
       <td>${fp(r.di,2)}</td><td class="${deltaClass(r.diff)}">${fb(r.diff)}</td></tr>`).join("");
   }
 
