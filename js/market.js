@@ -1,13 +1,13 @@
 (() => {
   const q = (id) => document.getElementById(id);
-  const STANDARD_DU = [126, 252, 504, 756, 1260, 2520];
+  const STANDARD_DU = [126, 252, 504, 756, 1260, 1764, 2520];
   const CATEGORY_ORDER = ["all","prefixado","ipca","selic","renda","educa","igpm","outros"];
   const CATEGORY_LABEL = {
     all:"Todos", prefixado:"Prefixados", ipca:"IPCA+", selic:"Selic",
     renda:"Renda+", educa:"Educa+", igpm:"IGP-M+", outros:"Outros"
   };
   const S = {
-    di:null, a:null, t:null, cache:new Map(),
+    di:null, a:null, t:null, cdi:null, cache:new Map(),
     lastA:null, lastC:null, lastHistory:null,
     tesouroFilter:"all", tesouroCurrent:null,
     decisionMarketMode:false
@@ -33,7 +33,7 @@
     : "—";
   const approx = (du) => ({
     21:"1M",42:"2M",63:"3M",126:"6M",252:"1A",378:"1,5A",504:"2A",
-    630:"2,5A",756:"3A",882:"3,5A",1008:"4A",1134:"4,5A",1260:"5A",2520:"10A"
+    630:"2,5A",756:"3A",882:"3,5A",1008:"4A",1134:"4,5A",1260:"5A",1764:"7A",2520:"10A"
   }[du] || `${(du/252).toLocaleString("pt-BR",{maximumFractionDigits:1})}A`);
 
   async function getJson(path) {
@@ -56,6 +56,7 @@
         if (btn.dataset.tab==="anbima" && S.lastA) renderAnbimaChart(S.lastA);
         if (btn.dataset.tab==="conexoes" && S.lastC) renderConnectionChart(S.lastC);
         if (btn.dataset.tab==="tesouro" && S.lastHistory) renderHistoryCharts(S.lastHistory);
+        if (btn.dataset.tab==="cenarios") renderScenario();
         if (btn.dataset.tab==="decisao") renderDecision();
       });
     });
@@ -565,6 +566,146 @@
   }
 
 
+
+  function diCurveFromSnapshot(di){
+    return (di?.contracts||[])
+      .filter(x=>finite(x.business_days)&&finite(x.rate_pct))
+      .map(x=>({du:+x.business_days,rate:+x.rate_pct}))
+      .sort((a,b)=>a.du-b.du);
+  }
+  async function diSnapshotForDate(date){
+    const entry=S.di?.entries?.find(x=>x.date===date);
+    return entry?getJson(entry.path):null;
+  }
+  function forwardAnnual(z0,du0,z1,du1){
+    if(!Number.isFinite(z1)||du1<=du0)return NaN;
+    if(du0===0)return z1;
+    if(!Number.isFinite(z0))return NaN;
+    const t0=du0/252,t1=du1/252,dt=(du1-du0)/252;
+    const gross=Math.pow(1+z1/100,t1)/Math.pow(1+z0/100,t0);
+    return (Math.pow(gross,1/dt)-1)*100;
+  }
+  function impliedForwardPath(diCurve,targetDu){
+    if(!Array.isArray(diCurve)||!diCurve.length||targetDu<=0)return[];
+    const nodes=STANDARD_DU.filter(x=>x<=targetDu);
+    if(!nodes.includes(targetDu))nodes.push(targetDu);
+    const rows=[];
+    let prevDu=0,prevZero=NaN;
+    for(const endDu of nodes){
+      const zero=flatForward(diCurve,endDu);
+      if(!Number.isFinite(zero))break;
+      const fwd=forwardAnnual(prevZero,prevDu,zero,endDu);
+      rows.push({
+        startDu:prevDu,endDu,
+        segmentDu:endDu-prevDu,
+        forward:fwd,
+        zero
+      });
+      prevDu=endDu;prevZero=zero;
+    }
+    return rows;
+  }
+  function pctCdiPathModel(diCurve,targetDu,pctCdi){
+    const path=impliedForwardPath(diCurve,targetDu);
+    if(!path.length||path.at(-1).endDu!==targetDu||!Number.isFinite(pctCdi))return{path:[],factor:NaN,annual:NaN};
+    let factor=1;
+    for(const seg of path){
+      if(!Number.isFinite(seg.forward))return{path,factor:NaN,annual:NaN};
+      const daily=Math.pow(1+seg.forward/100,1/252)-1;
+      const productDaily=(pctCdi/100)*daily;
+      factor*=Math.pow(1+productDaily,seg.segmentDu);
+    }
+    const annual=(Math.pow(factor,252/targetDu)-1)*100;
+    return{path,factor,annual};
+  }
+  function cdiWindow(du){return S.cdi?.windows?.[String(du)]||null;}
+  function setupScenarioDates(){
+    const sel=q("scenarioDate"),h=q("scenarioHorizon");
+    if(!sel||!h||!S.di)return;
+    sel.innerHTML="";
+    [...(S.di.entries||[])].sort((a,b)=>b.date.localeCompare(a.date))
+      .forEach(e=>sel.add(new Option(fd(e.date),e.date)));
+    sel.disabled=!sel.options.length;
+    if(sel.options.length)sel.value=S.di.latest||sel.options[0].value;
+    sel.addEventListener("change",renderScenario);
+    h.addEventListener("change",renderScenario);
+  }
+  async function renderScenario(){
+    const pending=q("cdiPending"),content=q("scenarioContent");
+    if(!pending||!content||!q("scenarioDate")||!q("scenarioHorizon"))return;
+    if(!S.cdi?.windows){
+      pending.classList.remove("hidden");
+      content.classList.add("hidden");
+      return;
+    }
+    pending.classList.add("hidden");
+    content.classList.remove("hidden");
+    const d=q("scenarioDate").value;
+    const du=+q("scenarioHorizon").value;
+    if(!d||!du)return;
+    const di=await diSnapshotForDate(d);
+    const curve=diCurveFromSnapshot(di);
+    const zero=flatForward(curve,du);
+    const win=cdiWindow(du);
+    if(!win)return;
+
+    const latest=win.latest||{},dist=win.distribution||{};
+    const curveVsLatest=Number.isFinite(zero)&&finite(latest.annual_equivalent_pct)?(zero-+latest.annual_equivalent_pct)*100:NaN;
+    const curveVsMedian=Number.isFinite(zero)&&finite(dist.median_pct)?(zero-+dist.median_pct)*100:NaN;
+
+    q("scenarioTitle").textContent=`${approx(du)} · ${du.toLocaleString("pt-BR")} DU`;
+    q("scenarioStatus").textContent=`Curva ${fd(d)} · CDI histórico até ${fd(S.cdi.history_end)}`;
+    q("scenarioCards").innerHTML=`
+      <article><span>CDI realizado · última janela</span><strong>${fp(latest.annual_equivalent_pct,2)}</strong><small>${fd(latest.start)} → ${fd(latest.end)} · acumulado ${fp(latest.accumulated_pct,2)}</small></article>
+      <article><span>Mediana histórica</span><strong>${fp(dist.median_pct,2)}</strong><small>${Number(dist.count||0).toLocaleString("pt-BR")} janelas de ${approx(du)}</small></article>
+      <article><span>Faixa histórica</span><strong>${fp(dist.min_pct,2)} → ${fp(dist.max_pct,2)}</strong><small>mínima → máxima das janelas móveis</small></article>
+      <article><span>Curva DI · equivalente</span><strong>${fp(zero,2)}</strong><small>taxa zero interpolada no horizonte</small></article>
+      <article><span>DI − última janela</span><strong class="${deltaClass(curveVsLatest)}">${fb(curveVsLatest)}</strong><small>mercado hoje × realizado recente</small></article>
+      <article><span>DI − mediana histórica</span><strong class="${deltaClass(curveVsMedian)}">${fb(curveVsMedian)}</strong><small>mercado hoje × distribuição histórica</small></article>`;
+
+    const relative=Number.isFinite(curveVsMedian)
+      ? Math.abs(curveVsMedian)<10?"muito próxima da mediana histórica"
+        : curveVsMedian>0?"acima da mediana histórica":"abaixo da mediana histórica"
+      :"sem comparação disponível";
+    q("scenarioReading").innerHTML=`<p class="eyebrow">COMO LER</p><p>Para ${approx(du)}, a curva DI está ${relative}. O CDI realizado mostra o que ocorreu; a curva DI mostra o preço de equilíbrio negociado hoje. Não trate nenhum deles como previsão garantida do CDI futuro.</p>`;
+
+    const path=impliedForwardPath(curve,du);
+    q("scenarioForwardTable").innerHTML=path.map(r=>`
+      <tr><td><strong>${r.startDu===0?"Hoje":approx(r.startDu)} → ${approx(r.endDu)}</strong></td>
+      <td>${r.segmentDu.toLocaleString("pt-BR")} DU</td>
+      <td>${fp(r.forward,2)}</td><td>${fp(r.zero,2)}</td></tr>`).join("");
+
+    const points=(win.series||[]).map(p=>({
+      x:Date.parse(`${p.date}T00:00:00Z`),
+      y:+p.annual_equivalent_pct,
+      date:p.date
+    })).filter(p=>Number.isFinite(p.x)&&Number.isFinite(p.y));
+    q("scenarioHistoryTitle").textContent=`CDI equivalente · janelas móveis de ${approx(du)}`;
+    timeSeriesChart("scenarioHistoryChart",points,"pct");
+
+    const matrixRows=[];
+    for(const x of STANDARD_DU){
+      const w=cdiWindow(x);
+      const z=flatForward(curve,x);
+      if(!w)continue;
+      const med=+w.distribution.median_pct;
+      matrixRows.push({
+        du:x,
+        latest:+w.latest.annual_equivalent_pct,
+        median:med,
+        min:+w.distribution.min_pct,
+        max:+w.distribution.max_pct,
+        di:z,
+        diff:Number.isFinite(z)&&Number.isFinite(med)?(z-med)*100:NaN
+      });
+    }
+    q("scenarioMatrix").innerHTML=matrixRows.map(r=>`
+      <tr><td><strong>${approx(r.du)}</strong><span class="maturitySoon">${r.du.toLocaleString("pt-BR")} DU</span></td>
+      <td>${fp(r.latest,2)}</td><td>${fp(r.median,2)}</td><td>${fp(r.min,2)}</td><td>${fp(r.max,2)}</td>
+      <td>${fp(r.di,2)}</td><td class="${deltaClass(r.diff)}">${fb(r.diff)}</td></tr>`).join("");
+  }
+
+
   function annualPctOfCdi(cdiAnnual,pctCdi){
     if(!Number.isFinite(cdiAnnual)||!Number.isFinite(pctCdi))return NaN;
     const daily=Math.pow(1+cdiAnnual/100,1/252)-1;
@@ -607,7 +748,7 @@
   }
   function currentDecisionRefs(bundle,du){
     if(!bundle)return null;
-    const diCurve=(bundle.di.contracts||[]).filter(x=>finite(x.business_days)&&finite(x.rate_pct)).map(x=>({du:+x.business_days,rate:+x.rate_pct}));
+    const diCurve=diCurveFromSnapshot(bundle.di);
     const pre=(bundle.a.curves||[]).filter(x=>finite(x.pre_pct)).map(x=>({du:+x.du,rate:+x.pre_pct}));
     const real=(bundle.a.curves||[]).filter(x=>finite(x.ipca_pct)).map(x=>({du:+x.du,rate:+x.ipca_pct}));
     const implied=(bundle.a.curves||[]).filter(x=>finite(x.implied_pct)).map(x=>({du:+x.du,rate:+x.implied_pct}));
@@ -698,13 +839,23 @@
       <article><span>LCI Pré − ANBIMA</span><strong class="${deltaClass(preVsCurve)}">${fb(preVsCurve)}</strong><small>taxa/prazo; risco diferente</small></article>
       <article><span>LCI IPCA+ − real</span><strong class="${deltaClass(realVsCurve)}">${fb(realVsCurve)}</strong><small>taxa/prazo; risco diferente</small></article>`;
 
-    const postAnnual=annualPctOfCdi(cdiScenario,pctCdi);
+    const decisionDiCurve=diCurveFromSnapshot(bundle.di);
+    const pathModel=S.decisionMarketMode?pctCdiPathModel(decisionDiCurve,du,pctCdi):null;
+    const postAnnual=S.decisionMarketMode&&Number.isFinite(pathModel?.annual)
+      ?pathModel.annual
+      :annualPctOfCdi(cdiScenario,pctCdi);
     const ipcaNominal=annualIpcaPlus(ipcaScenario,ipcaSpread);
-    const postFinal=finalValue(amount,postAnnual,du),preFinal=finalValue(amount,preRate,du),ipcaFinal=finalValue(amount,ipcaNominal,du);
+    const postFinal=S.decisionMarketMode&&Number.isFinite(pathModel?.factor)
+      ?amount*pathModel.factor
+      :finalValue(amount,postAnnual,du);
+    const preFinal=finalValue(amount,preRate,du),ipcaFinal=finalValue(amount,ipcaNominal,du);
+    const postDetail=S.decisionMarketMode
+      ?`trajetória DI implícita · equivalente do horizonte ${fp(cdiScenario,2)}`
+      :`CDI equivalente constante usado: ${fp(cdiScenario,2)}`;
     const products=[
-      {name:"LCI Pós",rate:postAnnual,rateLabel:`${pctCdi.toLocaleString("pt-BR",{maximumFractionDigits:2})}% do CDI`,final:postFinal,real:realRate(postAnnual,ipcaScenario),detail:`CDI médio usado: ${fp(cdiScenario,2)}`},
+      {name:"LCI Pós",rate:postAnnual,rateLabel:`${pctCdi.toLocaleString("pt-BR",{maximumFractionDigits:2})}% do CDI`,final:postFinal,real:realRate(postAnnual,ipcaScenario),detail:postDetail},
       {name:"LCI Pré",rate:preRate,rateLabel:`${fp(preRate,2)} a.a.`,final:preFinal,real:realRate(preRate,ipcaScenario),detail:"taxa travada no cenário"},
-      {name:"LCI IPCA+",rate:ipcaNominal,rateLabel:`IPCA + ${fp(ipcaSpread,2)}`,final:ipcaFinal,real:ipcaSpread,detail:`IPCA médio usado: ${fp(ipcaScenario,2)}`}
+      {name:"LCI IPCA+",rate:ipcaNominal,rateLabel:`IPCA + ${fp(ipcaSpread,2)}`,final:ipcaFinal,real:ipcaSpread,detail:`IPCA equivalente usado: ${fp(ipcaScenario,2)}`}
     ];
     const validFinals=products.map(p=>p.final).filter(Number.isFinite),maxFinal=validFinals.length?Math.max(...validFinals):NaN;
     q("rfProductCards").innerHTML=products.map(p=>`
@@ -725,14 +876,17 @@
       <article><span>IPCA+ empata com Pós</span><strong>IPCA médio ${fp(ipcaPostBE,2)}</strong><small>considerando CDI do cenário</small></article>`;
 
     const postVsPre=postFinal-preFinal,ipcaVsPre=ipcaFinal-preFinal;
+    const postPremise=S.decisionMarketMode
+      ?`Pela trajetória DI implícita (${fp(cdiScenario,2)} equivalente no horizonte)`
+      :`Com CDI equivalente constante de ${fp(cdiScenario,2)}`;
     const sentencePost=postVsPre>0
-      ? `Com CDI médio de ${fp(cdiScenario,2)}, a LCI Pós modelada supera a Pré em ${fm(postVsPre)} no horizonte.`
-      : `Com CDI médio de ${fp(cdiScenario,2)}, a LCI Pré modelada supera a Pós em ${fm(Math.abs(postVsPre))} no horizonte.`;
+      ? `${postPremise}, a LCI Pós modelada supera a Pré em ${fm(postVsPre)} no horizonte.`
+      : `${postPremise}, a LCI Pré modelada supera a Pós em ${fm(Math.abs(postVsPre))} no horizonte.`;
     const sentenceIpca=ipcaVsPre>0
       ? `Com IPCA médio de ${fp(ipcaScenario,2)}, a LCI IPCA+ modelada supera a Pré em ${fm(ipcaVsPre)}.`
       : `Com IPCA médio de ${fp(ipcaScenario,2)}, a LCI Pré modelada supera a IPCA+ em ${fm(Math.abs(ipcaVsPre))}.`;
     const modeText=S.decisionMarketMode
-      ? `Cenário de mercado ativo: CDI e IPCA acompanham automaticamente ${approx(du)} / ${du.toLocaleString("pt-BR")} DU na data ${fd(d)}.`
+      ? `Cenário de mercado ativo: a LCI Pós usa a trajetória forward implícita do DI; CDI e IPCA equivalentes acompanham ${approx(du)} / ${du.toLocaleString("pt-BR")} DU na data ${fd(d)}.`
       : "Cenário personalizado: CDI e IPCA foram informados manualmente.";
     q("rfScenarioReading").innerHTML=`<p class="eyebrow">LEITURA DO CENÁRIO</p><p>${sentencePost} ${sentenceIpca}</p>
       <p class="rfCaution">${modeText} A curva é referência de mercado, não previsão. Liquidez, carência, crédito, concentração, FGC e objetivo do cliente podem pesar mais que a diferença de retorno modelada.</p>`;
@@ -750,10 +904,19 @@
 
   async function boot(){
     setupTabs();
-    const [d,a,t]=await Promise.allSettled([getJson("data/index.json"),getJson("data/anbima/index.json"),getJson("data/tesouro/index.json")]);
-    if(d.status==="fulfilled")S.di=d.value;if(a.status==="fulfilled")S.a=a.value;if(t.status==="fulfilled")S.t=t.value;
+    const [d,a,t,cdi]=await Promise.allSettled([
+      getJson("data/index.json"),
+      getJson("data/anbima/index.json"),
+      getJson("data/tesouro/index.json"),
+      getJson("data/cdi/index.json")
+    ]);
+    if(d.status==="fulfilled")S.di=d.value;
+    if(a.status==="fulfilled")S.a=a.value;
+    if(t.status==="fulfilled")S.t=t.value;
+    if(cdi.status==="fulfilled")S.cdi=cdi.value;
     if(S.a?.entries?.length){fillSelect(q("anbimaDate"),S.a,renderAnbima);await renderAnbima();}
     fillSelect(q("tesouroDate"),S.t,renderTesouro);await renderTesouro();
+    if(S.di)setupScenarioDates();
     if(S.di&&S.a){
       setupConnectionDates();
       setupDecisionDates();
@@ -762,6 +925,7 @@
       updateDecisionModeUi();
       await renderDecision();
     }
+    if(S.di)await renderScenario();
     fixV2Copy();
     const root=q("tab-di");if(root)new MutationObserver(fixV2Copy).observe(root,{subtree:true,childList:true,characterData:true});
   }
