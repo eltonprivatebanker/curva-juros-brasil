@@ -4,13 +4,13 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <meta name="description" content="Painel didático de curva DI Futuro, movimentos em pontos-base e comparação entre pregões.">
-  <title>Juros Brasil · V3.1 Teste</title>
+  <title>Juros Brasil · V3.2 Teste</title>
   <link rel="stylesheet" href="css/style.css?v=1.2.0">
   <link rel="stylesheet" href="css/v2.css?v=2.3.0">
   <link rel="stylesheet" href="css/evolution-v2.css?v=2.3.5">
   <link rel="stylesheet" href="css/term-structure-v2.css?v=2.3.7">
   <link rel="stylesheet" href="css/anbima-v2.css?v=2.3.9">
-  <link rel="stylesheet" href="css/v3.css?v=3.1.0">
+  <link rel="stylesheet" href="css/v3.css?v=3.2.0">
 </head>
 <body>
   <main class="shell">
@@ -136,6 +136,91 @@
     </div>
 
     <div id="tab-di" class="tabPane">
+    <section class="panel v32ConceptHero">
+      <div class="v32ConceptHead">
+        <div>
+          <p class="eyebrow">ENTENDA ANTES DO GRÁFICO</p>
+          <h2>DI Futuro — juros negociados na B3</h2>
+          <p class="sectionSubtitle">Os números desta aba vêm de contratos futuros de DI1. Eles mostram preços de mercado para diferentes prazos; não são uma promessa de rentabilidade nem uma previsão garantida da Selic.</p>
+        </div>
+        <span class="v32ConceptTag">DI1 · B3</span>
+      </div>
+
+      <div class="v32MarketFlow" aria-label="Como a curva DI é formada">
+        <div><strong>Participantes</strong><small>Bancos, fundos, empresas, tesourarias e outros investidores</small></div>
+        <i>→</i>
+        <div><strong>Negociam DI1 na B3</strong><small>Proteção, arbitragem ou exposição a juros</small></div>
+        <i>→</i>
+        <div><strong>Cada vencimento forma uma taxa</strong><small>Ex.: jan/2028, jan/2029, jan/2030…</small></div>
+        <i>→</i>
+        <div><strong>Juntos formam a Curva DI</strong><small>Juros por diferentes horizontes</small></div>
+      </div>
+
+      <div class="v32ExplainGrid">
+        <article>
+          <span>O QUE É?</span>
+          <strong>Um contrato futuro de taxa de juros</strong>
+          <p>O DI1 tem como referência a Taxa DI acumulada entre a negociação e o vencimento. A cotação aparece como taxa anual em base de 252 dias úteis.</p>
+        </article>
+        <article>
+          <span>O QUE ESTÁ SENDO NEGOCIADO?</span>
+          <strong>Uma taxa fixa hoje × o DI que será realizado</strong>
+          <p>Não é a compra de um CDB. É um derivativo: o resultado econômico depende da diferença entre a taxa contratada e a taxa DI que efetivamente ocorrer ao longo do período.</p>
+        </article>
+        <article>
+          <span>POSSO SAIR ANTES?</span>
+          <strong>A posição pode ser encerrada antes do vencimento</strong>
+          <p>Em geral, o participante zera a exposição fazendo a operação oposta, desde que exista liquidez no contrato. O preço e a taxa podem mudar durante todo o pregão.</p>
+        </article>
+        <article>
+          <span>POR QUE IMPORTA?</span>
+          <strong>É uma referência central de juros no Brasil</strong>
+          <p>O DI1 é usado para gestão de risco, hedge, arbitragem e estratégias de mercado. Por isso, seus vencimentos ajudam a formar referências usadas na precificação de diversas exposições a juros.</p>
+        </article>
+      </div>
+
+      <div class="v32RateChain">
+        <div><span>Taxa básica</span><strong>Selic</strong><small>definida pelo Banco Central</small></div>
+        <i>→</i>
+        <div><span>Mercado interbancário</span><strong>Taxa DI / CDI</strong><small>costuma acompanhar de perto a Selic</small></div>
+        <i>→</i>
+        <div><span>Mercado futuro</span><strong>DI Futuro</strong><small>taxas negociadas para diferentes vencimentos</small></div>
+      </div>
+
+      <div class="v32InterpretBox">
+        <div>
+          <span>SE A TAXA SOBE</span>
+          <strong>Chamamos de abertura</strong>
+          <p>O mercado passou a negociar uma taxa maior naquele prazo.</p>
+        </div>
+        <div>
+          <span>SE A TAXA CAI</span>
+          <strong>Chamamos de fechamento</strong>
+          <p>O mercado passou a negociar uma taxa menor naquele prazo.</p>
+        </div>
+        <div>
+          <span>CUIDADO</span>
+          <strong>DI Futuro não é “a Selic prevista”</strong>
+          <p>É um preço de mercado, que incorpora expectativas e prêmios e pode mudar rapidamente.</p>
+        </div>
+      </div>
+
+      <details class="v31Technical v32TechnicalBox">
+        <summary>ⓘ Como o contrato DI1 funciona por dentro</summary>
+        <div class="v32TechnicalGrid">
+          <div><strong>PU anda ao contrário da taxa</strong><p>Quando a taxa negociada cai, o preço unitário (PU) sobe; quando a taxa sobe, o PU cai.</p></div>
+          <div><strong>Ajustes diários</strong><p>Ganhos e perdas são atualizados ao longo da vida da posição de acordo com as regras do mercado futuro.</p></div>
+          <div><strong>Margem de garantia</strong><p>Como é um derivativo, a negociação pode exigir garantias. O participante não simplesmente paga R$ 100 mil para “comprar a taxa”.</p></div>
+          <div><strong>Valor no vencimento</strong><p>O contrato DI1 tem valor nocional de 100.000 pontos no vencimento, equivalente a R$ 100 mil.</p></div>
+        </div>
+      </details>
+
+      <div class="v32SourceLine">
+        <span>Fonte técnica:</span>
+        <a href="https://www.b3.com.br/pt_br/produtos-e-servicos/negociacao/juros/futuro-de-taxa-media-de-depositos-interfinanceiros-de-um-dia.htm" target="_blank" rel="noopener">B3 · Futuro de DI1 ↗</a>
+      </div>
+    </section>
+
     <section class="controls panel">
       <div class="dateControls">
         <label>
@@ -212,8 +297,8 @@
       <div class="panelHead termStructureHead">
         <div>
           <p class="eyebrow">ESTRUTURA A TERMO</p>
-          <h2>Curva DI · Atual × comparação</h2>
-          <p id="termSubtitle" class="sectionSubtitle">Como as taxas mudaram entre os dois pregões selecionados.</p>
+          <h2>Curva de juros DI · Atual × comparação</h2>
+          <p id="termSubtitle" class="sectionSubtitle">Cada ponto representa um prazo. Compare as curvas para ver onde os juros abriram ou fecharam.</p>
         </div>
         <div id="legend" class="legend"></div>
       </div>
@@ -296,7 +381,7 @@
         <div>
           <p class="eyebrow">VÉRTICES DE REFERÊNCIA</p>
           <h2>Contratos de janeiro</h2>
-          <p class="sectionSubtitle">Uma visão limpa dos principais pontos anuais da curva.</p>
+          <p class="sectionSubtitle">Cada código identifica um contrato DI1 e seu mês/ano de vencimento. Ex.: DI1F29 = DI1 com vencimento em janeiro de 2029.</p>
         </div>
         <div id="januaryCount" class="muted">—</div>
       </div>
@@ -338,10 +423,50 @@
       <section class="sectionIntro panel anbimaIntro">
         <div>
           <p class="eyebrow">CURVA SOBERANA · ANBIMA</p>
-          <h2>ETTJ Prefixada, juro real e inflação implícita</h2>
-          <p class="sectionSubtitle">Leia a curva nominal, a curva real e a inflação implícita no mesmo horizonte.</p>
+          <h2>Curva de juros ANBIMA</h2>
+          <p class="sectionSubtitle"><strong>ETTJ — Estrutura a Termo da Taxa de Juros.</strong> Mostra taxas de referência para diferentes prazos.</p>
         </div>
         <label class="inlineSelect">Data<select id="anbimaDate"></select></label>
+      </section>
+
+      <section class="panel v32EttjPanel">
+        <div class="v32ConceptHead">
+          <div>
+            <p class="eyebrow">O QUE SIGNIFICA ETTJ?</p>
+            <h2>Estrutura a Termo da Taxa de Juros</h2>
+            <p class="sectionSubtitle">É uma curva de referência: relaciona <strong>prazo</strong> e <strong>taxa de juros</strong>. Não é um título específico que o investidor compra.</p>
+          </div>
+          <span class="v32ConceptTag">ANBIMA</span>
+        </div>
+
+        <div class="v32EttjGrid">
+          <article>
+            <span>JUROS NOMINAIS</span>
+            <strong>ETTJ Prefixada</strong>
+            <p>Mostra a taxa nominal de referência para cada prazo, sem descontar a inflação.</p>
+          </article>
+          <article>
+            <span>JURO ACIMA DA INFLAÇÃO</span>
+            <strong>ETTJ de juro real</strong>
+            <p>É a curva associada aos títulos indexados ao IPCA e ajuda a enxergar o juro real exigido pelo mercado.</p>
+          </article>
+          <article>
+            <span>RELAÇÃO ENTRE AS DUAS</span>
+            <strong>Inflação implícita</strong>
+            <p>É extraída da relação entre a curva nominal e a curva real. É uma referência de mercado, não uma projeção garantida da inflação futura.</p>
+          </article>
+        </div>
+
+        <div class="v32SimpleFormula">
+          <span>Exemplo de leitura</span>
+          <div><strong>Prazo</strong> → <strong>taxa nominal</strong> + <strong>juro real</strong> → <strong>inflação implícita</strong></div>
+          <small>Os pontos observados e o modelo de curva permitem estimar referências para diversos prazos.</small>
+        </div>
+
+        <div class="v32SourceLine">
+          <span>Fonte técnica:</span>
+          <a href="https://www.anbima.com.br/informacoes/est-termo/" target="_blank" rel="noopener">ANBIMA · Estrutura a Termo ↗</a>
+        </div>
       </section>
 
       <section class="panel anbimaReadingPanel">
@@ -446,10 +571,10 @@
     </div>
 
     <div id="tab-conexoes" class="tabPane">
-      <section class="sectionIntro panel"><div><p class="eyebrow">CONEXÕES DE MERCADO</p><h2>DI Futuro × ETTJ Prefixada ANBIMA</h2><p class="sectionSubtitle">O DI é interpolado nos mesmos vértices da ANBIMA.</p></div><label class="inlineSelect">Data em comum<select id="connectionDate"></select></label></section>
+      <section class="sectionIntro panel"><div><p class="eyebrow">CONEXÕES DE MERCADO</p><h2>Juros futuros × Curva soberana ANBIMA</h2><p class="sectionSubtitle">Tecnicamente: DI Futuro × ETTJ Prefixada. As duas curvas são comparadas nos mesmos prazos.</p></div><label class="inlineSelect">Data em comum<select id="connectionDate"></select></label></section>
       <section class="panel reading"><div class="panelHead"><div><p class="eyebrow">LEITURA DO BASIS</p><h2 id="basisTitle">—</h2></div><div id="basisStatus" class="muted">—</div></div><p id="basisText" class="readingText">Carregando…</p></section>
       <section class="panel chartPanel"><div class="panelHead"><div><p class="eyebrow">CURVAS NORMALIZADAS</p><h2>DI interpolado × ANBIMA Pré</h2></div><div id="connectionLegend" class="legend"></div></div><div id="connectionChart" class="chart"></div></section>
-      <section class="panel"><div class="panelHead"><div><p class="eyebrow">BASIS</p><h2>ANBIMA Pré − DI</h2><p class="sectionSubtitle">Diferença em pontos-base; não representa spread de crédito.</p></div></div><div id="basisBars" class="basisBars"></div><div class="tableWrap"><table><thead><tr><th>Vértice</th><th>Prazo</th><th>DI interpolado</th><th>ANBIMA Pré</th><th>Basis</th></tr></thead><tbody id="basisTable"></tbody></table></div></section>
+      <section class="panel"><div class="panelHead"><div><p class="eyebrow">DIFERENÇA ENTRE CURVAS · BASIS</p><h2>ANBIMA Pré − DI</h2><p class="sectionSubtitle">Diferença em pontos-base; não representa spread de crédito.</p></div></div><div id="basisBars" class="basisBars"></div><div class="tableWrap"><table><thead><tr><th>Vértice</th><th>Prazo</th><th>DI interpolado</th><th>ANBIMA Pré</th><th>Basis</th></tr></thead><tbody id="basisTable"></tbody></table></div></section>
     </div>
 
 
@@ -577,10 +702,33 @@
           </div>
         </div>
         <div class="learningSteps">
-          <article class="learnStep"><span>1</span><div><strong>DI futuro</strong><p>É uma referência negociada para juros DI em prazos futuros. Taxa para cima = abertura; taxa para baixo = fechamento.</p></div></article>
+          <article class="learnStep"><span>1</span><div><strong>DI Futuro</strong><p>É um contrato de juros negociado na B3. Seus diferentes vencimentos ajudam a formar a Curva DI. Taxa para cima = abertura; taxa para baixo = fechamento.</p></div></article>
           <article class="learnStep"><span>2</span><div><strong>Onde mexeu?</strong><p>Curto, miolo e longo podem andar de formas diferentes. Isso ajuda a separar política monetária próxima de prêmio de prazo.</p></div></article>
           <article class="learnStep"><span>3</span><div><strong>Pré ou pós?</strong><p>O pós acompanha o CDI realizado; o prefixado trava uma taxa nominal; o IPCA+ trava uma taxa real sobre a inflação.</p></div></article>
           <article class="learnStep"><span>4</span><div><strong>Marcação a mercado</strong><p>Quanto maior a duration, maior tende a ser a sensibilidade do preço a mudanças na curva, mantendo as demais variáveis constantes.</p></div></article>
+        </div>
+      </section>
+
+      <section class="panel v32GlossaryPanel">
+        <div class="panelHead">
+          <div>
+            <p class="eyebrow">GLOSSÁRIO ESSENCIAL</p>
+            <h2>Os termos que aparecem no painel</h2>
+            <p class="sectionSubtitle">Nome simples primeiro; termo técnico entre parênteses quando necessário.</p>
+          </div>
+        </div>
+
+        <div class="v32GlossaryGrid">
+          <article><strong>DI Futuro</strong><span>DI1</span><p>Contrato futuro de taxa de juros negociado na B3. Seus vencimentos ajudam a formar a Curva DI.</p></article>
+          <article><strong>Curva de juros ANBIMA</strong><span>ETTJ</span><p>Estrutura a Termo da Taxa de Juros: taxa de referência para diferentes prazos.</p></article>
+          <article><strong>CDI / Taxa DI</strong><span>mercado interbancário</span><p>Taxa de curtíssimo prazo que costuma acompanhar de perto a Selic e serve de referência para muitos investimentos.</p></article>
+          <article><strong>Selic</strong><span>taxa básica</span><p>Taxa básica de juros da economia, definida pelo Banco Central por meio do Copom.</p></article>
+          <article><strong>Ponto-base</strong><span>bp / bps</span><p>Unidade para pequenas variações de taxa. 1 bp = 0,01 ponto percentual; 100 bps = 1 p.p.</p></article>
+          <article><strong>Dias úteis</strong><span>DU</span><p>Medida de prazo usada no mercado de juros. O painel normaliza diversos horizontes em dias úteis.</p></article>
+          <article><strong>Juro real</strong><span>acima da inflação</span><p>Remuneração em termos reais. Na curva ANBIMA, aparece associada à estrutura de títulos indexados ao IPCA.</p></article>
+          <article><strong>Inflação implícita</strong><span>nominal × real</span><p>Inflação extraída da relação entre as curvas nominal e real. É preço relativo de mercado, não previsão garantida.</p></article>
+          <article><strong>Diferença entre curvas</strong><span>basis</span><p>Diferença em pontos-base entre duas referências comparáveis. Não deve ser interpretada automaticamente como spread de crédito.</p></article>
+          <article><strong>Marcação a mercado</strong><span>preço muda com a taxa</span><p>Reavaliação do preço de um ativo conforme as taxas de mercado mudam. Em geral, taxa sobe e preço de um título prefixado cai, e vice-versa.</p></article>
         </div>
       </section>
 
@@ -614,7 +762,7 @@
           <article class="impactCard">
             <div class="impactHead real"><span>π</span><strong>Juro real / inflação</strong></div>
             <ul>
-              <li><b>ETTJ IPCA:</b> ajuda a enxergar o juro real exigido pelo mercado.</li>
+              <li><b>Curva de juro real (ETTJ IPCA):</b> ajuda a enxergar o juro real exigido pelo mercado.</li>
               <li><b>Inflação implícita:</b> liga curva nominal e curva real.</li>
               <li><b>LCI IPCA+:</b> compare a taxa real contratada com a curva real do mesmo prazo.</li>
               <li><b>Prazo longo:</b> pequenas mudanças de taxa podem gerar grande oscilação de preço.</li>
@@ -774,7 +922,7 @@
     </div>
 
     <footer>
-      Painel educacional de mercado. Taxas e movimentos não constituem recomendação de investimento. <span class="v3Build">V3.1 · teste</span>
+      Painel educacional de mercado. Taxas e movimentos não constituem recomendação de investimento. <span class="v3Build">V3.2 · teste</span>
     </footer>
   </main>
   <script src="js/app.js?v=1.2.0" defer></script>
@@ -782,6 +930,6 @@
   <script src="js/term-structure-v2.js?v=2.3.8" defer></script>
   <script src="js/market.js?v=2.3.4" defer></script>
   <script src="js/anbima-v2.js?v=2.3.9" defer></script>
-  <script src="js/v3.js?v=3.1.0" defer></script>
+  <script src="js/v3.js?v=3.2.0" defer></script>
 </body>
 </html>

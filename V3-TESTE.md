@@ -1,130 +1,173 @@
-# Juros Brasil · V3.1 Teste
+# Juros Brasil · V3.2 Teste
 
-A V3.1 continua paralela à V2. A página principal e a `v2.html` permanecem intactas.
+A V3.2 adiciona a **Camada Educacional**. A V2 continua intacta e a V3 segue paralela.
 
-## Objetivo da V3.1
+## Objetivo
 
-Fazer o painel ser compreensível antes de ser técnico.
+Fazer com que um cliente consiga navegar sem conhecer previamente:
 
-A lógica passa a ser:
+- DI;
+- DI1;
+- ETTJ;
+- CDI;
+- Selic;
+- bps;
+- DU;
+- juro real;
+- inflação implícita;
+- basis;
+- marcação a mercado.
 
-**conclusão → explicação → gráfico → detalhe técnico**
+A regra da interface passa a ser:
 
-## 1. Nova aba Resumo
+**nome simples → termo técnico → gráfico → detalhe**
 
-É a página inicial da V3.1.
+---
 
-Ela responde cinco perguntas:
+## Juros futuros
 
-1. O que aconteceu com os juros?
-2. Onde a curva mais mexeu?
-3. Quanto o mercado está cobrando em Pré, juro real e inflação implícita?
-4. Como posicionar o nível atual no histórico?
-5. Como levar isso para a comparação Pós × Pré × IPCA+?
+Antes dos controles e do gráfico, a aba explica:
 
-Os cards são clicáveis e levam para a aba correspondente.
+### DI Futuro
+Contrato futuro de taxa de juros negociado na B3.
 
-## 2. Navegação renomeada
+### Quem forma a curva?
+Fluxo visual:
 
-- Resumo
-- Juros futuros
-- Curva soberana
-- Tesouro Direto
-- Comparar curvas
-- Histórico e cenários
-- Aprender
-- Comparar renda fixa
+`Participantes → DI1 na B3 → taxas por vencimento → Curva DI`
 
-A ideia é que o nome da aba já explique sua função.
+### O que está sendo negociado?
+A camada educacional apresenta a lógica como:
 
-## 3. “Esta aba responde…”
+`taxa fixa negociada hoje × DI que será realizado`
 
-Cada área recebe uma pergunta-guia no topo.
+Sem tratar DI1 como CDB ou título de renda fixa.
 
-Exemplos:
+### Posso sair antes?
+Explica que a exposição pode ser encerrada por uma operação oposta, sujeita à liquidez.
 
-**Juros futuros**
-> Os juros abriram ou fecharam — e em quais prazos?
+### Por que importa?
+Hedge, gestão de risco, arbitragem e estratégias de mercado.
 
-**Curva soberana**
-> Quanto o mercado exige em taxa nominal, juro real e inflação implícita?
+### Selic × CDI/DI × DI Futuro
+Novo fluxo:
 
-**Comparar curvas**
-> DI, ANBIMA e Tesouro estão contando a mesma história?
+`Selic → Taxa DI/CDI → DI Futuro`
 
-**Histórico e cenários**
-> O nível atual é alto ou baixo comparado ao histórico?
+### Como interpretar
+- taxa sobe = abertura;
+- taxa cai = fechamento;
+- DI Futuro não é promessa de rentabilidade;
+- DI Futuro não é uma previsão garantida da Selic.
 
-**Comparar renda fixa**
-> Como Pós, Pré e IPCA+ se comparam no mesmo horizonte?
+### Modo Técnico
+Mostra:
+- PU anda no sentido inverso da taxa;
+- ajustes diários;
+- margem de garantia;
+- valor nocional no vencimento.
 
-## 4. Modo Essencial × Técnico
+Fonte oficial visível:
+`B3 · Futuro de DI1`
 
-O painel abre em **Essencial**.
+---
 
-### Essencial
-Esconde alguns blocos de detalhe:
-- tabela contrato a contrato do DI;
-- tabela completa da ANBIMA;
-- parâmetros/metodologia técnica;
-- tabela detalhada do Tesouro;
-- tabela detalhada de basis;
-- trajetória forward;
-- matriz histórica completa.
+## Curva soberana / ANBIMA
 
-### Técnico
-Mostra tudo.
+O título principal vira:
 
-A preferência fica salva no navegador.
+`Curva de juros ANBIMA`
 
-## 5. Resumo automático
+Logo abaixo:
 
-A página inicial lê os próprios arquivos de dados do projeto.
+`ETTJ — Estrutura a Termo da Taxa de Juros`
 
-DI:
-- último pregão × anterior;
-- flat-forward;
-- 6M, 1A, 2A, 3A, 5A, 7A e 10A;
-- classificação de abertura/fechamento;
-- identifica a região de maior movimento.
+A aba explica que ETTJ é uma **curva de referência**, e não um título específico.
 
-ANBIMA:
-- usa 5A como referência principal quando disponível;
-- mostra Pré, juro real e inflação implícita.
+Três blocos:
 
-Histórico:
-- mostra o DI 5A no primeiro carregamento;
-- quando a aba de cenários já tiver dados renderizados, o resumo pode indicar se está acima ou abaixo da mediana.
+- Juros nominais — ETTJ Prefixada
+- Juro real — ETTJ associada ao IPCA
+- Inflação implícita — relação entre nominal e real
 
-## Arquivos desta etapa
+Fonte oficial visível:
+`ANBIMA · Estrutura a Termo`
 
-Substituir apenas os mesmos 4 arquivos da V3:
+No gráfico, `ETTJ Pré` aparece como:
+`Juros nominais (ETTJ Pré)`
+
+---
+
+## Comparar curvas
+
+Título mais amigável:
+
+`Juros futuros × Curva soberana ANBIMA`
+
+Subtítulo preserva o termo técnico:
+`DI Futuro × ETTJ Prefixada`
+
+`BASIS` passa a aparecer como:
+`DIFERENÇA ENTRE CURVAS · BASIS`
+
+---
+
+## Aprender
+
+Novo `Glossário essencial`:
+
+- DI Futuro / DI1
+- ETTJ
+- CDI / Taxa DI
+- Selic
+- bp / bps
+- DU
+- juro real
+- inflação implícita
+- basis
+- marcação a mercado
+
+---
+
+## Arquivos
+
+Substituir os mesmos 4 arquivos da V3:
 
 - `v3.html`
 - `css/v3.css`
 - `js/v3.js`
 - `V3-TESTE.md`
 
-A V2 não muda.
+Nenhum arquivo da V2 precisa ser alterado.
 
 ## URL
 
 `https://eltonprivatebanker.github.io/curva-juros-brasil/v3.html`
 
-## Teste visual prioritário
+## Testes
 
-Ao abrir a V3.1, a primeira tela deve ser **Resumo**.
+### Modo Essencial
+Na aba Juros futuros devem aparecer:
+1. explicação do DI;
+2. quem forma a curva;
+3. Selic → CDI/DI → DI Futuro;
+4. abertura × fechamento;
+5. fonte B3;
+6. depois os dados e gráficos.
 
-O usuário deve conseguir responder, sem abrir nenhuma tabela:
+O bloco sobre PU, margem e ajustes deve ficar escondido.
 
-- juros abriram ou fecharam?
-- onde mais mexeram?
-- qual referência de Pré / juro real / inflação implícita?
-- onde buscar o contexto histórico?
-- onde comparar Pós, Pré e IPCA+?
+### Modo Técnico
+O bloco:
+`Como o contrato DI1 funciona por dentro`
+deve aparecer.
 
-Depois altere:
+### Curva soberana
+O cliente deve ver imediatamente:
 
-`Modo Essencial → Técnico`
+`ETTJ = Estrutura a Termo da Taxa de Juros`
 
-e confirme que as tabelas e blocos de profundidade reaparecem.
+antes da leitura dos números.
+
+### Aprender
+Confirmar que o glossário possui os dez conceitos essenciais.
