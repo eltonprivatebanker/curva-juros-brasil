@@ -1,0 +1,79 @@
+/* Juros Brasil · V3.0 — camada paralela de hierarquia e semântica */
+:root {
+  --v3-border: rgba(255,255,255,.075);
+}
+.v3Build {
+  margin-left:.55rem;
+  opacity:.48;
+  font-size:.72rem;
+  white-space:nowrap;
+}
+.mainTabs {
+  position:sticky;
+  top:8px;
+  z-index:30;
+  backdrop-filter:blur(14px);
+  background:color-mix(in srgb,#0b1a2a 91%,transparent);
+}
+#tab-di .heroGrid {
+  grid-template-columns:1fr;
+}
+#tab-di .heroGrid > .reading {
+  min-height:auto;
+}
+#tab-di .heroGrid > .glossary {
+  display:none;
+}
+.v3InlineHelp {
+  margin-top:14px;
+  padding-top:11px;
+  border-top:1px solid var(--v3-border);
+}
+.v3InlineHelp summary {
+  cursor:pointer;
+  color:#8fc8ff;
+  font-size:.8rem;
+  font-weight:750;
+}
+.v3InlineHelp p {
+  margin:8px 0 0;
+  color:var(--muted,#9fb2c6);
+  font-size:.8rem;
+  line-height:1.5;
+}
+#tab-di .termInsight {
+  display:none;
+}
+.v3JanuaryActions {
+  display:flex;
+  align-items:center;
+  gap:12px;
+}
+.v3JanuaryHidden {
+  display:none !important;
+}
+#tab-decisao .v3PrimaryResult {
+  border-color:rgba(105,183,255,.24);
+  background:
+    linear-gradient(180deg,rgba(105,183,255,.045),rgba(105,183,255,.012)),
+    var(--panel,#0c1d2d);
+}
+#tab-anbima .anbimaCardsV2 .subline {
+  line-height:1.55;
+}
+.v3TesouroHint {
+  margin:8px 0 0;
+  color:var(--muted,#9fb2c6);
+  font-size:.78rem;
+}
+.sourceBox .badge {
+  white-space:nowrap;
+}
+@media (max-width:760px) {
+  .mainTabs { top:0; }
+  .v3JanuaryActions {
+    align-items:flex-end;
+    flex-direction:column;
+    gap:6px;
+  }
+}
