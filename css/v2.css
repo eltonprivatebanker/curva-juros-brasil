@@ -289,3 +289,23 @@
 @media(max-width:1180px){.learningSteps,.fundMap{grid-template-columns:repeat(2,1fr)}.decisionInputs{grid-template-columns:repeat(3,1fr)}.rfReferenceCards{grid-template-columns:repeat(3,1fr)}}
 @media(max-width:900px){.impactGrid,.rfProductCards,.decisionSplit{grid-template-columns:1fr}.decisionInputs{grid-template-columns:repeat(2,1fr)}.correlationPreview{grid-template-columns:1fr}.correlationMock{min-width:0}}
 @media(max-width:620px){.learningSteps,.fundMap,.decisionInputs,.rfReferenceCards,.breakevenGrid{grid-template-columns:1fr}.learnBadge{white-space:normal}}
+
+
+/* ===== V2.3-A · Cenários CDI + trajetória DI ===== */
+.scenarioTabButton{border-color:rgba(255,201,107,.14)}
+.scenarioIntro{background:linear-gradient(135deg,rgba(255,201,107,.055),rgba(105,183,255,.035))}
+.scenarioSelectors{display:flex;gap:10px;align-items:end;flex-wrap:wrap}
+.scenarioSelectors .inlineSelect{min-width:190px}
+.scenarioSnapshot,.scenarioForwardPanel,.scenarioHistoryPanel,.scenarioMatrixPanel,.scenarioNext{margin-bottom:16px}
+.scenarioCards{display:grid;grid-template-columns:repeat(6,minmax(135px,1fr));gap:9px;margin-top:14px}
+.scenarioCards article{border:1px solid var(--line);border-radius:13px;padding:13px;background:rgba(9,25,43,.27);min-width:0}
+.scenarioCards span{display:block;color:var(--muted);font-size:.64rem;line-height:1.35}
+.scenarioCards strong{display:block;font-size:.94rem;margin:6px 0;line-height:1.25;font-variant-numeric:tabular-nums}
+.scenarioCards small{display:block;color:var(--muted);font-size:.6rem;line-height:1.45}
+.scenarioForwardPanel .tableWrap,.scenarioMatrixPanel .tableWrap{margin-top:12px}
+.scenarioHistoryChart{height:260px;min-height:260px;margin-top:10px}
+.scenarioNext{display:grid;grid-template-columns:1fr;gap:12px;padding:20px 22px;background:rgba(105,183,255,.025)}
+.scenarioNext h2{margin:4px 0 7px}.scenarioNext p:last-child{margin:0;color:#b8c9dc;line-height:1.6;font-size:.72rem;max-width:980px}
+.secondaryButton.active{border-color:rgba(105,183,255,.55);background:rgba(105,183,255,.12);color:var(--accent)}
+@media(max-width:1250px){.scenarioCards{grid-template-columns:repeat(3,1fr)}}
+@media(max-width:760px){.scenarioSelectors{display:grid;grid-template-columns:1fr;width:100%}.scenarioSelectors .inlineSelect{min-width:0}.scenarioCards{grid-template-columns:1fr}.scenarioHistoryChart{height:230px;min-height:230px}}
