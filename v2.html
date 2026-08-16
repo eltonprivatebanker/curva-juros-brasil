@@ -4,7 +4,7 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <meta name="description" content="Painel didático de curva DI Futuro, movimentos em pontos-base e comparação entre pregões.">
-  <title>Juros Brasil · V2.3-A.1 Teste</title>
+  <title>Juros Brasil · V2.3-A.2 Teste</title>
   <link rel="stylesheet" href="css/style.css?v=1.2.0">
   <link rel="stylesheet" href="css/v2.css?v=2.3.0">
 </head>
@@ -303,7 +303,7 @@
           </div>
           <div class="tableWrap">
             <table>
-              <thead><tr><th>Horizonte</th><th>Última janela</th><th>Mediana histórica</th><th>Mínima</th><th>Máxima</th><th>Curva DI</th><th>DI − mediana</th></tr></thead>
+              <thead><tr><th>Horizonte</th><th>Última janela</th><th>P25</th><th>Mediana</th><th>P75</th><th>Mínima</th><th>Máxima</th><th>Curva DI</th><th>DI − mediana</th></tr></thead>
               <tbody id="scenarioMatrix"></tbody>
             </table>
           </div>
@@ -508,7 +508,7 @@
     </div>
 
     <section class="panel notePanel">
-      <p><strong>V2.3-A.1 teste:</strong> acrescenta filtros de regime histórico ao CDI (completo, Plano Real, regime de metas e recente), mantendo janelas 6M/1A/2A/3A/5A/7A/10A e trajetória forward implícita da curva DI.</p>
+      <p><strong>V2.3-A.2 teste:</strong> acrescenta P25/P75 à leitura histórica e melhora o eixo temporal do gráfico com anos, preservando os filtros de regime e a trajetória forward implícita.</p>
     </section>
 
     <footer>
@@ -516,6 +516,6 @@
     </footer>
   </main>
   <script src="js/app.js?v=1.2.0" defer></script>
-  <script src="js/market.js?v=2.3.1" defer></script>
+  <script src="js/market.js?v=2.3.2" defer></script>
 </body>
 </html>
