@@ -1,0 +1,38 @@
+name: Atualizar CDI histórico
+
+on:
+  workflow_dispatch:
+  schedule:
+    # 23:40 de segunda a sexta em Brasília = 02:40 UTC do dia seguinte
+    # Horário separado dos workflows de DI, ANBIMA e Tesouro para reduzir conflitos de push.
+    - cron: "40 2 * * 2-6"
+
+permissions:
+  contents: write
+
+jobs:
+  update:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - name: Coletar e consolidar CDI
+        run: python scripts/update_cdi.py
+
+      - name: Commit dos dados
+        run: |
+          if git diff --quiet -- data/cdi/; then
+            echo "Sem mudanças."
+            exit 0
+          fi
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add data/cdi/
+          git commit -m "Atualiza histórico CDI"
+          git push
