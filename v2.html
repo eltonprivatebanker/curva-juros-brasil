@@ -4,9 +4,9 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <meta name="description" content="Painel didático de curva DI Futuro, movimentos em pontos-base e comparação entre pregões.">
-  <title>Juros Brasil · V2.2.2 Teste</title>
+  <title>Juros Brasil · V2.3-A Teste</title>
   <link rel="stylesheet" href="css/style.css?v=1.2.0">
-  <link rel="stylesheet" href="css/v2.css?v=2.2.0">
+  <link rel="stylesheet" href="css/v2.css?v=2.3.0">
 </head>
 <body>
   <main class="shell">
@@ -27,6 +27,7 @@
       <button type="button" class="tabButton" data-tab="anbima">ANBIMA</button>
       <button type="button" class="tabButton" data-tab="tesouro">Tesouro Direto</button>
       <button type="button" class="tabButton" data-tab="conexoes">Conexões</button>
+      <button type="button" class="tabButton scenarioTabButton" data-tab="cenarios">Cenários</button>
       <button type="button" class="tabButton" data-tab="aprender">Aprender</button>
       <button type="button" class="tabButton decisionTabButton" data-tab="decisao">Decisão RF</button>
     </nav>
@@ -212,6 +213,104 @@
     </div>
 
 
+
+    <div id="tab-cenarios" class="tabPane">
+      <section class="sectionIntro panel scenarioIntro">
+        <div>
+          <p class="eyebrow">PASSADO × MERCADO</p>
+          <h2>Cenários de referência</h2>
+          <p class="sectionSubtitle">Compare CDI realizado em janelas históricas com a taxa equivalente e a trajetória forward implícita na curva DI atual.</p>
+        </div>
+        <div class="scenarioSelectors">
+          <label class="inlineSelect">Data da curva<select id="scenarioDate"></select></label>
+          <label class="inlineSelect">Horizonte
+            <select id="scenarioHorizon">
+              <option value="126">6 meses · 126 DU</option>
+              <option value="252">1 ano · 252 DU</option>
+              <option value="504">2 anos · 504 DU</option>
+              <option value="756">3 anos · 756 DU</option>
+              <option value="1260" selected>5 anos · 1.260 DU</option>
+              <option value="1764">7 anos · 1.764 DU</option>
+              <option value="2520">10 anos · 2.520 DU</option>
+            </select>
+          </label>
+        </div>
+      </section>
+
+      <section id="cdiPending" class="panel pendingPanel">
+        <p class="eyebrow">CDI HISTÓRICO</p>
+        <h2>Aguardando a primeira coleta do Banco Central</h2>
+        <p>Depois de subir os arquivos, rode <strong>Actions → Atualizar CDI histórico → Run workflow</strong>. O workflow criará <code>data/cdi/index.json</code> e esta área será preenchida automaticamente.</p>
+      </section>
+
+      <div id="scenarioContent" class="hidden">
+        <section class="panel scenarioSnapshot">
+          <div class="panelHead">
+            <div>
+              <p class="eyebrow">CENÁRIOS DE REFERÊNCIA</p>
+              <h2 id="scenarioTitle">—</h2>
+              <p class="sectionSubtitle">Histórico é realizado; curva DI é preço de mercado hoje. Nenhum dos dois é previsão garantida.</p>
+            </div>
+            <div id="scenarioStatus" class="muted">—</div>
+          </div>
+          <div id="scenarioCards" class="scenarioCards"></div>
+          <div id="scenarioReading" class="rfReading"></div>
+        </section>
+
+        <section class="panel scenarioForwardPanel">
+          <div class="panelHead">
+            <div>
+              <p class="eyebrow">TRAJETÓRIA IMPLÍCITA</p>
+              <h2>Como a curva chega à taxa equivalente?</h2>
+              <p class="sectionSubtitle">Forward anual equivalente de cada trecho, extraído dos fatores de desconto da curva DI interpolada.</p>
+            </div>
+          </div>
+          <div class="tableWrap">
+            <table>
+              <thead><tr><th>Trecho</th><th>DU do trecho</th><th>Forward implícito</th><th>Taxa zero no fim</th></tr></thead>
+              <tbody id="scenarioForwardTable"></tbody>
+            </table>
+          </div>
+          <p class="modelNote">A composição dos forwards reproduz a taxa equivalente do horizonte. Para produtos a % do CDI, a V2.3-A aplica o percentual em cada trecho da trajetória, em vez de repetir uma única taxa por todo o período.</p>
+        </section>
+
+        <section class="panel scenarioHistoryPanel">
+          <div class="panelHead">
+            <div>
+              <p class="eyebrow">HISTÓRICO</p>
+              <h2 id="scenarioHistoryTitle">CDI equivalente em janelas móveis</h2>
+              <p class="sectionSubtitle">Cada ponto responde: “qual foi a taxa anual equivalente do CDI nos N dias úteis terminados nesta data?”.</p>
+            </div>
+          </div>
+          <div id="scenarioHistoryChart" class="historyChartCompact scenarioHistoryChart"></div>
+        </section>
+
+        <section class="panel scenarioMatrixPanel">
+          <div class="panelHead">
+            <div>
+              <p class="eyebrow">VISÃO COMPLETA</p>
+              <h2>Todos os horizontes</h2>
+              <p class="sectionSubtitle">Última janela realizada, distribuição histórica e referência da curva DI na data selecionada.</p>
+            </div>
+          </div>
+          <div class="tableWrap">
+            <table>
+              <thead><tr><th>Horizonte</th><th>Última janela</th><th>Mediana histórica</th><th>Mínima</th><th>Máxima</th><th>Curva DI</th><th>DI − mediana</th></tr></thead>
+              <tbody id="scenarioMatrix"></tbody>
+            </table>
+          </div>
+        </section>
+      </div>
+
+      <section class="panel scenarioNext">
+        <div>
+          <p class="eyebrow">PRÓXIMA CAMADA · V2.4</p>
+          <h2>Boletim Focus</h2>
+          <p>Na próxima etapa, Selic e IPCA do Focus entram como trajetória de consenso, respeitando o fato de que a Selic publicada no Focus é uma expectativa de fim de período e não um “CDI médio” pronto.</p>
+        </div>
+      </section>
+    </div>
+
     <div id="tab-aprender" class="tabPane">
       <section class="sectionIntro panel learnIntro">
         <div>
@@ -333,6 +432,7 @@
               <option value="504">2 anos · 504 DU</option>
               <option value="756">3 anos · 756 DU</option>
               <option value="1260">5 anos · 1.260 DU</option>
+              <option value="1764">7 anos · 1.764 DU</option>
               <option value="2520">10 anos · 2.520 DU</option>
             </select>
           </label>
@@ -345,14 +445,14 @@
           <label>LCI IPCA+
             <div class="inputSuffix"><input id="rfIpcaSpread" type="number" min="0" max="30" step="0.01" value="7.00"><span>% a.a.</span></div>
           </label>
-          <label>CDI médio · cenário
+          <label>CDI equivalente · cenário
             <div class="inputSuffix"><input id="rfCdiScenario" type="number" min="0" max="50" step="0.01" value="13.90"><span>% a.a.</span></div>
           </label>
           <label>IPCA médio · cenário
             <div class="inputSuffix"><input id="rfIpcaScenario" type="number" min="-5" max="30" step="0.01" value="5.00"><span>% a.a.</span></div>
           </label>
         </div>
-        <p class="decisionHint">Por padrão, a ferramenta abre em cenário de mercado e acompanha automaticamente o prazo selecionado. Se CDI ou IPCA forem editados manualmente, passa para cenário personalizado. As referências de curva não são previsão.</p>
+        <p class="decisionHint">Por padrão, a ferramenta abre em cenário de mercado. Na LCI Pós, a V2.3-A usa a trajetória forward implícita da curva DI; o campo de CDI mostra a taxa equivalente do horizonte. Se CDI ou IPCA forem editados manualmente, passa para cenário personalizado. Curva não é previsão.</p>
       </section>
 
       <section class="panel marketReferencePanel">
@@ -400,7 +500,7 @@
     </div>
 
     <section class="panel notePanel">
-      <p><strong>V2.2.2 teste:</strong> mantém o DI, acrescenta filtros e histórico do Tesouro Direto, interpolação flat forward e conexões Tesouro × ANBIMA por dias úteis.</p>
+      <p><strong>V2.3-A teste:</strong> acrescenta CDI histórico, janelas 6M/1A/2A/3A/5A/7A/10A e trajetória forward implícita da curva DI. Focus fica para a próxima etapa.</p>
     </section>
 
     <footer>
@@ -408,6 +508,6 @@
     </footer>
   </main>
   <script src="js/app.js?v=1.2.0" defer></script>
-  <script src="js/market.js?v=2.2.2" defer></script>
+  <script src="js/market.js?v=2.3.0" defer></script>
 </body>
 </html>
