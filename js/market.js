@@ -620,15 +620,32 @@
   }
   function cdiWindow(du){return S.cdi?.windows?.[String(du)]||null;}
   function setupScenarioDates(){
-    const sel=q("scenarioDate"),h=q("scenarioHorizon");
+    const sel=q("scenarioDate"),h=q("scenarioHorizon"),r=q("scenarioRegime");
     if(!sel||!h||!S.di)return;
     sel.innerHTML="";
     [...(S.di.entries||[])].sort((a,b)=>b.date.localeCompare(a.date))
       .forEach(e=>sel.add(new Option(fd(e.date),e.date)));
     sel.disabled=!sel.options.length;
     if(sel.options.length)sel.value=S.di.latest||sel.options[0].value;
+    if(r&&S.cdi?.default_regime&&[...r.options].some(o=>o.value===S.cdi.default_regime)){
+      r.value=S.cdi.default_regime;
+    }
     sel.addEventListener("change",renderScenario);
     h.addEventListener("change",renderScenario);
+    r?.addEventListener("change",renderScenario);
+  }
+  function currentCdiRegime(){
+    const key=q("scenarioRegime")?.value||S.cdi?.default_regime||"targets";
+    const meta=S.cdi?.regimes?.[key]||{
+      label:key==="targets"?"Regime de metas":key,
+      start:key==="targets"?"1999-07-01":""
+    };
+    return{key,meta};
+  }
+  function cdiWindowForRegime(du,regimeKey){
+    const w=cdiWindow(du);
+    if(!w)return null;
+    return w.regimes?.[regimeKey]||w;
   }
   async function renderScenario(){
     const pending=q("cdiPending"),content=q("scenarioContent");
@@ -646,19 +663,21 @@
     const di=await diSnapshotForDate(d);
     const curve=diCurveFromSnapshot(di);
     const zero=flatForward(curve,du);
+    const {key:regimeKey,meta:regimeMeta}=currentCdiRegime();
     const win=cdiWindow(du);
-    if(!win)return;
+    const view=cdiWindowForRegime(du,regimeKey);
+    if(!win||!view)return;
 
-    const latest=win.latest||{},dist=win.distribution||{};
+    const latest=view.latest||{},dist=view.distribution||{};
     const curveVsLatest=Number.isFinite(zero)&&finite(latest.annual_equivalent_pct)?(zero-+latest.annual_equivalent_pct)*100:NaN;
     const curveVsMedian=Number.isFinite(zero)&&finite(dist.median_pct)?(zero-+dist.median_pct)*100:NaN;
 
     q("scenarioTitle").textContent=`${approx(du)} · ${du.toLocaleString("pt-BR")} DU`;
-    q("scenarioStatus").textContent=`Curva ${fd(d)} · CDI histórico até ${fd(S.cdi.history_end)}`;
+    q("scenarioStatus").textContent=`Curva ${fd(d)} · ${regimeMeta.label} · CDI até ${fd(S.cdi.history_end)}`;
     q("scenarioCards").innerHTML=`
       <article><span>CDI realizado · última janela</span><strong>${fp(latest.annual_equivalent_pct,2)}</strong><small>${fd(latest.start)} → ${fd(latest.end)} · acumulado ${fp(latest.accumulated_pct,2)}</small></article>
-      <article><span>Mediana histórica</span><strong>${fp(dist.median_pct,2)}</strong><small>${Number(dist.count||0).toLocaleString("pt-BR")} janelas de ${approx(du)}</small></article>
-      <article><span>Faixa histórica</span><strong>${fp(dist.min_pct,2)} → ${fp(dist.max_pct,2)}</strong><small>mínima → máxima das janelas móveis</small></article>
+      <article><span>Mediana · ${regimeMeta.label}</span><strong>${fp(dist.median_pct,2)}</strong><small>${Number(dist.count||0).toLocaleString("pt-BR")} janelas completas de ${approx(du)}</small></article>
+      <article><span>Faixa · ${regimeMeta.label}</span><strong>${fp(dist.min_pct,2)} → ${fp(dist.max_pct,2)}</strong><small>mínima → máxima das janelas filtradas</small></article>
       <article><span>Curva DI · equivalente</span><strong>${fp(zero,2)}</strong><small>taxa zero interpolada no horizonte</small></article>
       <article><span>DI − última janela</span><strong class="${deltaClass(curveVsLatest)}">${fb(curveVsLatest)}</strong><small>mercado hoje × realizado recente</small></article>
       <article><span>DI − mediana histórica</span><strong class="${deltaClass(curveVsMedian)}">${fb(curveVsMedian)}</strong><small>mercado hoje × distribuição histórica</small></article>`;
@@ -667,7 +686,8 @@
       ? Math.abs(curveVsMedian)<10?"muito próxima da mediana histórica"
         : curveVsMedian>0?"acima da mediana histórica":"abaixo da mediana histórica"
       :"sem comparação disponível";
-    q("scenarioReading").innerHTML=`<p class="eyebrow">COMO LER</p><p>Para ${approx(du)}, a curva DI está ${relative}. O CDI realizado mostra o que ocorreu; a curva DI mostra o preço de equilíbrio negociado hoje. Não trate nenhum deles como previsão garantida do CDI futuro.</p>`;
+    const regimeStart=regimeMeta.start?fd(regimeMeta.start):"—";
+    q("scenarioReading").innerHTML=`<p class="eyebrow">COMO LER</p><p>Para ${approx(du)}, a curva DI está ${relative}. A comparação histórica usa <strong>${regimeMeta.label}</strong>: somente janelas iniciadas em ${regimeStart} ou depois. O CDI realizado mostra o que ocorreu; a curva DI mostra o preço de equilíbrio negociado hoje. Não trate nenhum deles como previsão garantida do CDI futuro.</p>`;
 
     const path=impliedForwardPath(curve,du);
     q("scenarioForwardTable").innerHTML=path.map(r=>`
@@ -675,26 +695,27 @@
       <td>${r.segmentDu.toLocaleString("pt-BR")} DU</td>
       <td>${fp(r.forward,2)}</td><td>${fp(r.zero,2)}</td></tr>`).join("");
 
-    const points=(win.series||[]).map(p=>({
+    const points=(view.series||[]).map(p=>({
       x:Date.parse(`${p.date}T00:00:00Z`),
       y:+p.annual_equivalent_pct,
       date:p.date
     })).filter(p=>Number.isFinite(p.x)&&Number.isFinite(p.y));
-    q("scenarioHistoryTitle").textContent=`CDI equivalente · janelas móveis de ${approx(du)}`;
+    q("scenarioHistoryTitle").textContent=`CDI equivalente · ${approx(du)} · ${regimeMeta.label}`;
     timeSeriesChart("scenarioHistoryChart",points,"pct");
 
     const matrixRows=[];
     for(const x of STANDARD_DU){
       const w=cdiWindow(x);
+      const vw=cdiWindowForRegime(x,regimeKey);
       const z=flatForward(curve,x);
-      if(!w)continue;
-      const med=+w.distribution.median_pct;
+      if(!w||!vw?.distribution||!vw?.latest)continue;
+      const med=+vw.distribution.median_pct;
       matrixRows.push({
         du:x,
-        latest:+w.latest.annual_equivalent_pct,
+        latest:+vw.latest.annual_equivalent_pct,
         median:med,
-        min:+w.distribution.min_pct,
-        max:+w.distribution.max_pct,
+        min:+vw.distribution.min_pct,
+        max:+vw.distribution.max_pct,
         di:z,
         diff:Number.isFinite(z)&&Number.isFinite(med)?(z-med)*100:NaN
       });
