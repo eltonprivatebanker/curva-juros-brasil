@@ -244,3 +244,48 @@
   .historyKpi strong{font-size:.82rem}
   .historyChartCompact{min-height:220px;height:220px}
 }
+
+
+/* ===== V2.2 · Aprender + Decisão RF ===== */
+.decisionTabButton{border-color:rgba(105,183,255,.16)}
+.learnIntro,.decisionIntro{background:linear-gradient(135deg,rgba(105,183,255,.06),rgba(56,211,159,.025))}
+.learnBadge{border:1px solid var(--line);border-radius:999px;padding:7px 10px;color:var(--muted);font-size:.68rem;white-space:nowrap}
+.learningSteps{display:grid;grid-template-columns:repeat(4,1fr);gap:10px;margin-top:16px}
+.learnStep{display:flex;gap:11px;border:1px solid var(--line);border-radius:14px;background:rgba(9,25,43,.28);padding:14px;min-width:0}
+.learnStep>span{display:grid;place-items:center;flex:0 0 28px;height:28px;border-radius:9px;background:rgba(105,183,255,.12);color:var(--accent);font-weight:850;font-size:.78rem}
+.learnStep strong{font-size:.84rem}.learnStep p{margin:5px 0 0;color:var(--muted);font-size:.71rem;line-height:1.55}
+.impactPanel,.fundGuide,.correlationPreview{margin-top:16px}
+.impactGrid{display:grid;grid-template-columns:repeat(3,1fr);gap:10px}
+.impactCard{border:1px solid var(--line);border-radius:14px;background:rgba(9,25,43,.26);padding:15px}
+.impactHead{display:flex;align-items:center;gap:9px;margin-bottom:10px}.impactHead span{width:28px;height:28px;display:grid;place-items:center;border-radius:9px;font-weight:900}
+.impactHead.up span{background:rgba(255,156,156,.12);color:#ff9c9c}.impactHead.down span{background:rgba(125,226,209,.12);color:#7de2d1}.impactHead.real span{background:rgba(255,201,107,.12);color:#ffc96b}
+.impactCard ul{margin:0;padding-left:17px;color:#b8c9dc;font-size:.71rem;line-height:1.65}.impactCard li+li{margin-top:6px}
+.fundMap{display:grid;grid-template-columns:repeat(4,1fr);gap:10px}.fundMap>div{border:1px solid var(--line);border-radius:14px;padding:14px;background:rgba(9,25,43,.25)}
+.fundMap strong{display:block;font-size:.86rem}.fundMap span{display:block;color:var(--accent);font-size:.67rem;margin:5px 0 7px}.fundMap p{margin:0;color:var(--muted);font-size:.7rem;line-height:1.55}
+.correlationPreview{display:grid;grid-template-columns:1fr auto;gap:20px;align-items:center}.correlationPreview p{max-width:900px;color:#b9cbe0;line-height:1.6}
+.correlationMock{min-width:220px;padding:14px;border:1px dashed rgba(105,183,255,.38);border-radius:14px;background:rgba(105,183,255,.045)}
+.correlationMock span,.correlationMock small{display:block;color:var(--muted);font-size:.67rem}.correlationMock strong{display:block;margin:6px 0;font-size:.9rem}
+.decisionFormPanel{margin-bottom:16px}.decisionInputs{display:grid;grid-template-columns:repeat(4,minmax(150px,1fr));gap:10px;margin-top:14px}
+.decisionInputs label{display:grid;gap:6px;color:var(--muted);font-size:.69rem}
+.inputPrefix,.inputSuffix{display:flex;align-items:center;border:1px solid var(--line);border-radius:10px;background:rgba(9,25,43,.45);overflow:hidden}
+.inputPrefix span,.inputSuffix span{padding:0 10px;color:var(--muted);font-size:.68rem;white-space:nowrap}
+.inputPrefix input,.inputSuffix input{border:0!important;background:transparent!important;min-width:0;width:100%;padding:10px 10px!important;color:var(--text)}
+.inputPrefix span{border-right:1px solid var(--line)}.inputSuffix span{border-left:1px solid var(--line)}
+.decisionHint{margin:12px 0 0;color:var(--muted);font-size:.68rem;line-height:1.55}.marketReferencePanel{margin-bottom:16px}
+.rfReferenceCards{display:grid;grid-template-columns:repeat(6,minmax(130px,1fr));gap:9px;margin-top:14px}
+.rfReferenceCards article{border:1px solid var(--line);border-radius:12px;padding:12px;background:rgba(9,25,43,.27)}
+.rfReferenceCards span{display:block;color:var(--muted);font-size:.64rem}.rfReferenceCards strong{display:block;font-size:.9rem;margin:5px 0}.rfReferenceCards small{display:block;color:var(--muted);font-size:.6rem;line-height:1.35}
+.rfProductCards{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin-top:14px}.rfProductCard{border:1px solid var(--line);border-radius:15px;padding:16px;background:rgba(9,25,43,.28);position:relative}
+.rfProductCard.scenarioLeader{border-color:rgba(105,183,255,.52);background:rgba(105,183,255,.07)}
+.rfProductHead{display:flex;justify-content:space-between;gap:10px;align-items:center;color:var(--muted);font-size:.7rem}.rfProductHead em{font-style:normal;color:var(--accent);font-size:.58rem;border:1px solid rgba(105,183,255,.3);border-radius:999px;padding:3px 6px}
+.rfProductCard>strong{display:block;font-size:1.02rem;margin:7px 0 4px}.rfProductValue{font-size:1.45rem;font-weight:850;margin:9px 0 12px}
+.rfProductMeta{display:grid;grid-template-columns:1fr 1fr;gap:7px}.rfProductMeta span{display:block;color:var(--muted);font-size:.62rem;line-height:1.4}.rfProductMeta b{display:block;color:var(--text);font-size:.72rem;margin-top:2px}
+.rfProductCard>small{display:block;color:var(--muted);font-size:.61rem;margin-top:10px}
+.rfReading{margin-top:12px;border:1px solid rgba(105,183,255,.15);background:rgba(105,183,255,.04);border-radius:12px;padding:13px 14px}.rfReading .eyebrow{margin:0 0 5px}.rfReading p{margin:0;color:#c2d2e4;font-size:.73rem;line-height:1.6}.rfReading .rfCaution{color:var(--muted);margin-top:6px;font-size:.66rem}
+.decisionSplit{display:grid;grid-template-columns:1.25fr .75fr;gap:16px;margin-top:16px}.breakevenGrid{display:grid;grid-template-columns:repeat(3,1fr);gap:9px}
+.breakevenGrid article{border:1px solid var(--line);border-radius:12px;padding:13px;background:rgba(9,25,43,.26)}.breakevenGrid span{display:block;color:var(--muted);font-size:.65rem}.breakevenGrid strong{display:block;margin:6px 0;font-size:.88rem}.breakevenGrid small{display:block;color:var(--muted);font-size:.61rem;line-height:1.4}
+.clientChecklist{display:grid;gap:8px}.clientChecklist label{display:flex;gap:9px;align-items:flex-start;border:1px solid var(--line);border-radius:10px;padding:9px 10px;color:#b8c9dc;font-size:.69rem;line-height:1.4;background:rgba(9,25,43,.24)}.clientChecklist input{margin-top:2px;accent-color:#69b7ff}
+.decisionFootnote{margin-top:16px}.decisionFootnote p{margin:0;color:var(--muted);font-size:.68rem;line-height:1.55}
+@media(max-width:1180px){.learningSteps,.fundMap{grid-template-columns:repeat(2,1fr)}.decisionInputs{grid-template-columns:repeat(3,1fr)}.rfReferenceCards{grid-template-columns:repeat(3,1fr)}}
+@media(max-width:900px){.impactGrid,.rfProductCards,.decisionSplit{grid-template-columns:1fr}.decisionInputs{grid-template-columns:repeat(2,1fr)}.correlationPreview{grid-template-columns:1fr}.correlationMock{min-width:0}}
+@media(max-width:620px){.learningSteps,.fundMap,.decisionInputs,.rfReferenceCards,.breakevenGrid{grid-template-columns:1fr}.learnBadge{white-space:normal}}
