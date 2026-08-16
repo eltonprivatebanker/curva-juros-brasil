@@ -4,7 +4,7 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <meta name="description" content="Painel didático de curva DI Futuro, movimentos em pontos-base e comparação entre pregões.">
-  <title>Juros Brasil · V2.3-B.2.2 Teste</title>
+  <title>Juros Brasil · V2.3-B.2.2.1 Teste</title>
   <link rel="stylesheet" href="css/style.css?v=1.2.0">
   <link rel="stylesheet" href="css/v2.css?v=2.3.0">
   <link rel="stylesheet" href="css/evolution-v2.css?v=2.3.5">
@@ -126,11 +126,11 @@
         <div>
           <span class="presetLabel">Visualização</span>
           <div class="termViewToggle" role="group" aria-label="Visualização da curva DI">
-            <button type="button" class="active" data-term-mode="contracts">Contratos DI1</button>
-            <button type="button" data-term-mode="normalized">Prazos normalizados</button>
+            <button type="button" data-term-mode="contracts">Contratos DI1</button>
+            <button type="button" class="active" data-term-mode="normalized">Prazos normalizados</button>
           </div>
         </div>
-        <div id="termModeHint" class="muted">Contratos negociados posicionados pelo prazo remanescente real.</div>
+        <div id="termModeHint" class="muted">Mesmos vértices em todas as datas: 6M, 1A, 2A, 3A, 5A, 7A e 10A.</div>
       </div>
 
       <div id="chart" class="chart termStructureChart" aria-label="Gráfico da curva DI atual e de comparação"></div>
@@ -576,7 +576,7 @@
     </div>
 
     <section class="panel notePanel">
-      <p><strong>V2.3-B.2.2 teste:</strong> aprimora a Curva DI diária com leitura automática, visualização por contratos ou prazos normalizados e movimento por prazo em bps.</p>
+      <p><strong>V2.3-B.2.2.1 teste:</strong> deixa prazos normalizados como visualização padrão, melhora a leitura automática e limpa os rótulos extremos no modo Contratos DI1.</p>
     </section>
 
     <footer>
@@ -585,7 +585,7 @@
   </main>
   <script src="js/app.js?v=1.2.0" defer></script>
   <script src="js/evolution-v2.js?v=2.3.6" defer></script>
-  <script src="js/term-structure-v2.js?v=2.3.7" defer></script>
+  <script src="js/term-structure-v2.js?v=2.3.8" defer></script>
   <script src="js/market.js?v=2.3.4" defer></script>
 </body>
 </html>
