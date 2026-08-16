@@ -4,11 +4,12 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <meta name="description" content="Painel didático de curva DI Futuro, movimentos em pontos-base e comparação entre pregões.">
-  <title>Juros Brasil · V2.3-B.2.2.1 Teste</title>
+  <title>Juros Brasil · V2.3-B.2.3 Teste</title>
   <link rel="stylesheet" href="css/style.css?v=1.2.0">
   <link rel="stylesheet" href="css/v2.css?v=2.3.0">
   <link rel="stylesheet" href="css/evolution-v2.css?v=2.3.5">
   <link rel="stylesheet" href="css/term-structure-v2.css?v=2.3.7">
+  <link rel="stylesheet" href="css/anbima-v2.css?v=2.3.9">
 </head>
 <body>
   <main class="shell">
@@ -234,11 +235,108 @@
     </div>
 
     <div id="tab-anbima" class="tabPane">
-      <section class="sectionIntro panel"><div><p class="eyebrow">CURVA SOBERANA · ANBIMA</p><h2>ETTJ Prefixada, juro real e inflação implícita</h2><p class="sectionSubtitle">Vértices de prazo constante em dias úteis.</p></div><label class="inlineSelect">Data<select id="anbimaDate"></select></label></section>
-      <section class="panel marketStatus"><div class="panelHead"><div><p class="eyebrow">VÉRTICES PADRÃO</p><h2>Retrato da curva ANBIMA</h2></div><div id="anbimaStatus" class="muted">—</div></div><div id="anbimaCards" class="marketCards"></div></section>
-      <section class="panel chartPanel"><div class="panelHead"><div><p class="eyebrow">ETTJ</p><h2>Pré × IPCA × inflação implícita</h2></div><div id="anbimaLegend" class="legend"></div></div><div id="anbimaChart" class="chart"></div></section>
-      <section class="panel"><div class="panelHead"><div><p class="eyebrow">VÉRTICES</p><h2>Estrutura a termo</h2></div></div><div class="tableWrap"><table><thead><tr><th>DU</th><th>Prazo</th><th>ETTJ Pré</th><th>ETTJ IPCA</th><th>Inflação implícita</th></tr></thead><tbody id="anbimaTable"></tbody></table></div></section>
-      <section class="panel parameterPanel"><div class="panelHead"><div><p class="eyebrow">MODELO</p><h2>Parâmetros Svensson</h2><p id="anbimaPrecision" class="sectionSubtitle"></p></div></div><div class="tableWrap"><table><thead><tr><th>Curva</th><th>Beta 1</th><th>Beta 2</th><th>Beta 3</th><th>Beta 4</th><th>Lambda 1</th><th>Lambda 2</th></tr></thead><tbody id="anbimaParams"></tbody></table></div></section>
+      <section class="sectionIntro panel anbimaIntro">
+        <div>
+          <p class="eyebrow">CURVA SOBERANA · ANBIMA</p>
+          <h2>ETTJ Prefixada, juro real e inflação implícita</h2>
+          <p class="sectionSubtitle">Leia a curva nominal, a curva real e a inflação implícita no mesmo horizonte.</p>
+        </div>
+        <label class="inlineSelect">Data<select id="anbimaDate"></select></label>
+      </section>
+
+      <section class="panel anbimaReadingPanel">
+        <div class="panelHead">
+          <div>
+            <p class="eyebrow">LEITURA DA CURVA</p>
+            <h2>O que a estrutura está mostrando?</h2>
+          </div>
+          <div id="anbimaStatus" class="muted">—</div>
+        </div>
+        <p id="anbimaReading" class="readingText">Carregando a curva ANBIMA…</p>
+      </section>
+
+      <section class="panel marketStatus anbimaSnapshot">
+        <div class="panelHead">
+          <div>
+            <p class="eyebrow">VÉRTICES PRINCIPAIS</p>
+            <h2>Retrato da curva ANBIMA</h2>
+            <p class="sectionSubtitle">Prazo primeiro; dias úteis ficam como referência técnica.</p>
+          </div>
+        </div>
+        <div id="anbimaCards" class="marketCards anbimaCardsV2"></div>
+      </section>
+
+      <section class="panel chartPanel anbimaChartPanel">
+        <div class="panelHead anbimaChartHead">
+          <div>
+            <p class="eyebrow">ESTRUTURA A TERMO</p>
+            <h2 id="anbimaChartTitle">Comparável até 10A</h2>
+            <p id="anbimaChartSubtitle" class="sectionSubtitle">Pré, juro real e inflação implícita no trecho em que as três séries coexistem.</p>
+          </div>
+          <div id="anbimaLegend" class="legend"></div>
+        </div>
+
+        <div class="anbimaToolbar">
+          <div>
+            <span class="presetLabel">Visualização</span>
+            <div class="anbimaModeToggle" role="group" aria-label="Visualização da curva ANBIMA">
+              <button type="button" class="active" data-anbima-mode="compare">Comparável até 10A</button>
+              <button type="button" data-anbima-mode="real-long">Juro real longo</button>
+            </div>
+          </div>
+          <div id="anbimaModeHint" class="muted">As três séries são comparadas somente até 10 anos.</div>
+        </div>
+
+        <div id="anbimaChart" class="chart anbimaChartV2"></div>
+      </section>
+
+      <section class="panel anbimaKeyPanel">
+        <div class="panelHead">
+          <div>
+            <p class="eyebrow">PONTOS-CHAVE</p>
+            <h2>Onde estão os principais níveis?</h2>
+          </div>
+        </div>
+        <div id="anbimaKeyPoints" class="anbimaKeyPoints"></div>
+      </section>
+
+      <section class="panel anbimaTablePanel">
+        <div class="panelHead">
+          <div>
+            <p class="eyebrow">ESTRUTURA A TERMO</p>
+            <h2>Vértices da curva</h2>
+            <p id="anbimaTableNote" class="sectionSubtitle">Exibindo os sete horizontes principais.</p>
+          </div>
+          <div class="tableActions">
+            <div id="anbimaTableCount" class="muted">—</div>
+            <button type="button" id="anbimaTableToggle" class="secondaryButton">Ver estrutura completa</button>
+          </div>
+        </div>
+        <div class="tableWrap">
+          <table>
+            <thead>
+              <tr><th>Prazo</th><th>DU</th><th>ETTJ Pré</th><th>Juro real</th><th>Inflação implícita</th></tr>
+            </thead>
+            <tbody id="anbimaTable"></tbody>
+          </table>
+        </div>
+      </section>
+
+      <section class="panel parameterPanel anbimaMethodPanel">
+        <details class="anbimaMethodDetails">
+          <summary>ⓘ Metodologia e parâmetros Svensson</summary>
+          <div class="anbimaMethodBody">
+            <p id="anbimaPrecision" class="sectionSubtitle"></p>
+            <p class="sectionSubtitle">Os parâmetros abaixo descrevem o ajuste da estrutura a termo. Para leitura de mercado, os vértices e as curvas acima são a referência principal.</p>
+            <div class="tableWrap">
+              <table>
+                <thead><tr><th>Curva</th><th>Beta 1</th><th>Beta 2</th><th>Beta 3</th><th>Beta 4</th><th>Lambda 1</th><th>Lambda 2</th></tr></thead>
+                <tbody id="anbimaParams"></tbody>
+              </table>
+            </div>
+          </div>
+        </details>
+      </section>
     </div>
 
     <div id="tab-tesouro" class="tabPane">
@@ -576,7 +674,7 @@
     </div>
 
     <section class="panel notePanel">
-      <p><strong>V2.3-B.2.2.1 teste:</strong> deixa prazos normalizados como visualização padrão, melhora a leitura automática e limpa os rótulos extremos no modo Contratos DI1.</p>
+      <p><strong>V2.3-B.2.3 teste:</strong> reorganiza a aba ANBIMA com leitura automática, gráfico comparável até 10A, juro real longo, pontos-chave e tabela resumida.</p>
     </section>
 
     <footer>
@@ -587,5 +685,6 @@
   <script src="js/evolution-v2.js?v=2.3.6" defer></script>
   <script src="js/term-structure-v2.js?v=2.3.8" defer></script>
   <script src="js/market.js?v=2.3.4" defer></script>
+  <script src="js/anbima-v2.js?v=2.3.9" defer></script>
 </body>
 </html>
