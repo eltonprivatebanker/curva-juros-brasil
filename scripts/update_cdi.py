@@ -48,6 +48,32 @@ HORIZONS = {
     2520: "10A",
 }
 
+# A base completa é preservada, mas a interface pode comparar apenas janelas
+# integralmente contidas em um regime econômico mais comparável ao presente.
+REGIMES = {
+    "full": {
+        "label": "Histórico completo",
+        "start": "1986-03-06",
+        "description": "Toda a série disponível, incluindo o período de hiperinflação.",
+    },
+    "real": {
+        "label": "Plano Real",
+        "start": "1994-07-01",
+        "description": "Janelas iniciadas a partir de julho de 1994.",
+    },
+    "targets": {
+        "label": "Regime de metas",
+        "start": "1999-07-01",
+        "description": "Janelas iniciadas a partir de julho de 1999.",
+    },
+    "recent": {
+        "label": "Histórico recente",
+        "start": "2005-01-01",
+        "description": "Janelas iniciadas a partir de janeiro de 2005.",
+    },
+}
+DEFAULT_REGIME = "targets"
+
 
 def parse_iso(s: str) -> date:
     return date.fromisoformat(s)
@@ -137,46 +163,20 @@ def annual_equivalent_from_log(log_factor: float, business_days: int) -> float:
     return math.expm1(log_factor * 252.0 / business_days) * 100.0
 
 
-def build_window(observations: list[dict], n: int, label: str) -> dict | None:
-    if len(observations) < n:
+def summarize_windows(records: list[dict], sample_stride: int = 21) -> dict | None:
+    if not records:
         return None
 
-    logs = [0.0]
-    for obs in observations:
-        logs.append(logs[-1] + math.log1p(float(obs["daily_pct"]) / 100.0))
-
-    annual_values: list[float] = []
-    sampled: list[dict] = []
-    latest = None
-
-    # Uma observação mensal aproximada a cada 21 pregões para manter o JSON leve.
-    sample_stride = 21
-
-    for end_idx in range(n, len(observations) + 1):
-        start_idx = end_idx - n
-        log_factor = logs[end_idx] - logs[start_idx]
-        annual = annual_equivalent_from_log(log_factor, n)
-        accumulated = math.expm1(log_factor) * 100.0
-        annual_values.append(annual)
-
-        point = {
-            "date": observations[end_idx - 1]["date"],
-            "annual_equivalent_pct": round(annual, 6),
-        }
-        if (end_idx - n) % sample_stride == 0 or end_idx == len(observations):
-            sampled.append(point)
-
-        if end_idx == len(observations):
-            latest = {
-                "start": observations[start_idx]["date"],
-                "end": observations[end_idx - 1]["date"],
-                "business_days": n,
-                "accumulated_pct": round(accumulated, 6),
-                "annual_equivalent_pct": round(annual, 6),
-            }
-
-    values = sorted(annual_values)
-    dist = {
+    values = sorted(float(r["annual_equivalent_pct"]) for r in records)
+    latest_record = records[-1]
+    latest = {
+        "start": latest_record["start"],
+        "end": latest_record["end"],
+        "business_days": latest_record["business_days"],
+        "accumulated_pct": round(float(latest_record["accumulated_pct"]), 6),
+        "annual_equivalent_pct": round(float(latest_record["annual_equivalent_pct"]), 6),
+    }
+    distribution = {
         "count": len(values),
         "min_pct": round(values[0], 6),
         "p25_pct": round(percentile(values, 0.25), 6),
@@ -186,12 +186,60 @@ def build_window(observations: list[dict], n: int, label: str) -> dict | None:
         "mean_pct": round(statistics.fmean(values), 6),
     }
 
+    series: list[dict] = []
+    for i, r in enumerate(records):
+        if i % sample_stride == 0 or i == len(records) - 1:
+            series.append({
+                "date": r["end"],
+                "annual_equivalent_pct": round(float(r["annual_equivalent_pct"]), 6),
+            })
+
+    return {
+        "latest": latest,
+        "distribution": distribution,
+        "series": series,
+    }
+
+
+def build_window(observations: list[dict], n: int, label: str) -> dict | None:
+    if len(observations) < n:
+        return None
+
+    logs = [0.0]
+    for obs in observations:
+        logs.append(logs[-1] + math.log1p(float(obs["daily_pct"]) / 100.0))
+
+    records: list[dict] = []
+    for end_idx in range(n, len(observations) + 1):
+        start_idx = end_idx - n
+        log_factor = logs[end_idx] - logs[start_idx]
+        annual = annual_equivalent_from_log(log_factor, n)
+        accumulated = math.expm1(log_factor) * 100.0
+        records.append({
+            "start": observations[start_idx]["date"],
+            "end": observations[end_idx - 1]["date"],
+            "business_days": n,
+            "accumulated_pct": accumulated,
+            "annual_equivalent_pct": annual,
+        })
+
+    full_summary = summarize_windows(records)
+    assert full_summary is not None
+
+    regime_summaries: dict[str, dict] = {}
+    for key, meta in REGIMES.items():
+        # A janela inteira precisa começar dentro do regime escolhido.
+        filtered = [r for r in records if r["start"] >= meta["start"]]
+        summary = summarize_windows(filtered)
+        if summary:
+            regime_summaries[key] = summary
+
     return {
         "label": label,
         "business_days": n,
-        "latest": latest,
-        "distribution": dist,
-        "series": sampled,
+        # Mantém compatibilidade com a V2.3-A original.
+        **full_summary,
+        "regimes": regime_summaries,
     }
 
 
@@ -209,13 +257,16 @@ def build_payload(observations: list[dict]) -> dict:
             windows[str(du)] = item
 
     return {
-        "schema_version": 1,
+        "schema_version": 2,
         "mode": "live",
         "source": SOURCE,
         "series_code": SERIES_CODE,
         "series_name": SERIES_NAME,
         "unit": "% ao dia",
         "methodology": "Composição dos fatores diários; taxa anual equivalente em base 252 DU.",
+        "regime_methodology": "Cada regime usa apenas janelas cujo início ocorre na data inicial do regime ou depois dela.",
+        "default_regime": DEFAULT_REGIME,
+        "regimes": REGIMES,
         "generated_at": datetime.now(TZ).isoformat(timespec="seconds"),
         "history_start": observations[0]["date"],
         "history_end": observations[-1]["date"],
