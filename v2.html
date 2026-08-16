@@ -4,7 +4,7 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <meta name="description" content="Painel didático de curva DI Futuro, movimentos em pontos-base e comparação entre pregões.">
-  <title>Juros Brasil · V2.3-A Teste</title>
+  <title>Juros Brasil · V2.3-A.1 Teste</title>
   <link rel="stylesheet" href="css/style.css?v=1.2.0">
   <link rel="stylesheet" href="css/v2.css?v=2.3.0">
 </head>
@@ -223,6 +223,14 @@
         </div>
         <div class="scenarioSelectors">
           <label class="inlineSelect">Data da curva<select id="scenarioDate"></select></label>
+          <label class="inlineSelect">Base histórica
+            <select id="scenarioRegime">
+              <option value="full">Histórico completo · desde 1986</option>
+              <option value="real">Plano Real · desde jul/1994</option>
+              <option value="targets" selected>Regime de metas · desde jul/1999</option>
+              <option value="recent">Histórico recente · desde 2005</option>
+            </select>
+          </label>
           <label class="inlineSelect">Horizonte
             <select id="scenarioHorizon">
               <option value="126">6 meses · 126 DU</option>
@@ -249,7 +257,7 @@
             <div>
               <p class="eyebrow">CENÁRIOS DE REFERÊNCIA</p>
               <h2 id="scenarioTitle">—</h2>
-              <p class="sectionSubtitle">Histórico é realizado; curva DI é preço de mercado hoje. Nenhum dos dois é previsão garantida.</p>
+              <p class="sectionSubtitle">Histórico é realizado; curva DI é preço de mercado hoje. A base histórica selecionada filtra apenas janelas inteiramente contidas no regime. Nenhum dos dois é previsão garantida.</p>
             </div>
             <div id="scenarioStatus" class="muted">—</div>
           </div>
@@ -500,7 +508,7 @@
     </div>
 
     <section class="panel notePanel">
-      <p><strong>V2.3-A teste:</strong> acrescenta CDI histórico, janelas 6M/1A/2A/3A/5A/7A/10A e trajetória forward implícita da curva DI. Focus fica para a próxima etapa.</p>
+      <p><strong>V2.3-A.1 teste:</strong> acrescenta filtros de regime histórico ao CDI (completo, Plano Real, regime de metas e recente), mantendo janelas 6M/1A/2A/3A/5A/7A/10A e trajetória forward implícita da curva DI.</p>
     </section>
 
     <footer>
@@ -508,6 +516,6 @@
     </footer>
   </main>
   <script src="js/app.js?v=1.2.0" defer></script>
-  <script src="js/market.js?v=2.3.0" defer></script>
+  <script src="js/market.js?v=2.3.1" defer></script>
 </body>
 </html>
