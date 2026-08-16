@@ -349,6 +349,7 @@
   }
 
   const SOURCE_BY_TAB={
+    resumo:["RESUMO","B3 + ANBIMA + Tesouro Nacional + BCB"],
     di:["B3 · LIVE","DI Futuro · B3 / PYield"],
     anbima:["ANBIMA","ETTJ · curva nominal, real e implícita"],
     tesouro:["TESOURO","Tesouro Nacional · taxas e preços"],
@@ -388,6 +389,306 @@
       const tab=document.querySelector("[data-tab].active")?.dataset.tab||"di";
       updateGlobalSource(tab);
     },1200);
+  }
+
+  if(document.readyState==="loading"){
+    document.addEventListener("DOMContentLoaded",boot);
+  }else{
+    boot();
+  }
+})();
+
+
+/* ==========================================================
+   Juros Brasil · V3.1 — compreensão primeiro
+   ========================================================== */
+(() => {
+  const $ = id => document.getElementById(id);
+  const TENORS = [
+    {du:126,label:"6M"},
+    {du:252,label:"1A"},
+    {du:504,label:"2A"},
+    {du:756,label:"3A"},
+    {du:1260,label:"5A"},
+    {du:1764,label:"7A"},
+    {du:2520,label:"10A"},
+  ];
+  const cache = new Map();
+
+  async function getJson(path) {
+    if (cache.has(path)) return cache.get(path);
+    const p = fetch(path,{cache:"no-store"}).then(r=>{
+      if(!r.ok) throw new Error(`${path}: HTTP ${r.status}`);
+      return r.json();
+    });
+    cache.set(path,p);
+    return p;
+  }
+
+  function flatForward(contracts,targetDu) {
+    const pts=(contracts||[])
+      .filter(c=>Number.isFinite(c.business_days)&&Number.isFinite(c.rate_pct)&&+c.business_days>0)
+      .map(c=>({du:+c.business_days,rate:+c.rate_pct}))
+      .sort((a,b)=>a.du-b.du);
+
+    const exact=pts.find(p=>p.du===targetDu);
+    if(exact)return exact.rate;
+
+    const left=[...pts].reverse().find(p=>p.du<targetDu);
+    const right=pts.find(p=>p.du>targetDu);
+    if(!left||!right||targetDu<=0)return NaN;
+
+    const t1=left.du/252,t2=right.du/252,t=targetDu/252;
+    const ldf1=-t1*Math.log1p(left.rate/100);
+    const ldf2=-t2*Math.log1p(right.rate/100);
+    const w=(t-t1)/(t2-t1);
+    const ldf=ldf1+w*(ldf2-ldf1);
+    return Math.expm1(-ldf/t)*100;
+  }
+
+  function avg(xs) {
+    const a=xs.filter(Number.isFinite);
+    return a.length?a.reduce((x,y)=>x+y,0)/a.length:NaN;
+  }
+
+  function pct(v,d=2) {
+    return Number.isFinite(v)
+      ? `${v.toLocaleString("pt-BR",{minimumFractionDigits:d,maximumFractionDigits:d})}%`
+      : "—";
+  }
+
+  function bp(v) {
+    return Number.isFinite(v)
+      ? `${v>0?"+":""}${v.toLocaleString("pt-BR",{maximumFractionDigits:1})} bps`
+      : "—";
+  }
+
+  function dateBr(iso) {
+    if(!iso)return"—";
+    const [y,m,d]=iso.split("-");
+    return `${d}/${m}/${y}`;
+  }
+
+  function goTo(tab) {
+    const btn=document.querySelector(`[data-tab="${tab}"]`);
+    if(btn)btn.click();
+    window.scrollTo({top:0,behavior:"smooth"});
+  }
+
+  function setupNavigationCards() {
+    document.querySelectorAll("[data-v31-goto]").forEach(el=>{
+      el.addEventListener("click",e=>{
+        if(e.target.closest("a"))return;
+        goTo(el.dataset.v31Goto);
+      });
+    });
+  }
+
+  const QUESTIONS={
+    di:{
+      q:"Os juros abriram ou fecharam — e em quais prazos?",
+      h:"Comece pela leitura do período e pelo gráfico normalizado. Contratos individuais ficam no modo Técnico."
+    },
+    anbima:{
+      q:"Quanto o mercado exige em taxa nominal, juro real e inflação implícita?",
+      h:"Use primeiro os sete prazos principais. Inflação implícita é uma relação entre curvas, não uma previsão garantida."
+    },
+    tesouro:{
+      q:"Quais taxas o Tesouro está oferecendo — e como elas mudaram?",
+      h:"Os cards mostram a faixa de taxas por família. No modo Técnico, você abre a tabela título a título."
+    },
+    conexoes:{
+      q:"DI, ANBIMA e Tesouro estão contando a mesma história?",
+      h:"Observe onde as curvas se afastam ou se cruzam. Diferença de taxa aqui não deve ser tratada automaticamente como spread de crédito."
+    },
+    cenarios:{
+      q:"O nível atual é alto ou baixo comparado ao histórico?",
+      h:"Compare o mesmo horizonte: última janela realizada, faixa histórica e curva DI atual. Histórico não é previsão."
+    },
+    aprender:{
+      q:"Como transformar movimentos da curva em leitura de mercado?",
+      h:"Esta área explica os conceitos e conecta juros, renda fixa, fundos, Bolsa e IFIX."
+    },
+    decisao:{
+      q:"Como Pós, Pré e IPCA+ se comparam no mesmo horizonte?",
+      h:"Primeiro veja o resultado modelado; depois confira cenário, histórico, liquidez, crédito e demais riscos."
+    }
+  };
+
+  function insertQuestions() {
+    Object.entries(QUESTIONS).forEach(([tab,info])=>{
+      const pane=$(`tab-${tab}`);
+      if(!pane||pane.querySelector(".v31Question"))return;
+      const box=document.createElement("section");
+      box.className="v31Question";
+      box.innerHTML=`<span>ESTA ABA RESPONDE</span><strong>${info.q}</strong><small>${info.h}</small>`;
+      pane.prepend(box);
+    });
+  }
+
+  function markTechnical() {
+    const targets=[
+      $("curveTable")?.closest("section.panel"),
+      $("anbimaTable")?.closest("section.panel"),
+      $("anbimaParams")?.closest("section.panel"),
+      $("tesouroTable")?.closest("section.panel"),
+      $("scenarioForwardTable")?.closest("section.panel"),
+      $("scenarioMatrix")?.closest("section.panel"),
+    ].filter(Boolean);
+
+    targets.forEach(x=>x.classList.add("v31Technical"));
+
+    const basisWrap=$("basisTable")?.closest(".tableWrap");
+    if(basisWrap)basisWrap.classList.add("v31Technical");
+
+    document.querySelectorAll(".methodologyDetails,.anbimaMethodPanel").forEach(x=>x.classList.add("v31Technical"));
+  }
+
+  function applyMode(mode) {
+    const technical=mode==="technical";
+    document.body.classList.toggle("v31-essential",!technical);
+    document.body.classList.toggle("v31-technical",technical);
+    document.querySelectorAll("[data-v31-mode]").forEach(btn=>{
+      btn.classList.toggle("active",btn.dataset.v31Mode===mode);
+    });
+    try{localStorage.setItem("jurosBrasilV31Mode",mode);}catch{}
+    setTimeout(()=>window.dispatchEvent(new Event("resize")),0);
+  }
+
+  function setupMode() {
+    let mode="essential";
+    try{
+      const saved=localStorage.getItem("jurosBrasilV31Mode");
+      if(saved==="technical"||saved==="essential")mode=saved;
+    }catch{}
+    document.querySelectorAll("[data-v31-mode]").forEach(btn=>{
+      btn.addEventListener("click",()=>applyMode(btn.dataset.v31Mode));
+    });
+    applyMode(mode);
+  }
+
+  function activeSourceSummary() {
+    const badge=$("modeBadge"),source=$("sourceText");
+    if(badge)badge.textContent="RESUMO";
+    if(source)source.textContent="B3 + ANBIMA + Tesouro Nacional + BCB";
+  }
+
+  async function loadSummary() {
+    try{
+      const diIndex=await getJson("data/index.json");
+      const entries=[...(diIndex.entries||[])].sort((a,b)=>a.date.localeCompare(b.date));
+      const currentEntry=entries.at(-1);
+      const prevEntry=entries.at(-2);
+
+      if(currentEntry&&prevEntry){
+        const [cur,prev]=await Promise.all([getJson(currentEntry.path),getJson(prevEntry.path)]);
+        const rows=TENORS.map(t=>{
+          const a=flatForward(cur.contracts,t.du);
+          const b=flatForward(prev.contracts,t.du);
+          return {...t,bps:Number.isFinite(a)&&Number.isFinite(b)?(a-b)*100:NaN,current:a};
+        }).filter(r=>Number.isFinite(r.bps));
+
+        const up=rows.filter(r=>r.bps>1);
+        const down=rows.filter(r=>r.bps<-1);
+        let main="Movimento misto";
+        if(up.length===rows.length)main="Abertura generalizada";
+        else if(down.length===rows.length)main="Fechamento generalizado";
+        else if(up.length>=Math.ceil(rows.length*.67))main="Predomínio de abertura";
+        else if(down.length>=Math.ceil(rows.length*.67))main="Predomínio de fechamento";
+
+        const strongest=[...rows].sort((a,b)=>Math.abs(b.bps)-Math.abs(a.bps))[0];
+        if($("v31MoveMain"))$("v31MoveMain").textContent=main;
+        if($("v31MoveMeta"))$("v31MoveMeta").textContent=
+          `${up.length} abriram · ${down.length} fecharam${strongest?` · maior movimento: ${strongest.label} ${bp(strongest.bps)}`:""}`;
+
+        const buckets=[
+          {name:"Curto · 6M–1A",value:avg(rows.filter(r=>r.du<=252).map(r=>r.bps))},
+          {name:"Miolo · 2A–3A",value:avg(rows.filter(r=>r.du>=504&&r.du<=756).map(r=>r.bps))},
+          {name:"Longo · 5A–10A",value:avg(rows.filter(r=>r.du>=1260).map(r=>r.bps))}
+        ].filter(x=>Number.isFinite(x.value))
+         .sort((a,b)=>Math.abs(b.value)-Math.abs(a.value));
+        const region=buckets[0];
+        if(region){
+          $("v31WhereMain").textContent=region.name;
+          $("v31WhereMeta").textContent=`Maior deslocamento médio entre as três faixas: ${bp(region.value)}.`;
+        }
+
+        const di5=rows.find(r=>r.du===1260)?.current;
+        if(Number.isFinite(di5)){
+          $("v31HistoryMain").textContent=`DI 5A · ${pct(di5)}`;
+          $("v31HistoryMeta").textContent="Agora compare esse nível com mediana, P25 e P75 na aba Histórico e cenários.";
+        }
+
+        $("v31SummaryDate").textContent=`Curva DI · ${dateBr(currentEntry.date)}`;
+      }
+
+      const aIndex=await getJson("data/anbima/index.json");
+      const ae=(aIndex.entries||[]).find(e=>e.date===aIndex.latest)||(aIndex.entries||[]).at(-1);
+      if(ae){
+        const a=await getJson(ae.path);
+        const r=(a.curves||[]).find(x=>+x.du===1260)||(a.curves||[]).find(x=>+x.du===1764);
+        if(r){
+          $("v31SovMain").textContent=`Pré ${pct(+r.pre_pct)}`;
+          $("v31SovMeta").textContent=
+            `Juro real ${pct(+r.ipca_pct)} · inflação implícita ${pct(+r.implied_pct)} · ${(+r.du/252).toLocaleString("pt-BR",{maximumFractionDigits:1})}A.`;
+        }
+      }
+    }catch(err){
+      console.error("Resumo V3.1:",err);
+      if($("v31MoveMain"))$("v31MoveMain").textContent="Abra Juros futuros";
+      if($("v31MoveMeta"))$("v31MoveMeta").textContent="Não foi possível montar o resumo automático neste carregamento.";
+    }
+  }
+
+  function tryHistoryEnhancement() {
+    const cards=$("scenarioCards");
+    if(!cards||!cards.textContent.trim())return;
+    const blocks=[...cards.children];
+    const med=blocks.find(x=>/Mediana/i.test(x.textContent));
+    const di=blocks.find(x=>/Curva DI/i.test(x.textContent));
+    if(!med||!di)return;
+
+    const medVal=med.querySelector("strong")?.textContent?.trim();
+    const diVal=di.querySelector("strong")?.textContent?.trim();
+    const medNum=medVal?parseFloat(medVal.replace(".","").replace(",",".")):NaN;
+    const diNum=diVal?parseFloat(diVal.replace(".","").replace(",",".")):NaN;
+    if(Number.isFinite(medNum)&&Number.isFinite(diNum)){
+      $("v31HistoryMain").textContent=diNum>medNum?"Acima da mediana":"Abaixo da mediana";
+      $("v31HistoryMeta").textContent=`DI 5A ${diVal} · mediana histórica ${medVal}. Veja a distribuição completa na aba Histórico e cenários.`;
+    }
+  }
+
+  function setupTabHooks() {
+    document.querySelectorAll("[data-tab]").forEach(btn=>{
+      btn.addEventListener("click",()=>{
+        setTimeout(()=>{
+          markTechnical();
+          if(btn.dataset.tab==="resumo"){
+            activeSourceSummary();
+            tryHistoryEnhancement();
+          }
+        },80);
+      });
+    });
+  }
+
+  function boot() {
+    insertQuestions();
+    markTechnical();
+    setupMode();
+    setupNavigationCards();
+    setupTabHooks();
+    activeSourceSummary();
+    loadSummary();
+
+    setTimeout(activeSourceSummary,1300);
+    setTimeout(tryHistoryEnhancement,1800);
+
+    const scenario=$("scenarioCards");
+    if(scenario){
+      new MutationObserver(()=>tryHistoryEnhancement())
+        .observe(scenario,{childList:true,subtree:true,characterData:true});
+    }
   }
 
   if(document.readyState==="loading"){
