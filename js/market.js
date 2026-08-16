@@ -794,13 +794,16 @@
     }
   }
   function updateDecisionModeUi(){
-    const btn=q("useMarketScenario");
-    if(!btn)return;
-    btn.textContent=S.decisionMarketMode?"Cenário de mercado · ativo":"Usar cenário de mercado";
-    btn.classList.toggle("active",S.decisionMarketMode);
-    btn.title=S.decisionMarketMode
-      ?"CDI e IPCA acompanham automaticamente a data e o prazo selecionados."
-      :"Preenche CDI e IPCA com referências da curva para o prazo selecionado.";
+    const mode=q("rfScenarioMode"),cdi=q("rfCdiScenario"),ipca=q("rfIpcaScenario");
+    if(mode)mode.value=S.decisionMarketMode?"market":"custom";
+    [cdi,ipca].forEach(el=>{
+      if(!el)return;
+      el.readOnly=S.decisionMarketMode;
+      el.setAttribute("aria-readonly",S.decisionMarketMode?"true":"false");
+      el.title=S.decisionMarketMode
+        ?"Preenchido automaticamente pelo cenário de mercado. Selecione Personalizado para editar."
+        :"Premissa informada pelo usuário.";
+    });
   }
   async function refreshDecisionForContext(){
     if(S.decisionMarketMode)await applyMarketScenario();
@@ -834,27 +837,35 @@
     }
 
     ["rfCdiScenario","rfIpcaScenario"].forEach(id=>{
-      q(id)?.addEventListener("input",()=>{
-        S.decisionMarketMode=false;
-        updateDecisionModeUi();
-        renderDecision();
-      });
-      q(id)?.addEventListener("change",()=>{
-        S.decisionMarketMode=false;
-        updateDecisionModeUi();
-        renderDecision();
-      });
+      q(id)?.addEventListener("input",()=>{ if(!S.decisionMarketMode)renderDecision(); });
+      q(id)?.addEventListener("change",()=>{ if(!S.decisionMarketMode)renderDecision(); });
     });
 
-    q("useMarketScenario")?.addEventListener("click",async()=>{
-      S.decisionMarketMode=true;
-      await applyMarketScenario();
+    q("rfScenarioMode")?.addEventListener("change",async e=>{
+      S.decisionMarketMode=e.target.value==="market";
+      if(S.decisionMarketMode)await applyMarketScenario();
       updateDecisionModeUi();
       await renderDecision();
     });
 
     updateDecisionModeUi();
   }
+  function renderDecisionScenarioSource(d,du,refs){
+    const host=q("rfScenarioSource");
+    if(!host)return;
+    const cdi=pctInput("rfCdiScenario"),ipca=pctInput("rfIpcaScenario");
+    if(S.decisionMarketMode){
+      host.innerHTML=`<p class="eyebrow">CENÁRIO ATIVO · MERCADO</p>
+        <p><strong>Mercado · DI + ANBIMA</strong> · ${fd(d)} · ${approx(du)} / ${du.toLocaleString("pt-BR")} DU</p>
+        <p><strong>CDI equivalente exibido:</strong> ${fp(cdi,2)} · fonte: curva DI Futuro/B3 interpolada no horizonte. Na LCI Pós, o cálculo usa a trajetória forward por trechos, não uma taxa única repetida.</p>
+        <p><strong>IPCA equivalente exibido:</strong> ${fp(ipca,2)} · fonte: inflação implícita da ANBIMA, derivada das curvas nominal e real no mesmo horizonte.</p>`;
+    }else{
+      host.innerHTML=`<p class="eyebrow">CENÁRIO ATIVO · PERSONALIZADO</p>
+        <p><strong>Premissas informadas pelo usuário.</strong> CDI equivalente: ${fp(cdi,2)} · IPCA equivalente: ${fp(ipca,2)}.</p>
+        <p>As curvas DI e ANBIMA continuam aparecendo como referências de mercado, mas não substituem os valores personalizados no cálculo.</p>`;
+    }
+  }
+
   function decisionRegime(){
     const key=q("decisionHistoryRegime")?.value||S.cdi?.default_regime||"targets";
     const meta=S.cdi?.regimes?.[key]||{
@@ -864,26 +875,30 @@
     return{key,meta};
   }
   function curveHistoricalPosition(di,dist){
-    if(!Number.isFinite(di)||!dist)return{label:"sem comparação",detail:"Histórico indisponível.",className:"deltaFlat"};
+    if(!Number.isFinite(di)||!dist)return{label:"sem comparação",phrase:"sem comparação disponível",detail:"Histórico indisponível.",className:"deltaFlat"};
     const p25=+dist.p25_pct,med=+dist.median_pct,p75=+dist.p75_pct;
-    if(![p25,med,p75].every(Number.isFinite))return{label:"sem comparação",detail:"Quartis indisponíveis.",className:"deltaFlat"};
+    if(![p25,med,p75].every(Number.isFinite))return{label:"sem comparação",phrase:"sem comparação disponível",detail:"Quartis indisponíveis.",className:"deltaFlat"};
     if(di<p25)return{
       label:"abaixo do P25",
+      phrase:"abaixo do P25",
       detail:`A referência DI está abaixo de ${fp(p25,2)}, nível que delimita os 25% menores registros da amostra.`,
       className:"deltaDown"
     };
     if(di>p75)return{
       label:"acima do P75",
+      phrase:"acima do P75",
       detail:`A referência DI está acima de ${fp(p75,2)}, nível que delimita os 25% maiores registros da amostra.`,
       className:"deltaUp"
     };
     if(di>=med)return{
       label:"faixa central · acima da mediana",
+      phrase:"na faixa central, acima da mediana",
       detail:`A referência DI está entre a mediana ${fp(med,2)} e o P75 ${fp(p75,2)}.`,
       className:"deltaFlat"
     };
     return{
       label:"faixa central · abaixo da mediana",
+      phrase:"na faixa central, abaixo da mediana",
       detail:`A referência DI está entre o P25 ${fp(p25,2)} e a mediana ${fp(med,2)}.`,
       className:"deltaFlat"
     };
@@ -911,7 +926,7 @@
       <article><span>P75</span><strong>${fp(dist.p75_pct,2)}</strong><small>75% das janelas abaixo</small></article>
       <article><span>DI − mediana</span><strong class="${deltaClass(vsMedian)}">${fb(vsMedian)}</strong><small>referência de mercado × histórico</small></article>
       <article><span>Posição da curva DI</span><strong class="${pos.className}">${pos.label}</strong><small>${meta.label}</small></article>`;
-    reading.innerHTML=`<p class="eyebrow">LEITURA HISTÓRICA</p><p>No horizonte de <strong>${approx(du)}</strong>, a referência DI de <strong>${fp(refs?.di,2)}</strong> está <strong>${pos.label}</strong> na base <strong>${meta.label}</strong>. ${pos.detail} A amostra usa somente janelas iniciadas em ${regimeStart} ou depois. Histórico realizado não é previsão do CDI futuro.</p>`;
+    reading.innerHTML=`<p class="eyebrow">LEITURA HISTÓRICA</p><p>No horizonte de <strong>${approx(du)}</strong>, a referência DI de <strong>${fp(refs?.di,2)}</strong> está <strong>${pos.phrase||pos.label}</strong> na base <strong>${meta.label}</strong>. ${pos.detail} A amostra usa somente janelas iniciadas em ${regimeStart} ou depois. Histórico realizado não é previsão do CDI futuro.</p>`;
     return{view,dist,pos,meta,vsMedian};
   }
 
@@ -936,6 +951,7 @@
       <article><span>LCI Pré − ANBIMA</span><strong class="${deltaClass(preVsCurve)}">${fb(preVsCurve)}</strong><small>taxa/prazo; risco diferente</small></article>
       <article><span>LCI IPCA+ − real</span><strong class="${deltaClass(realVsCurve)}">${fb(realVsCurve)}</strong><small>taxa/prazo; risco diferente</small></article>`;
 
+    renderDecisionScenarioSource(d,du,refs);
     const historicalContext=renderDecisionHistory(du,refs);
 
     const decisionDiCurve=diCurveFromSnapshot(bundle.di);
@@ -988,7 +1004,7 @@
       ? `Cenário de mercado ativo: a LCI Pós usa a trajetória forward implícita do DI; CDI e IPCA equivalentes acompanham ${approx(du)} / ${du.toLocaleString("pt-BR")} DU na data ${fd(d)}.`
       : "Cenário personalizado: CDI e IPCA foram informados manualmente.";
     const historySentence=historicalContext
-      ? ` No contexto histórico de ${historicalContext.meta.label}, a referência DI está ${historicalContext.pos.label}.`
+      ? ` No contexto histórico de ${historicalContext.meta.label}, a referência DI está ${historicalContext.pos.phrase||historicalContext.pos.label}.`
       : "";
     q("rfScenarioReading").innerHTML=`<p class="eyebrow">LEITURA DO CENÁRIO</p><p>${sentencePost} ${sentenceIpca}${historySentence}</p>
       <p class="rfCaution">${modeText} A curva é referência de mercado, não previsão. Liquidez, carência, crédito, concentração, FGC e objetivo do cliente podem pesar mais que a diferença de retorno modelada.</p>`;
