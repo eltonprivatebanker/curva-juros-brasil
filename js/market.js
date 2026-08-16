@@ -825,6 +825,14 @@
 
     q("rfHorizon")?.addEventListener("change",refreshDecisionForContext);
 
+    const historyRegime=q("decisionHistoryRegime");
+    if(historyRegime){
+      if(S.cdi?.default_regime&&[...historyRegime.options].some(o=>o.value===S.cdi.default_regime)){
+        historyRegime.value=S.cdi.default_regime;
+      }
+      historyRegime.addEventListener("change",renderDecision);
+    }
+
     ["rfCdiScenario","rfIpcaScenario"].forEach(id=>{
       q(id)?.addEventListener("input",()=>{
         S.decisionMarketMode=false;
@@ -847,6 +855,66 @@
 
     updateDecisionModeUi();
   }
+  function decisionRegime(){
+    const key=q("decisionHistoryRegime")?.value||S.cdi?.default_regime||"targets";
+    const meta=S.cdi?.regimes?.[key]||{
+      label:key==="targets"?"Regime de metas":key,
+      start:key==="targets"?"1999-07-01":""
+    };
+    return{key,meta};
+  }
+  function curveHistoricalPosition(di,dist){
+    if(!Number.isFinite(di)||!dist)return{label:"sem comparação",detail:"Histórico indisponível.",className:"deltaFlat"};
+    const p25=+dist.p25_pct,med=+dist.median_pct,p75=+dist.p75_pct;
+    if(![p25,med,p75].every(Number.isFinite))return{label:"sem comparação",detail:"Quartis indisponíveis.",className:"deltaFlat"};
+    if(di<p25)return{
+      label:"abaixo do P25",
+      detail:`A referência DI está abaixo de ${fp(p25,2)}, nível que delimita os 25% menores registros da amostra.`,
+      className:"deltaDown"
+    };
+    if(di>p75)return{
+      label:"acima do P75",
+      detail:`A referência DI está acima de ${fp(p75,2)}, nível que delimita os 25% maiores registros da amostra.`,
+      className:"deltaUp"
+    };
+    if(di>=med)return{
+      label:"faixa central · acima da mediana",
+      detail:`A referência DI está entre a mediana ${fp(med,2)} e o P75 ${fp(p75,2)}.`,
+      className:"deltaFlat"
+    };
+    return{
+      label:"faixa central · abaixo da mediana",
+      detail:`A referência DI está entre o P25 ${fp(p25,2)} e a mediana ${fp(med,2)}.`,
+      className:"deltaFlat"
+    };
+  }
+  function renderDecisionHistory(du,refs){
+    const cards=q("rfHistoryCards"),reading=q("rfHistoryReading"),title=q("rfHistoryTitle");
+    if(!cards||!reading||!title)return null;
+    const {key,meta}=decisionRegime();
+    const view=cdiWindowForRegime(du,key);
+    if(!view?.latest||!view?.distribution){
+      title.textContent=`CDI realizado × curva atual · ${approx(du)}`;
+      cards.innerHTML=`<article><span>Histórico CDI</span><strong>—</strong><small>base histórica indisponível</small></article>`;
+      reading.innerHTML=`<p class="eyebrow">LEITURA HISTÓRICA</p><p>Não foi possível carregar a distribuição histórica deste horizonte.</p>`;
+      return null;
+    }
+    const latest=view.latest,dist=view.distribution;
+    const pos=curveHistoricalPosition(refs?.di,dist);
+    const vsMedian=Number.isFinite(refs?.di)&&finite(dist.median_pct)?(refs.di-(+dist.median_pct))*100:NaN;
+    const regimeStart=meta.start?fd(meta.start):"—";
+    title.textContent=`CDI realizado × curva atual · ${approx(du)} · ${du.toLocaleString("pt-BR")} DU`;
+    cards.innerHTML=`
+      <article><span>Última janela realizada</span><strong>${fp(latest.annual_equivalent_pct,2)}</strong><small>${fd(latest.start)} → ${fd(latest.end)}</small></article>
+      <article><span>P25</span><strong>${fp(dist.p25_pct,2)}</strong><small>25% das janelas abaixo</small></article>
+      <article><span>Mediana histórica</span><strong>${fp(dist.median_pct,2)}</strong><small>${Number(dist.count||0).toLocaleString("pt-BR")} janelas completas</small></article>
+      <article><span>P75</span><strong>${fp(dist.p75_pct,2)}</strong><small>75% das janelas abaixo</small></article>
+      <article><span>DI − mediana</span><strong class="${deltaClass(vsMedian)}">${fb(vsMedian)}</strong><small>referência de mercado × histórico</small></article>
+      <article><span>Posição da curva DI</span><strong class="${pos.className}">${pos.label}</strong><small>${meta.label}</small></article>`;
+    reading.innerHTML=`<p class="eyebrow">LEITURA HISTÓRICA</p><p>No horizonte de <strong>${approx(du)}</strong>, a referência DI de <strong>${fp(refs?.di,2)}</strong> está <strong>${pos.label}</strong> na base <strong>${meta.label}</strong>. ${pos.detail} A amostra usa somente janelas iniciadas em ${regimeStart} ou depois. Histórico realizado não é previsão do CDI futuro.</p>`;
+    return{view,dist,pos,meta,vsMedian};
+  }
+
   async function renderDecision(){
     if(!q("rfProductCards")||!q("decisionDate"))return;
     const d=q("decisionDate").value;if(!d)return;
@@ -867,6 +935,8 @@
       <article><span>Inflação implícita</span><strong>${fp(refs.implied)}</strong><small>curva nominal × real</small></article>
       <article><span>LCI Pré − ANBIMA</span><strong class="${deltaClass(preVsCurve)}">${fb(preVsCurve)}</strong><small>taxa/prazo; risco diferente</small></article>
       <article><span>LCI IPCA+ − real</span><strong class="${deltaClass(realVsCurve)}">${fb(realVsCurve)}</strong><small>taxa/prazo; risco diferente</small></article>`;
+
+    const historicalContext=renderDecisionHistory(du,refs);
 
     const decisionDiCurve=diCurveFromSnapshot(bundle.di);
     const pathModel=S.decisionMarketMode?pctCdiPathModel(decisionDiCurve,du,pctCdi):null;
@@ -900,9 +970,9 @@
     const ipcaPreBE=ipcaBreakeven(preRate,ipcaSpread);
     const ipcaPostBE=ipcaBreakeven(postAnnual,ipcaSpread);
     q("rfBreakevens").innerHTML=`
-      <article><span>Pós empata com Pré</span><strong>CDI médio ${fp(cdiBE,2)}</strong><small>com LCI a ${pctCdi.toLocaleString("pt-BR",{maximumFractionDigits:2})}% do CDI</small></article>
-      <article><span>IPCA+ empata com Pré</span><strong>IPCA médio ${fp(ipcaPreBE,2)}</strong><small>mantida a taxa real de ${fp(ipcaSpread,2)}</small></article>
-      <article><span>IPCA+ empata com Pós</span><strong>IPCA médio ${fp(ipcaPostBE,2)}</strong><small>considerando CDI do cenário</small></article>`;
+      <article><span>Pós empata com Pré</span><strong>CDI equivalente ${fp(cdiBE,2)}</strong><small>taxa equivalente constante de equilíbrio · LCI a ${pctCdi.toLocaleString("pt-BR",{maximumFractionDigits:2})}% do CDI</small></article>
+      <article><span>IPCA+ empata com Pré</span><strong>IPCA equivalente ${fp(ipcaPreBE,2)}</strong><small>taxa equivalente de equilíbrio · mantida a taxa real de ${fp(ipcaSpread,2)}</small></article>
+      <article><span>IPCA+ empata com Pós</span><strong>IPCA equivalente ${fp(ipcaPostBE,2)}</strong><small>taxa equivalente de equilíbrio · considerando CDI do cenário</small></article>`;
 
     const postVsPre=postFinal-preFinal,ipcaVsPre=ipcaFinal-preFinal;
     const postPremise=S.decisionMarketMode
@@ -912,12 +982,15 @@
       ? `${postPremise}, a LCI Pós modelada supera a Pré em ${fm(postVsPre)} no horizonte.`
       : `${postPremise}, a LCI Pré modelada supera a Pós em ${fm(Math.abs(postVsPre))} no horizonte.`;
     const sentenceIpca=ipcaVsPre>0
-      ? `Com IPCA médio de ${fp(ipcaScenario,2)}, a LCI IPCA+ modelada supera a Pré em ${fm(ipcaVsPre)}.`
-      : `Com IPCA médio de ${fp(ipcaScenario,2)}, a LCI Pré modelada supera a IPCA+ em ${fm(Math.abs(ipcaVsPre))}.`;
+      ? `Com IPCA equivalente de ${fp(ipcaScenario,2)}, a LCI IPCA+ modelada supera a Pré em ${fm(ipcaVsPre)}.`
+      : `Com IPCA equivalente de ${fp(ipcaScenario,2)}, a LCI Pré modelada supera a IPCA+ em ${fm(Math.abs(ipcaVsPre))}.`;
     const modeText=S.decisionMarketMode
       ? `Cenário de mercado ativo: a LCI Pós usa a trajetória forward implícita do DI; CDI e IPCA equivalentes acompanham ${approx(du)} / ${du.toLocaleString("pt-BR")} DU na data ${fd(d)}.`
       : "Cenário personalizado: CDI e IPCA foram informados manualmente.";
-    q("rfScenarioReading").innerHTML=`<p class="eyebrow">LEITURA DO CENÁRIO</p><p>${sentencePost} ${sentenceIpca}</p>
+    const historySentence=historicalContext
+      ? ` No contexto histórico de ${historicalContext.meta.label}, a referência DI está ${historicalContext.pos.label}.`
+      : "";
+    q("rfScenarioReading").innerHTML=`<p class="eyebrow">LEITURA DO CENÁRIO</p><p>${sentencePost} ${sentenceIpca}${historySentence}</p>
       <p class="rfCaution">${modeText} A curva é referência de mercado, não previsão. Liquidez, carência, crédito, concentração, FGC e objetivo do cliente podem pesar mais que a diferença de retorno modelada.</p>`;
   }
 
