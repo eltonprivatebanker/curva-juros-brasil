@@ -9,7 +9,6 @@
     { du:1260, label:"5A" },
     { du:1764, label:"7A" },
     { du:2520, label:"10A" },
-    { du:3780, label:"15A" },
   ];
   const READING_DU = [252, 504, 756, 1260, 1764, 2520];
 
@@ -37,6 +36,27 @@
     return left.rate + w*(right.rate-left.rate);
   }
 
+  function normalizeContracts(contracts) {
+    return TENORS.map(t => {
+      const rate = interpolateRate(contracts, t.du);
+      return Number.isFinite(rate)
+        ? {
+            ticker: t.label,
+            maturity: t.label,
+            business_days: t.du,
+            rate_pct: rate
+          }
+        : null;
+    }).filter(Boolean);
+  }
+
+  function normalizedSeries(series) {
+    return (series || []).map(item => ({
+      ...item,
+      contracts: normalizeContracts(item.contracts)
+    }));
+  }
+
   function regionName(du) {
     if (du <= 252) return "curto prazo";
     if (du <= 756) return "miolo da curva";
@@ -44,6 +64,7 @@
   }
 
   function buildEvolutionReading(series) {
+    series = normalizedSeries(series);
     const host = document.getElementById("evolutionReading");
     if (!host) return;
     if (!series?.length || series.length < 2) {
@@ -149,27 +170,32 @@
     if (!host) return;
     host.innerHTML = "";
 
-    const scales = buildChartScales(series, host);
+    const normalized = normalizedSeries(series);
+    const valid = normalized.filter(s => (s.contracts || []).length >= 2);
+    const scales = buildChartScales(valid, host);
     if (!scales) {
       host.innerHTML = '<div class="error">Sem dados suficientes para o gráfico histórico.</div>';
       buildEvolutionReading([]);
       return;
     }
 
+    // Os únicos X possíveis agora são 126..2520 DU.
     const svg = svgEl("svg", {
       viewBox:`0 0 ${scales.width} ${scales.height}`,
       role:"img",
-      "aria-label":"Evolução histórica da curva DI por prazo"
+      "aria-label":"Evolução histórica da curva DI normalizada de 6 meses a 10 anos"
     });
     renderEvolutionAxesV2(svg, scales);
 
-    series.forEach(item => {
+    valid.forEach(item => {
       plotSeries(svg, item.contracts, scales, {
         className:item.current ? "seriesLine current" : "seriesLine",
         stroke:item.color,
         strokeWidth:item.current ? 3.5 : 2.1,
         opacity:item.current ? 1 : .78,
-        showPoints:false
+        showPoints:true,
+        pointRadius:item.current ? 4.2 : 3.2,
+        pointClass:item.current ? "seriesPoint current" : "seriesPoint"
       });
     });
 
