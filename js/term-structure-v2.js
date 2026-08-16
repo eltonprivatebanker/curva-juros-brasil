@@ -8,7 +8,7 @@
     {du:1764,label:"7A"},
     {du:2520,label:"10A"},
   ];
-  let termViewMode = "contracts";
+  let termViewMode = "normalized";
 
   function termFlatForward(contracts,targetDu) {
     const pts=(contracts||[])
@@ -87,7 +87,9 @@
     });
 
     const ticks=[];
-    if(mode==="contracts"&&xMin<126){
+    // Só mostra o rótulo extremo inicial quando ele estiver suficientemente
+    // distante do vértice de 6M. Isso evita "12 DU / 6M" espremidos.
+    if(mode==="contracts"&&xMin<126&&(126-xMin)>180){
       ticks.push({du:xMin,label:`${Math.round(xMin)} DU`,edge:true});
     }
     TERM_TENORS.forEach(t=>{
@@ -148,20 +150,20 @@
     const closed=valid.filter(r=>r.bps<-1);
     const strongest=[...valid].sort((a,b)=>Math.abs(b.bps)-Math.abs(a.bps))[0];
 
-    let lead;
-    if(opened.length===valid.length)lead="Abertura generalizada";
-    else if(closed.length===valid.length)lead="Fechamento generalizado";
-    else if(opened.length>=Math.ceil(valid.length*.67))lead="Predomínio de abertura";
-    else if(closed.length>=Math.ceil(valid.length*.67))lead="Predomínio de fechamento";
-    else lead="Movimento misto";
+    let text;
+    if(opened.length===valid.length){
+      text=`Abertura generalizada: as taxas subiram nos ${valid.length} prazos analisados.`;
+    }else if(closed.length===valid.length){
+      text=`Fechamento generalizado: as taxas caíram nos ${valid.length} prazos analisados.`;
+    }else if(opened.length>=Math.ceil(valid.length*.67)){
+      text=`Predomínio de abertura: as taxas subiram em ${opened.length} dos ${valid.length} prazos analisados.`;
+    }else if(closed.length>=Math.ceil(valid.length*.67)){
+      text=`Predomínio de fechamento: as taxas caíram em ${closed.length} dos ${valid.length} prazos analisados.`;
+    }else{
+      text=`Movimento misto: ${opened.length} prazos abriram e ${closed.length} fecharam.`;
+    }
 
-    const detail=lead.includes("abertura")
-      ? `${opened.length} de ${valid.length} prazos normalizados estão acima da curva de comparação`
-      : lead.includes("fechamento")
-        ? `${closed.length} de ${valid.length} prazos normalizados estão abaixo da curva de comparação`
-        : `${opened.length} prazos abriram e ${closed.length} fecharam`;
-
-    host.textContent=`${lead}: ${detail}. Maior movimento em ${strongest.label}: ${fmtBp(strongest.bps)}.`;
+    host.textContent=`${text} O maior movimento ocorreu em ${strongest.label}, com ${fmtBp(strongest.bps)}.`;
   }
 
   function termPlotNormalized(svg,contracts,scales,options={}) {
