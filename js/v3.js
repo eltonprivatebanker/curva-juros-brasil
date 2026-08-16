@@ -703,24 +703,26 @@
    Juros Brasil · V3.2 — semântica educacional
    ========================================================== */
 (() => {
-  function replaceTextNodes(root, from, to) {
-    if(!root)return;
+  function replaceExactTextNodes(root, from, to) {
+    if(!root)return false;
     const walker=document.createTreeWalker(root,NodeFilter.SHOW_TEXT);
-    const nodes=[];
-    while(walker.nextNode())nodes.push(walker.currentNode);
-    nodes.forEach(n=>{
-      if((n.nodeValue||"").includes(from)){
-        n.nodeValue=n.nodeValue.split(from).join(to);
+    let changed=false;
+    while(walker.nextNode()){
+      const n=walker.currentNode;
+      const value=(n.nodeValue||"").trim();
+      if(value===from){
+        n.nodeValue=n.nodeValue.replace(from,to);
+        changed=true;
       }
-    });
+    }
+    return changed;
   }
 
   function applyEducationSemantics() {
     const legend=document.getElementById("anbimaLegend");
-    replaceTextNodes(legend,"ETTJ Pré","Juros nominais (ETTJ Pré)");
-
-    const summary=document.getElementById("v31SovMeta");
-    replaceTextNodes(summary,"Juro real","Juro real");
+    // IMPORTANT: exact-match only. The replacement itself contains "ETTJ Pré",
+    // so using includes()/split() inside a MutationObserver creates a self-triggering loop.
+    replaceExactTextNodes(legend,"ETTJ Pré","Juros nominais (ETTJ Pré)");
   }
 
   function bootV32() {
@@ -728,8 +730,8 @@
 
     const legend=document.getElementById("anbimaLegend");
     if(legend){
-      new MutationObserver(applyEducationSemantics)
-        .observe(legend,{childList:true,subtree:true,characterData:true});
+      new MutationObserver(()=>applyEducationSemantics())
+        .observe(legend,{childList:true,subtree:true});
     }
 
     document.querySelectorAll("[data-tab]").forEach(btn=>{
