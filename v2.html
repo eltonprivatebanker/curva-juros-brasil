@@ -4,9 +4,10 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <meta name="description" content="Painel didático de curva DI Futuro, movimentos em pontos-base e comparação entre pregões.">
-  <title>Juros Brasil · V2.3-B.1 Teste</title>
+  <title>Juros Brasil · V2.3-B.2 Teste</title>
   <link rel="stylesheet" href="css/style.css?v=1.2.0">
   <link rel="stylesheet" href="css/v2.css?v=2.3.0">
+  <link rel="stylesheet" href="css/evolution-v2.css?v=2.3.5">
 </head>
 <body>
   <main class="shell">
@@ -117,19 +118,24 @@
       <p class="chartNote">O eixo horizontal usa dias úteis até o vencimento; assim, contratos diferentes ficam posicionados pelo prazo real restante.</p>
     </section>
 
-    <section class="panel evolutionPanel">
-      <div class="panelHead">
+    <section class="panel evolutionPanel evolutionPanelV2">
+      <div class="panelHead evolutionHead">
         <div>
-          <p class="eyebrow">EVOLUÇÃO DA CURVA</p>
-          <h2>Curvas sobrepostas no tempo</h2>
-          <p class="sectionSubtitle">A curva selecionada é sempre exibida. Ative as janelas históricas para enxergar deslocamentos, inclinação e reprecificação da curva.</p>
+          <p class="eyebrow">EVOLUÇÃO DA CURVA DI</p>
+          <h2>Como a estrutura de juros mudou no tempo</h2>
+          <p class="sectionSubtitle">Compare a curva atual com janelas históricas e identifique deslocamentos, inclinação e reprecificação por prazo.</p>
         </div>
-        <div id="evolutionLegend" class="legend"></div>
+        <div id="evolutionLegend" class="legend evolutionLegendV2"></div>
       </div>
 
-      <div class="evoControls">
+      <div class="evolutionInsight" role="status" aria-live="polite">
+        <span>LEITURA AUTOMÁTICA</span>
+        <strong id="evolutionReading">Carregando a comparação histórica…</strong>
+      </div>
+
+      <div class="evoControls evolutionControlsV2">
         <div class="presetWrap">
-          <span class="presetLabel">Mostrar junto com a curva selecionada</span>
+          <span class="presetLabel">Comparar com</span>
           <div class="presetButtons evoButtons" id="evolutionButtons">
             <button type="button" data-evo="5d">1 semana</button>
             <button type="button" data-evo="1m">1 mês</button>
@@ -140,12 +146,17 @@
         </div>
         <div class="evoHint">
           <div id="evolutionCount" class="muted">—</div>
-          <div class="muted">Leitura visual da curva ao longo do tempo.</div>
+          <div class="muted">A curva atual permanece sempre visível.</div>
         </div>
       </div>
 
-      <div id="evolutionChart" class="chart evolutionChart" aria-label="Gráfico de evolução histórica da curva DI"></div>
-      <p class="chartNote">V1.2 usa os snapshots históricos disponíveis e sobrepõe as curvas por prazo remanescente em cada data. Numa próxima etapa, podemos acrescentar a curva normalizada por prazo constante (1 ano, 2 anos, 3 anos, 5 anos...).</p>
+      <div id="evolutionChart" class="chart evolutionChart evolutionChartV2" aria-label="Gráfico de evolução histórica da curva DI"></div>
+      <p class="chartNote">O eixo horizontal prioriza prazos em anos; o detalhe em dias úteis permanece nos tooltips dos vértices.</p>
+
+      <details class="methodologyDetails">
+        <summary>ⓘ Metodologia</summary>
+        <p>As curvas são snapshots de contratos DI1 disponíveis em cada pregão e são posicionadas pelo prazo remanescente em dias úteis. A leitura automática interpola apenas vértices padronizados dentro da área comum das curvas para resumir o deslocamento; ela é descritiva e não representa previsão.</p>
+      </details>
     </section>
 
     <section class="panel januaryPanel">
@@ -534,7 +545,7 @@
     </div>
 
     <section class="panel notePanel">
-      <p><strong>V2.3-B.1 teste:</strong> torna explícito o cenário de projeção usado na Decisão RF, mostra as fontes de CDI/IPCA e separa claramente cenário de cálculo de contexto histórico.</p>
+      <p><strong>V2.3-B.2 teste:</strong> melhora a hierarquia da Evolução da Curva DI, acrescenta leitura automática e eixo por prazos, além de disponibilizar o primeiro widget incorporável do projeto.</p>
     </section>
 
     <footer>
@@ -542,6 +553,7 @@
     </footer>
   </main>
   <script src="js/app.js?v=1.2.0" defer></script>
+  <script src="js/evolution-v2.js?v=2.3.5" defer></script>
   <script src="js/market.js?v=2.3.4" defer></script>
 </body>
 </html>
