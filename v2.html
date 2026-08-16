@@ -4,7 +4,7 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <meta name="description" content="Painel didático de curva DI Futuro, movimentos em pontos-base e comparação entre pregões.">
-  <title>Juros Brasil · V2.2.1 Teste</title>
+  <title>Juros Brasil · V2.2.2 Teste</title>
   <link rel="stylesheet" href="css/style.css?v=1.2.0">
   <link rel="stylesheet" href="css/v2.css?v=2.2.0">
 </head>
@@ -352,7 +352,7 @@
             <div class="inputSuffix"><input id="rfIpcaScenario" type="number" min="-5" max="30" step="0.01" value="5.00"><span>% a.a.</span></div>
           </label>
         </div>
-        <p class="decisionHint">O CDI e o IPCA informados são cenários médios constantes para o cálculo. “Usar cenário de mercado” preenche referências derivadas das curvas disponíveis; isso não transforma a curva em previsão.</p>
+        <p class="decisionHint">Por padrão, a ferramenta abre em cenário de mercado e acompanha automaticamente o prazo selecionado. Se CDI ou IPCA forem editados manualmente, passa para cenário personalizado. As referências de curva não são previsão.</p>
       </section>
 
       <section class="panel marketReferencePanel">
@@ -400,7 +400,7 @@
     </div>
 
     <section class="panel notePanel">
-      <p><strong>V2.2.1 teste:</strong> mantém o DI, acrescenta filtros e histórico do Tesouro Direto, interpolação flat forward e conexões Tesouro × ANBIMA por dias úteis.</p>
+      <p><strong>V2.2.2 teste:</strong> mantém o DI, acrescenta filtros e histórico do Tesouro Direto, interpolação flat forward e conexões Tesouro × ANBIMA por dias úteis.</p>
     </section>
 
     <footer>
@@ -408,6 +408,6 @@
     </footer>
   </main>
   <script src="js/app.js?v=1.2.0" defer></script>
-  <script src="js/market.js?v=2.2.1" defer></script>
+  <script src="js/market.js?v=2.2.2" defer></script>
 </body>
 </html>
