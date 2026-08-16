@@ -757,7 +757,10 @@
     if(S.di&&S.a){
       setupConnectionDates();
       setupDecisionDates();
-      renderDecision();
+      S.decisionMarketMode=true;
+      await applyMarketScenario();
+      updateDecisionModeUi();
+      await renderDecision();
     }
     fixV2Copy();
     const root=q("tab-di");if(root)new MutationObserver(fixV2Copy).observe(root,{subtree:true,childList:true,characterData:true});
