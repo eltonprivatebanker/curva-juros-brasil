@@ -1,0 +1,26 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Prévia · Widgets Curva de Juros</title>
+<style>
+:root{color-scheme:dark;font-family:Inter,system-ui,sans-serif;background:#07111f;color:#eef5ff}
+*{box-sizing:border-box}body{margin:0;padding:28px}.shell{max-width:1280px;margin:auto}
+h1{margin:0 0 5px}.sub{color:#96abc0;margin:0 0 24px}.label{font-size:11px;font-weight:800;letter-spacing:.1em;color:#69b7ff;margin:28px 0 8px}
+iframe{display:block;width:100%;border:0;border-radius:18px;background:transparent}
+.note{margin-top:20px;padding:14px;border:1px solid #223b52;border-radius:12px;color:#9db2c7;font-size:13px;line-height:1.5}
+</style>
+</head>
+<body><main class="shell">
+<h1>Widgets · Curva de Juros</h1>
+<p class="sub">Prévia pensada para a seção de indicadores do Catálogo de Fundos.</p>
+
+<p class="label">WIDGET 1 · CURVA ATUAL</p>
+<iframe src="curva-di-fundos.html" title="Curva DI atual" height="590"></iframe>
+
+<p class="label">WIDGET 2 · EVOLUÇÃO</p>
+<iframe src="evolucao-di-fundos.html" title="Evolução da Curva DI" height="520"></iframe>
+
+<div class="note">Quando estes arquivos forem hospedados dentro de <code>/widgets/</code> no projeto Curva de Juros, eles usarão automaticamente os JSONs atualizados do DI. Se abertos fora do GitHub Pages e o acesso aos dados for bloqueado, mostram uma prévia visual de fallback.</div>
+</main></body></html>

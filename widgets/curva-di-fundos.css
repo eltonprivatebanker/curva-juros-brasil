@@ -1,0 +1,80 @@
+
+:root{
+  color-scheme:dark;
+  font-family:Inter,ui-sans-serif,system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;
+  --bg:#091827;--panel:#0d2033;--panel2:#12283f;--line:#223b52;
+  --text:#f3f7fb;--muted:#9db2c7;--blue:#69b7ff;--orange:#ffb86b;
+  --cyan:#69d6e8;--gray:#8fa4bd;--green:#6ce0b7;
+}
+*{box-sizing:border-box}
+html,body{margin:0;background:transparent;color:var(--text)}
+body{padding:0}
+.widget{
+  width:100%;background:linear-gradient(180deg,#0b1c2d,#091827);
+  border:1px solid var(--line);border-radius:18px;padding:20px;overflow:hidden
+}
+.head{display:flex;align-items:flex-start;justify-content:space-between;gap:18px}
+.eyebrow{margin:0;color:var(--blue);font-size:10px;font-weight:850;letter-spacing:.12em}
+h1{margin:5px 0 4px;font-size:22px;line-height:1.15}
+.subtitle{margin:0;color:var(--muted);font-size:12px;line-height:1.45}
+.status{text-align:right;display:grid;gap:3px;flex:0 0 auto}
+.status strong{color:var(--green);font-size:11px}
+.status span{color:var(--muted);font-size:11px}
+.insight{
+  margin:14px 0 10px;padding:11px 13px;border:1px solid rgba(105,183,255,.18);
+  background:rgba(105,183,255,.045);border-radius:12px;
+  display:flex;align-items:flex-start;justify-content:space-between;gap:14px
+}
+.insightText{display:grid;gap:3px}
+.insightText span{color:var(--muted);font-size:10px;font-weight:750;letter-spacing:.06em}
+.insightText strong{font-size:13px;line-height:1.4}
+.direction{
+  flex:0 0 auto;border-radius:999px;padding:5px 8px;font-size:10px;font-weight:850;
+  border:1px solid transparent
+}
+.direction.open{color:var(--orange);background:rgba(255,184,107,.09);border-color:rgba(255,184,107,.18)}
+.direction.close{color:var(--cyan);background:rgba(105,214,232,.08);border-color:rgba(105,214,232,.18)}
+.direction.flat{color:var(--gray);background:rgba(143,164,189,.08);border-color:rgba(143,164,189,.16)}
+.legend{display:flex;justify-content:flex-end;flex-wrap:wrap;gap:8px 13px;color:var(--muted);font-size:10px;margin:7px 0}
+.legend span{display:flex;align-items:center;gap:5px}
+.legend i{width:16px;height:3px;border-radius:3px;display:inline-block}
+.legend strong{color:#e9f2fb}
+.chart{width:100%;min-height:300px;overflow:hidden}
+.chart svg{width:100%;height:auto;display:block}
+.grid{stroke:#294057;stroke-width:1;opacity:.62}
+.axis{stroke:#3b5268;stroke-width:1}
+.axisText{fill:#91a7bd;font-size:10px}
+.tenorText{fill:#a9bdd1;font-size:10px;font-weight:750}
+.curve{fill:none;stroke-linecap:round;stroke-linejoin:round}
+.empty{min-height:260px;display:grid;place-items:center;color:var(--muted);font-size:12px}
+footer{
+  border-top:1px solid rgba(255,255,255,.07);margin-top:8px;padding-top:9px;
+  display:flex;justify-content:space-between;gap:14px;color:var(--muted);font-size:10px;line-height:1.45
+}
+footer a{color:#8fc8ff;text-decoration:none}
+footer a:hover{text-decoration:underline}
+@media(max-width:720px){
+ .widget{padding:15px;border-radius:14px}.head,.insight,footer{display:block}
+ .status{text-align:left;margin-top:9px}.direction{display:inline-flex;margin-top:8px}
+ .legend{justify-content:flex-start}.chart{min-height:260px;overflow-x:auto}
+}
+
+.moves{display:grid;grid-template-columns:repeat(7,minmax(0,1fr));gap:6px;margin-top:7px}
+.move{
+  min-width:0;border:1px solid rgba(255,255,255,.065);border-radius:9px;
+  padding:8px 7px;background:rgba(255,255,255,.018);text-align:center
+}
+.move span{display:block;color:var(--muted);font-size:9px;font-weight:750}
+.move strong{display:block;margin-top:3px;font-size:11px}
+.move small{display:block;margin-top:2px;font-size:9px}
+.move small.open{color:var(--orange)}.move small.close{color:var(--cyan)}.move small.flat{color:var(--gray)}
+.fundNote{
+  margin-top:10px;padding:9px 11px;border-left:2px solid rgba(105,183,255,.45);
+  background:rgba(105,183,255,.025);display:flex;gap:7px;align-items:baseline
+}
+.fundNote strong{font-size:10px;white-space:nowrap}
+.fundNote span{color:var(--muted);font-size:10px;line-height:1.4}
+@media(max-width:720px){
+ .moves{grid-template-columns:repeat(4,minmax(0,1fr))}
+ .fundNote{display:block}.fundNote span{display:block;margin-top:4px}
+}

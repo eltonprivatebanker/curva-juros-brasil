@@ -1,0 +1,49 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="color-scheme" content="dark">
+<title>Curva DI Atual · Widget</title>
+<link rel="stylesheet" href="curva-di-fundos.css?v=1.0.0">
+</head>
+<body>
+<main class="widget" id="widget">
+  <header class="head">
+    <div>
+      <p class="eyebrow">JUROS FUTUROS · DI1</p>
+      <h1>Curva DI atual</h1>
+      <p class="subtitle">Como o mercado está precificando os juros em diferentes prazos.</p>
+    </div>
+    <div class="status">
+      <strong id="mode">carregando</strong>
+      <span id="date">—</span>
+    </div>
+  </header>
+
+  <section class="insight">
+    <div class="insightText">
+      <span>LEITURA DO ÚLTIMO PREGÃO</span>
+      <strong id="reading">Carregando dados…</strong>
+    </div>
+    <span id="direction" class="direction flat">—</span>
+  </section>
+
+  <div id="legend" class="legend"></div>
+  <div id="chart" class="chart" aria-label="Curva DI atual comparada ao pregão anterior"></div>
+
+  <section id="moves" class="moves" aria-label="Movimento por prazo"></section>
+
+  <div class="fundNote">
+    <strong>Por que isso importa para fundos?</strong>
+    <span>Aberturas e fechamentos da curva podem afetar a marcação a mercado de estratégias prefixadas e de maior duration. O efeito depende da carteira de cada fundo.</span>
+  </div>
+
+  <footer>
+    <span>Fonte: B3 · coleta e parsing via PYield · prazos normalizados por flat-forward</span>
+    <span>Curva de mercado ≠ previsão garantida.</span>
+  </footer>
+</main>
+<script src="curva-di-fundos.js?v=1.0.0" defer></script>
+</body>
+</html>
