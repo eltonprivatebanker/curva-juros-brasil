@@ -1,0 +1,41 @@
+CURVA DI · WIDGET v1.0.1 — AJUSTE DOS EIXOS
+=============================================
+
+PROBLEMA
+No canto inferior esquerdo do gráfico o menor tick do eixo Y podia ser
+desenhado abaixo da área útil do gráfico. Isso fazia o percentual, por
+exemplo "13,60%", encostar visualmente no primeiro prazo "6M".
+
+CAUSA
+niceTicks() arredondava o primeiro tick para baixo, mas a escala Y ainda
+era calculada usando o mínimo bruto da série. Assim, o tick arredondado
+podia cair fora da área de plotagem.
+
+CORREÇÃO
+- os limites do eixo Y agora usam o primeiro e o último tick calculados;
+- nenhum tick fica abaixo/acima da área útil;
+- padding inferior passou de 40 para 44 px;
+- rótulos do eixo X têm um pouco mais de respiro.
+
+ARQUIVOS A SUBSTITUIR NO REPOSITÓRIO:
+eltonprivatebanker/curva-juros-brasil
+
+PASTA:
+widgets/
+
+SUBSTITUIR:
+- widgets/curva-di-fundos.html
+- widgets/curva-di-fundos.js
+
+NÃO ALTERAR:
+- widgets/curva-di-fundos.css
+- catálogo-fundos-caixa
+- dados / robôs / workflows
+
+OBSERVAÇÃO
+O HTML foi atualizado para carregar:
+curva-di-fundos.js?v=1.0.1
+evitando cache antigo.
+
+Depois do deploy, faça Ctrl + F5 no catálogo principal.
+A correção aparecerá automaticamente porque o catálogo incorpora este widget.
