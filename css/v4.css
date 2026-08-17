@@ -1,0 +1,91 @@
+/* Juros Brasil · V4.0 — comparador líquido LCI IPCA+ × Tesouro IPCA+ */
+:root{
+  --v4-blue:#69b7ff;
+  --v4-green:#38d39f;
+  --v4-gold:#ffc96b;
+  --v4-border:rgba(255,255,255,.09);
+  --v4-soft:rgba(255,255,255,.035);
+}
+
+.v4Build{margin-left:.55rem;opacity:.62;font-size:.72rem;white-space:nowrap}
+.v4HeroBadge{display:inline-flex;align-items:center;gap:6px;padding:6px 9px;border:1px solid rgba(56,211,159,.28);border-radius:999px;background:rgba(56,211,159,.07);color:#88e7c7;font-size:.7rem;font-weight:850;letter-spacing:.05em;text-transform:uppercase}
+.v4TreasuryCompare{border-color:rgba(56,211,159,.24);background:radial-gradient(circle at 8% 0%,rgba(56,211,159,.075),transparent 30%),var(--panel,#0c1d2d)}
+.v4TreasuryCompare .panelHead{align-items:flex-start}
+.v4TreasuryCompare h2{margin-bottom:5px}
+.v4TreasuryCompare .sectionSubtitle{max-width:900px}
+
+.v4InputGrid{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:12px;margin-top:18px}
+.v4InputGrid label{display:flex;flex-direction:column;gap:7px;color:var(--muted,#9fb2c6);font-size:.75rem;font-weight:750}
+.v4InputGrid input,.v4InputGrid select{width:100%;min-height:42px;box-sizing:border-box;border:1px solid #29445d;border-radius:9px;background:#091827;color:#f2f6fb;padding:9px 10px;font:inherit;font-size:.84rem;outline:none}
+.v4InputGrid input:focus,.v4InputGrid select:focus{border-color:#5387b2;box-shadow:0 0 0 3px rgba(105,183,255,.07)}
+.v4InputGrid input[readonly]{opacity:.76;background:#0b1621;cursor:not-allowed}
+.v4InputPrefix,.v4InputSuffix{display:flex;align-items:center;border:1px solid #29445d;border-radius:9px;background:#091827;overflow:hidden}
+.v4InputPrefix:focus-within,.v4InputSuffix:focus-within{border-color:#5387b2;box-shadow:0 0 0 3px rgba(105,183,255,.07)}
+.v4InputPrefix span,.v4InputSuffix span{flex:0 0 auto;padding:0 10px;color:#8ea6bc;font-size:.72rem;white-space:nowrap}
+.v4InputPrefix input,.v4InputSuffix input{border:0;border-radius:0;background:transparent;box-shadow:none!important}
+
+.v4MarketStrip{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:9px;margin-top:16px}
+.v4MarketStrip article{padding:12px;border:1px solid var(--v4-border);border-radius:11px;background:var(--v4-soft);min-width:0}
+.v4MarketStrip span{display:block;color:#8ea6bc;font-size:.69rem;font-weight:800;text-transform:uppercase;letter-spacing:.045em}
+.v4MarketStrip strong{display:block;margin-top:6px;color:#f4f8fc;font-size:1rem;line-height:1.25;overflow-wrap:anywhere}
+.v4MarketStrip small{display:block;margin-top:5px;color:#7f95aa;font-size:.69rem;line-height:1.35}
+
+.v4ResultGrid{display:grid;grid-template-columns:1fr 1fr .82fr;gap:12px;margin-top:16px}
+.v4ResultCard{position:relative;padding:16px;border:1px solid var(--v4-border);border-radius:14px;background:rgba(255,255,255,.025);min-width:0}
+.v4ResultCard.v4Leader{border-color:rgba(56,211,159,.4);background:linear-gradient(180deg,rgba(56,211,159,.07),rgba(56,211,159,.018))}
+.v4ResultHead{display:flex;align-items:flex-start;justify-content:space-between;gap:10px}
+.v4ResultHead span{color:#8fc8ff;font-size:.72rem;font-weight:850;text-transform:uppercase;letter-spacing:.05em}
+.v4ResultHead em{font-style:normal;color:#88e7c7;font-size:.65rem;font-weight:850;text-transform:uppercase;white-space:nowrap}
+.v4Rate{display:block;margin-top:8px;color:#f2f6fb;font-size:1.16rem;line-height:1.25}
+.v4NetValue{margin-top:12px;color:#fff;font-size:1.58rem;font-weight:850;letter-spacing:-.02em}
+.v4MetaList{display:grid;grid-template-columns:1fr 1fr;gap:7px;margin-top:13px}
+.v4MetaList div{padding:8px 9px;border-radius:9px;background:rgba(255,255,255,.035)}
+.v4MetaList span{display:block;color:#8197ab;font-size:.65rem;text-transform:uppercase;letter-spacing:.035em}
+.v4MetaList b{display:block;margin-top:3px;color:#dce8f4;font-size:.78rem}
+.v4ResultCard>small{display:block;margin-top:11px;color:#8298ad;font-size:.7rem;line-height:1.45}
+
+.v4WinnerCard{display:flex;flex-direction:column;justify-content:center;text-align:center;border-color:rgba(255,201,107,.24);background:linear-gradient(180deg,rgba(255,201,107,.055),rgba(255,201,107,.012))}
+.v4WinnerCard .v4Difference{margin-top:7px;color:#fff;font-size:1.35rem;font-weight:850}
+.v4WinnerCard .v4WinnerName{margin-top:4px;color:#ffc96b;font-size:.93rem;font-weight:800}
+.v4WinnerCard .v4WinnerNote{margin-top:10px;color:#8298ad;font-size:.72rem;line-height:1.45}
+
+.v4BreakGrid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:10px;margin-top:14px}
+.v4BreakGrid article{padding:13px;border:1px solid var(--v4-border);border-radius:11px;background:rgba(255,255,255,.025)}
+.v4BreakGrid span{display:block;color:#8ea6bc;font-size:.68rem;font-weight:800;text-transform:uppercase;letter-spacing:.04em}
+.v4BreakGrid strong{display:block;margin-top:6px;color:#fff;font-size:1.04rem}
+.v4BreakGrid small{display:block;margin-top:5px;color:#7f95aa;font-size:.69rem;line-height:1.4}
+
+.v4Reading{margin-top:14px;padding:14px 15px;border:1px solid rgba(105,183,255,.15);border-radius:11px;background:rgba(105,183,255,.035);color:#b9cadb;font-size:.78rem;line-height:1.62}
+.v4Reading p{margin:0}.v4Reading p+p{margin-top:7px}.v4Reading strong{color:#f2f6fb}
+.v4Caution{color:#8fa5b9!important}
+
+.v4SensitivityWrap{margin-top:14px;overflow:auto;border:1px solid var(--v4-border);border-radius:11px}
+.v4Sensitivity{width:100%;border-collapse:collapse;min-width:660px}
+.v4Sensitivity th,.v4Sensitivity td{padding:10px 12px;border-bottom:1px solid rgba(255,255,255,.06);text-align:right;font-size:.74rem;white-space:nowrap}
+.v4Sensitivity th:first-child,.v4Sensitivity td:first-child{text-align:left}
+.v4Sensitivity th{color:#8ea6bc;background:rgba(255,255,255,.025);font-size:.66rem;text-transform:uppercase;letter-spacing:.04em}
+.v4Sensitivity td{color:#d8e4ef}.v4Sensitivity tr:last-child td{border-bottom:0}
+.v4Sensitivity tr.v4MarketRow td{background:rgba(105,183,255,.045)}
+.v4Positive{color:#88e7c7!important}.v4Negative{color:#ff9d9d!important}.v4Neutral{color:#c9d7e3!important}
+
+.v4Method{margin-top:13px}
+.v4Method summary{cursor:pointer;color:#8fc8ff;font-size:.76rem;font-weight:800}
+.v4Method p,.v4Method li{color:#8da3b7;font-size:.73rem;line-height:1.55}
+.v4Method ul{margin:8px 0 0;padding-left:18px}
+
+.v4ScenarioTabs{display:flex;gap:7px;flex-wrap:wrap;margin-top:15px;padding-bottom:12px;border-bottom:1px solid rgba(255,255,255,.07)}
+.v4ScenarioTabs button{border:1px solid #29445d;border-radius:9px;background:#0b1928;color:#9fb2c6;padding:8px 11px;font:inherit;font-size:.75rem;font-weight:800;cursor:pointer}
+.v4ScenarioTabs button.active{border-color:rgba(56,211,159,.38);background:rgba(56,211,159,.09);color:#dffff4}
+.v4LegacyDecisionHidden{display:none!important}
+
+@media(max-width:1050px){
+  .v4InputGrid{grid-template-columns:repeat(2,minmax(0,1fr))}
+  .v4MarketStrip{grid-template-columns:repeat(3,minmax(0,1fr))}
+  .v4ResultGrid{grid-template-columns:1fr 1fr}.v4WinnerCard{grid-column:1/-1}
+}
+@media(max-width:700px){
+  .v4InputGrid,.v4ResultGrid,.v4BreakGrid,.v4MarketStrip{grid-template-columns:1fr}
+  .v4WinnerCard{grid-column:auto}
+  .v4MetaList{grid-template-columns:1fr}
+  .v4TreasuryCompare .panelHead{gap:10px}
+}
