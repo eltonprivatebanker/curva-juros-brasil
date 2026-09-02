@@ -2,7 +2,7 @@
   "schema_version": 1,
   "mode": "live",
   "source": "B3 (coleta e parsing via PYield)",
-  "latest": "2026-08-28",
+  "latest": "2026-08-31",
   "entries": [
     {
       "date": "2026-01-02",
@@ -827,6 +827,11 @@
     {
       "date": "2026-08-28",
       "path": "data/snapshots/2026-08-28.json",
+      "demo": false
+    },
+    {
+      "date": "2026-08-31",
+      "path": "data/snapshots/2026-08-31.json",
       "demo": false
     }
   ]
