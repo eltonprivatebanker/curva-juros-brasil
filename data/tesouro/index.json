@@ -2,7 +2,7 @@
   "schema_version": 2,
   "mode": "live",
   "source": "Tesouro Nacional · Tesouro Transparente",
-  "latest": "2026-09-04",
+  "latest": "2026-09-08",
   "entries": [
     {
       "date": "2026-01-02",
@@ -837,6 +837,11 @@
     {
       "date": "2026-09-04",
       "path": "data/tesouro/2026-09-04.json",
+      "schema_version": 2
+    },
+    {
+      "date": "2026-09-08",
+      "path": "data/tesouro/2026-09-08.json",
       "schema_version": 2
     }
   ]
