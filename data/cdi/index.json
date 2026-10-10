@@ -30,12 +30,12 @@
       "description": "Janelas iniciadas a partir de janeiro de 2005."
     }
   },
-  "generated_at": "2026-10-09T06:37:38-03:00",
+  "generated_at": "2026-10-10T05:59:16-03:00",
   "history_start": "1986-03-06",
-  "history_end": "2026-10-07",
-  "observations": 10157,
+  "history_end": "2026-10-08",
+  "observations": 10158,
   "latest_daily": {
-    "date": "2026-10-07",
+    "date": "2026-10-08",
     "daily_pct": 0.050788,
     "annualized_252_pct": 13.649989
   },
@@ -44,20 +44,20 @@
       "label": "6M",
       "business_days": 126,
       "latest": {
-        "start": "2026-04-09",
-        "end": "2026-10-07",
+        "start": "2026-04-10",
+        "end": "2026-10-08",
         "business_days": 126,
-        "accumulated_pct": 6.842681,
-        "annual_equivalent_pct": 14.153585
+        "accumulated_pct": 6.838967,
+        "annual_equivalent_pct": 14.145649
       },
       "distribution": {
-        "count": 10032,
+        "count": 10033,
         "min_pct": 1.899941,
-        "p25_pct": 10.97916,
-        "median_pct": 14.903522,
-        "p75_pct": 32.480245,
+        "p25_pct": 10.979425,
+        "median_pct": 14.899981,
+        "p75_pct": 32.465659,
         "max_pct": 32326.63686,
-        "mean_pct": 522.049474
+        "mean_pct": 521.998851
       },
       "series": [
         {
@@ -1973,27 +1973,27 @@
           "annual_equivalent_pct": 14.264748
         },
         {
-          "date": "2026-10-07",
-          "annual_equivalent_pct": 14.153585
+          "date": "2026-10-08",
+          "annual_equivalent_pct": 14.145649
         }
       ],
       "regimes": {
         "full": {
           "latest": {
-            "start": "2026-04-09",
-            "end": "2026-10-07",
+            "start": "2026-04-10",
+            "end": "2026-10-08",
             "business_days": 126,
-            "accumulated_pct": 6.842681,
-            "annual_equivalent_pct": 14.153585
+            "accumulated_pct": 6.838967,
+            "annual_equivalent_pct": 14.145649
           },
           "distribution": {
-            "count": 10032,
+            "count": 10033,
             "min_pct": 1.899941,
-            "p25_pct": 10.97916,
-            "median_pct": 14.903522,
-            "p75_pct": 32.480245,
+            "p25_pct": 10.979425,
+            "median_pct": 14.899981,
+            "p75_pct": 32.465659,
             "max_pct": 32326.63686,
-            "mean_pct": 522.049474
+            "mean_pct": 521.998851
           },
           "series": [
             {
@@ -3909,27 +3909,27 @@
               "annual_equivalent_pct": 14.264748
             },
             {
-              "date": "2026-10-07",
-              "annual_equivalent_pct": 14.153585
+              "date": "2026-10-08",
+              "annual_equivalent_pct": 14.145649
             }
           ]
         },
         "real": {
           "latest": {
-            "start": "2026-04-09",
-            "end": "2026-10-07",
+            "start": "2026-04-10",
+            "end": "2026-10-08",
             "business_days": 126,
-            "accumulated_pct": 6.842681,
-            "annual_equivalent_pct": 14.153585
+            "accumulated_pct": 6.838967,
+            "annual_equivalent_pct": 14.145649
           },
           "distribution": {
-            "count": 7974,
+            "count": 7975,
             "min_pct": 1.899941,
-            "p25_pct": 10.295182,
-            "median_pct": 13.411165,
-            "p75_pct": 18.578528,
+            "p25_pct": 10.296506,
+            "median_pct": 13.41135,
+            "p75_pct": 18.577919,
             "max_pct": 67.721974,
-            "mean_pct": 15.76837
+            "mean_pct": 15.768167
           },
           "series": [
             {
@@ -5453,27 +5453,27 @@
               "annual_equivalent_pct": 14.264748
             },
             {
-              "date": "2026-10-07",
-              "annual_equivalent_pct": 14.153585
+              "date": "2026-10-08",
+              "annual_equivalent_pct": 14.145649
             }
           ]
         },
         "targets": {
           "latest": {
-            "start": "2026-04-09",
-            "end": "2026-10-07",
+            "start": "2026-04-10",
+            "end": "2026-10-08",
             "business_days": 126,
-            "accumulated_pct": 6.842681,
-            "annual_equivalent_pct": 14.153585
+            "accumulated_pct": 6.838967,
+            "annual_equivalent_pct": 14.145649
           },
           "distribution": {
-            "count": 6726,
+            "count": 6727,
             "min_pct": 1.899941,
-            "p25_pct": 9.19214,
-            "median_pct": 12.175458,
-            "p75_pct": 15.433609,
+            "p25_pct": 9.195032,
+            "median_pct": 12.176751,
+            "p75_pct": 15.427392,
             "max_pct": 25.942417,
-            "mean_pct": 12.356461
+            "mean_pct": 12.356726
           },
           "series": [
             {
@@ -6761,27 +6761,27 @@
               "annual_equivalent_pct": 14.193274
             },
             {
-              "date": "2026-10-07",
-              "annual_equivalent_pct": 14.153585
+              "date": "2026-10-08",
+              "annual_equivalent_pct": 14.145649
             }
           ]
         },
         "recent": {
           "latest": {
-            "start": "2026-04-09",
-            "end": "2026-10-07",
+            "start": "2026-04-10",
+            "end": "2026-10-08",
             "business_days": 126,
-            "accumulated_pct": 6.842681,
-            "annual_equivalent_pct": 14.153585
+            "accumulated_pct": 6.838967,
+            "annual_equivalent_pct": 14.145649
           },
           "distribution": {
-            "count": 5340,
+            "count": 5341,
             "min_pct": 1.899941,
-            "p25_pct": 8.304738,
-            "median_pct": 11.160597,
-            "p75_pct": 13.443633,
+            "p25_pct": 8.305382,
+            "median_pct": 11.160887,
+            "p75_pct": 13.444315,
             "max_pct": 19.613155,
-            "mean_pct": 10.71649
+            "mean_pct": 10.717132
           },
           "series": [
             {
@@ -7805,8 +7805,8 @@
               "annual_equivalent_pct": 14.193274
             },
             {
-              "date": "2026-10-07",
-              "annual_equivalent_pct": 14.153585
+              "date": "2026-10-08",
+              "annual_equivalent_pct": 14.145649
             }
           ]
         }
@@ -7816,20 +7816,20 @@
       "label": "1A",
       "business_days": 252,
       "latest": {
-        "start": "2025-10-07",
-        "end": "2026-10-07",
+        "start": "2025-10-08",
+        "end": "2026-10-08",
         "business_days": 252,
-        "accumulated_pct": 14.512314,
-        "annual_equivalent_pct": 14.512314
+        "accumulated_pct": 14.507344,
+        "annual_equivalent_pct": 14.507344
       },
       "distribution": {
-        "count": 9906,
+        "count": 9907,
         "min_pct": 2.159163,
-        "p25_pct": 11.058953,
-        "median_pct": 15.017393,
-        "p75_pct": 30.701677,
+        "p25_pct": 11.059277,
+        "median_pct": 15.007987,
+        "p75_pct": 30.69326,
         "max_pct": 6611.09324,
-        "mean_pct": 372.67574
+        "mean_pct": 372.639587
       },
       "series": [
         {
@@ -9721,27 +9721,27 @@
           "annual_equivalent_pct": 14.581925
         },
         {
-          "date": "2026-10-07",
-          "annual_equivalent_pct": 14.512314
+          "date": "2026-10-08",
+          "annual_equivalent_pct": 14.507344
         }
       ],
       "regimes": {
         "full": {
           "latest": {
-            "start": "2025-10-07",
-            "end": "2026-10-07",
+            "start": "2025-10-08",
+            "end": "2026-10-08",
             "business_days": 252,
-            "accumulated_pct": 14.512314,
-            "annual_equivalent_pct": 14.512314
+            "accumulated_pct": 14.507344,
+            "annual_equivalent_pct": 14.507344
           },
           "distribution": {
-            "count": 9906,
+            "count": 9907,
             "min_pct": 2.159163,
-            "p25_pct": 11.058953,
-            "median_pct": 15.017393,
-            "p75_pct": 30.701677,
+            "p25_pct": 11.059277,
+            "median_pct": 15.007987,
+            "p75_pct": 30.69326,
             "max_pct": 6611.09324,
-            "mean_pct": 372.67574
+            "mean_pct": 372.639587
           },
           "series": [
             {
@@ -11633,27 +11633,27 @@
               "annual_equivalent_pct": 14.581925
             },
             {
-              "date": "2026-10-07",
-              "annual_equivalent_pct": 14.512314
+              "date": "2026-10-08",
+              "annual_equivalent_pct": 14.507344
             }
           ]
         },
         "real": {
           "latest": {
-            "start": "2025-10-07",
-            "end": "2026-10-07",
+            "start": "2025-10-08",
+            "end": "2026-10-08",
             "business_days": 252,
-            "accumulated_pct": 14.512314,
-            "annual_equivalent_pct": 14.512314
+            "accumulated_pct": 14.507344,
+            "annual_equivalent_pct": 14.507344
           },
           "distribution": {
-            "count": 7848,
+            "count": 7849,
             "min_pct": 2.159163,
-            "p25_pct": 10.076544,
-            "median_pct": 13.054549,
-            "p75_pct": 18.491872,
+            "p25_pct": 10.077895,
+            "median_pct": 13.054804,
+            "p75_pct": 18.491688,
             "max_pct": 64.305682,
-            "mean_pct": 15.412087
+            "mean_pct": 15.411972
           },
           "series": [
             {
@@ -13153,27 +13153,27 @@
               "annual_equivalent_pct": 14.581925
             },
             {
-              "date": "2026-10-07",
-              "annual_equivalent_pct": 14.512314
+              "date": "2026-10-08",
+              "annual_equivalent_pct": 14.507344
             }
           ]
         },
         "targets": {
           "latest": {
-            "start": "2025-10-07",
-            "end": "2026-10-07",
+            "start": "2025-10-08",
+            "end": "2026-10-08",
             "business_days": 252,
-            "accumulated_pct": 14.512314,
-            "annual_equivalent_pct": 14.512314
+            "accumulated_pct": 14.507344,
+            "annual_equivalent_pct": 14.507344
           },
           "distribution": {
-            "count": 6600,
+            "count": 6601,
             "min_pct": 2.159163,
-            "p25_pct": 9.267557,
-            "median_pct": 11.996624,
-            "p75_pct": 14.956188,
+            "p25_pct": 9.267951,
+            "median_pct": 11.997287,
+            "p75_pct": 14.951487,
             "max_pct": 24.021344,
-            "mean_pct": 12.268743
+            "mean_pct": 12.269083
           },
           "series": [
             {
@@ -14437,27 +14437,27 @@
               "annual_equivalent_pct": 14.53717
             },
             {
-              "date": "2026-10-07",
-              "annual_equivalent_pct": 14.512314
+              "date": "2026-10-08",
+              "annual_equivalent_pct": 14.507344
             }
           ]
         },
         "recent": {
           "latest": {
-            "start": "2025-10-07",
-            "end": "2026-10-07",
+            "start": "2025-10-08",
+            "end": "2026-10-08",
             "business_days": 252,
-            "accumulated_pct": 14.512314,
-            "annual_equivalent_pct": 14.512314
+            "accumulated_pct": 14.507344,
+            "annual_equivalent_pct": 14.507344
           },
           "distribution": {
-            "count": 5214,
+            "count": 5215,
             "min_pct": 2.159163,
-            "p25_pct": 8.285208,
-            "median_pct": 11.257579,
-            "p75_pct": 13.025414,
+            "p25_pct": 8.285701,
+            "median_pct": 11.258125,
+            "p75_pct": 13.026519,
             "max_pct": 19.086297,
-            "mean_pct": 10.560695
+            "mean_pct": 10.561452
           },
           "series": [
             {
@@ -15457,8 +15457,8 @@
               "annual_equivalent_pct": 14.53717
             },
             {
-              "date": "2026-10-07",
-              "annual_equivalent_pct": 14.512314
+              "date": "2026-10-08",
+              "annual_equivalent_pct": 14.507344
             }
           ]
         }
@@ -15468,20 +15468,20 @@
       "label": "2A",
       "business_days": 504,
       "latest": {
-        "start": "2024-10-04",
-        "end": "2026-10-07",
+        "start": "2024-10-07",
+        "end": "2026-10-08",
         "business_days": 504,
-        "accumulated_pct": 29.889361,
-        "annual_equivalent_pct": 13.969014
+        "accumulated_pct": 29.90315,
+        "annual_equivalent_pct": 13.975063
       },
       "distribution": {
-        "count": 9654,
+        "count": 9655,
         "min_pct": 3.276957,
-        "p25_pct": 10.702972,
-        "median_pct": 15.354676,
-        "p75_pct": 29.019431,
+        "p25_pct": 10.703753,
+        "median_pct": 15.346412,
+        "p75_pct": 29.019233,
         "max_pct": 3614.472865,
-        "mean_pct": 305.423741
+        "mean_pct": 305.393555
       },
       "series": [
         {
@@ -17325,27 +17325,27 @@
           "annual_equivalent_pct": 13.882826
         },
         {
-          "date": "2026-10-07",
-          "annual_equivalent_pct": 13.969014
+          "date": "2026-10-08",
+          "annual_equivalent_pct": 13.975063
         }
       ],
       "regimes": {
         "full": {
           "latest": {
-            "start": "2024-10-04",
-            "end": "2026-10-07",
+            "start": "2024-10-07",
+            "end": "2026-10-08",
             "business_days": 504,
-            "accumulated_pct": 29.889361,
-            "annual_equivalent_pct": 13.969014
+            "accumulated_pct": 29.90315,
+            "annual_equivalent_pct": 13.975063
           },
           "distribution": {
-            "count": 9654,
+            "count": 9655,
             "min_pct": 3.276957,
-            "p25_pct": 10.702972,
-            "median_pct": 15.354676,
-            "p75_pct": 29.019431,
+            "p25_pct": 10.703753,
+            "median_pct": 15.346412,
+            "p75_pct": 29.019233,
             "max_pct": 3614.472865,
-            "mean_pct": 305.423741
+            "mean_pct": 305.393555
           },
           "series": [
             {
@@ -19189,27 +19189,27 @@
               "annual_equivalent_pct": 13.882826
             },
             {
-              "date": "2026-10-07",
-              "annual_equivalent_pct": 13.969014
+              "date": "2026-10-08",
+              "annual_equivalent_pct": 13.975063
             }
           ]
         },
         "real": {
           "latest": {
-            "start": "2024-10-04",
-            "end": "2026-10-07",
+            "start": "2024-10-07",
+            "end": "2026-10-08",
             "business_days": 504,
-            "accumulated_pct": 29.889361,
-            "annual_equivalent_pct": 13.969014
+            "accumulated_pct": 29.90315,
+            "annual_equivalent_pct": 13.975063
           },
           "distribution": {
-            "count": 7596,
+            "count": 7597,
             "min_pct": 3.276957,
-            "p25_pct": 9.991463,
-            "median_pct": 12.490359,
-            "p75_pct": 17.795989,
+            "p25_pct": 9.9916,
+            "median_pct": 12.49182,
+            "p75_pct": 17.794746,
             "max_pct": 50.554165,
-            "mean_pct": 14.779525
+            "mean_pct": 14.779419
           },
           "series": [
             {
@@ -20661,27 +20661,27 @@
               "annual_equivalent_pct": 13.882826
             },
             {
-              "date": "2026-10-07",
-              "annual_equivalent_pct": 13.969014
+              "date": "2026-10-08",
+              "annual_equivalent_pct": 13.975063
             }
           ]
         },
         "targets": {
           "latest": {
-            "start": "2024-10-04",
-            "end": "2026-10-07",
+            "start": "2024-10-07",
+            "end": "2026-10-08",
             "business_days": 504,
-            "accumulated_pct": 29.889361,
-            "annual_equivalent_pct": 13.969014
+            "accumulated_pct": 29.90315,
+            "annual_equivalent_pct": 13.975063
           },
           "distribution": {
-            "count": 6348,
+            "count": 6349,
             "min_pct": 3.276957,
-            "p25_pct": 9.493072,
-            "median_pct": 11.972761,
-            "p75_pct": 14.262834,
+            "p25_pct": 9.494001,
+            "median_pct": 11.972854,
+            "p75_pct": 14.258775,
             "max_pct": 21.214096,
-            "mean_pct": 12.111361
+            "mean_pct": 12.111654
           },
           "series": [
             {
@@ -21897,27 +21897,27 @@
               "annual_equivalent_pct": 13.938773
             },
             {
-              "date": "2026-10-07",
-              "annual_equivalent_pct": 13.969014
+              "date": "2026-10-08",
+              "annual_equivalent_pct": 13.975063
             }
           ]
         },
         "recent": {
           "latest": {
-            "start": "2024-10-04",
-            "end": "2026-10-07",
+            "start": "2024-10-07",
+            "end": "2026-10-08",
             "business_days": 504,
-            "accumulated_pct": 29.889361,
-            "annual_equivalent_pct": 13.969014
+            "accumulated_pct": 29.90315,
+            "annual_equivalent_pct": 13.975063
           },
           "distribution": {
-            "count": 4962,
+            "count": 4963,
             "min_pct": 3.276957,
-            "p25_pct": 8.537396,
-            "median_pct": 10.78415,
-            "p75_pct": 12.392398,
+            "p25_pct": 8.53796,
+            "median_pct": 10.78437,
+            "p75_pct": 12.393172,
             "max_pct": 17.111372,
-            "mean_pct": 10.272249
+            "mean_pct": 10.272996
           },
           "series": [
             {
@@ -22869,8 +22869,8 @@
               "annual_equivalent_pct": 13.938773
             },
             {
-              "date": "2026-10-07",
-              "annual_equivalent_pct": 13.969014
+              "date": "2026-10-08",
+              "annual_equivalent_pct": 13.975063
             }
           ]
         }
@@ -22880,20 +22880,20 @@
       "label": "3A",
       "business_days": 756,
       "latest": {
-        "start": "2023-10-04",
-        "end": "2026-10-07",
+        "start": "2023-10-05",
+        "end": "2026-10-08",
         "business_days": 756,
-        "accumulated_pct": 44.275962,
-        "annual_equivalent_pct": 12.996414
+        "accumulated_pct": 44.281022,
+        "annual_equivalent_pct": 12.997735
       },
       "distribution": {
-        "count": 9402,
+        "count": 9403,
         "min_pct": 4.275809,
-        "p25_pct": 10.54235,
-        "median_pct": 15.264412,
-        "p75_pct": 27.569269,
+        "p25_pct": 10.542674,
+        "median_pct": 15.259999,
+        "p75_pct": 27.563491,
         "max_pct": 2526.86572,
-        "mean_pct": 271.296297
+        "mean_pct": 271.268827
       },
       "series": [
         {
@@ -24689,27 +24689,27 @@
           "annual_equivalent_pct": 12.981229
         },
         {
-          "date": "2026-10-07",
-          "annual_equivalent_pct": 12.996414
+          "date": "2026-10-08",
+          "annual_equivalent_pct": 12.997735
         }
       ],
       "regimes": {
         "full": {
           "latest": {
-            "start": "2023-10-04",
-            "end": "2026-10-07",
+            "start": "2023-10-05",
+            "end": "2026-10-08",
             "business_days": 756,
-            "accumulated_pct": 44.275962,
-            "annual_equivalent_pct": 12.996414
+            "accumulated_pct": 44.281022,
+            "annual_equivalent_pct": 12.997735
           },
           "distribution": {
-            "count": 9402,
+            "count": 9403,
             "min_pct": 4.275809,
-            "p25_pct": 10.54235,
-            "median_pct": 15.264412,
-            "p75_pct": 27.569269,
+            "p25_pct": 10.542674,
+            "median_pct": 15.259999,
+            "p75_pct": 27.563491,
             "max_pct": 2526.86572,
-            "mean_pct": 271.296297
+            "mean_pct": 271.268827
           },
           "series": [
             {
@@ -26505,27 +26505,27 @@
               "annual_equivalent_pct": 12.981229
             },
             {
-              "date": "2026-10-07",
-              "annual_equivalent_pct": 12.996414
+              "date": "2026-10-08",
+              "annual_equivalent_pct": 12.997735
             }
           ]
         },
         "real": {
           "latest": {
-            "start": "2023-10-04",
-            "end": "2026-10-07",
+            "start": "2023-10-05",
+            "end": "2026-10-08",
             "business_days": 756,
-            "accumulated_pct": 44.275962,
-            "annual_equivalent_pct": 12.996414
+            "accumulated_pct": 44.281022,
+            "annual_equivalent_pct": 12.997735
           },
           "distribution": {
-            "count": 7344,
+            "count": 7345,
             "min_pct": 4.275809,
-            "p25_pct": 9.841266,
-            "median_pct": 12.412236,
-            "p75_pct": 19.124206,
+            "p25_pct": 9.841382,
+            "median_pct": 12.412513,
+            "p75_pct": 19.123736,
             "max_pct": 40.834778,
-            "mean_pct": 14.436029
+            "mean_pct": 14.435833
           },
           "series": [
             {
@@ -27929,27 +27929,27 @@
               "annual_equivalent_pct": 12.981229
             },
             {
-              "date": "2026-10-07",
-              "annual_equivalent_pct": 12.996414
+              "date": "2026-10-08",
+              "annual_equivalent_pct": 12.997735
             }
           ]
         },
         "targets": {
           "latest": {
-            "start": "2023-10-04",
-            "end": "2026-10-07",
+            "start": "2023-10-05",
+            "end": "2026-10-08",
             "business_days": 756,
-            "accumulated_pct": 44.275962,
-            "annual_equivalent_pct": 12.996414
+            "accumulated_pct": 44.281022,
+            "annual_equivalent_pct": 12.997735
           },
           "distribution": {
-            "count": 6096,
+            "count": 6097,
             "min_pct": 4.275809,
-            "p25_pct": 9.400442,
-            "median_pct": 11.30461,
-            "p75_pct": 13.97015,
+            "p25_pct": 9.400729,
+            "median_pct": 11.304862,
+            "p75_pct": 13.967926,
             "max_pct": 19.935864,
-            "mean_pct": 11.982143
+            "mean_pct": 11.98231
           },
           "series": [
             {
@@ -29117,27 +29117,27 @@
               "annual_equivalent_pct": 12.989809
             },
             {
-              "date": "2026-10-07",
-              "annual_equivalent_pct": 12.996414
+              "date": "2026-10-08",
+              "annual_equivalent_pct": 12.997735
             }
           ]
         },
         "recent": {
           "latest": {
-            "start": "2023-10-04",
-            "end": "2026-10-07",
+            "start": "2023-10-05",
+            "end": "2026-10-08",
             "business_days": 756,
-            "accumulated_pct": 44.275962,
-            "annual_equivalent_pct": 12.996414
+            "accumulated_pct": 44.281022,
+            "annual_equivalent_pct": 12.997735
           },
           "distribution": {
-            "count": 4710,
+            "count": 4711,
             "min_pct": 4.275809,
-            "p25_pct": 9.091805,
-            "median_pct": 10.550392,
-            "p75_pct": 12.209176,
+            "p25_pct": 9.09183,
+            "median_pct": 10.551459,
+            "p75_pct": 12.209836,
             "max_pct": 15.339625,
-            "mean_pct": 10.081904
+            "mean_pct": 10.082523
           },
           "series": [
             {
@@ -30041,8 +30041,8 @@
               "annual_equivalent_pct": 12.989809
             },
             {
-              "date": "2026-10-07",
-              "annual_equivalent_pct": 12.996414
+              "date": "2026-10-08",
+              "annual_equivalent_pct": 12.997735
             }
           ]
         }
@@ -30052,20 +30052,20 @@
       "label": "5A",
       "business_days": 1260,
       "latest": {
-        "start": "2021-10-01",
-        "end": "2026-10-07",
+        "start": "2021-10-04",
+        "end": "2026-10-08",
         "business_days": 1260,
-        "accumulated_pct": 81.719338,
-        "annual_equivalent_pct": 12.688664
+        "accumulated_pct": 81.768574,
+        "annual_equivalent_pct": 12.69477
       },
       "distribution": {
-        "count": 8898,
+        "count": 8899,
         "min_pct": 5.810172,
-        "p25_pct": 10.327253,
-        "median_pct": 14.878091,
-        "p75_pct": 30.406673,
+        "p25_pct": 10.327459,
+        "median_pct": 14.876991,
+        "p75_pct": 30.402004,
         "max_pct": 2169.128729,
-        "mean_pct": 225.204646
+        "mean_pct": 225.180766
       },
       "series": [
         {
@@ -31765,27 +31765,27 @@
           "annual_equivalent_pct": 12.59645
         },
         {
-          "date": "2026-10-07",
-          "annual_equivalent_pct": 12.688664
+          "date": "2026-10-08",
+          "annual_equivalent_pct": 12.69477
         }
       ],
       "regimes": {
         "full": {
           "latest": {
-            "start": "2021-10-01",
-            "end": "2026-10-07",
+            "start": "2021-10-04",
+            "end": "2026-10-08",
             "business_days": 1260,
-            "accumulated_pct": 81.719338,
-            "annual_equivalent_pct": 12.688664
+            "accumulated_pct": 81.768574,
+            "annual_equivalent_pct": 12.69477
           },
           "distribution": {
-            "count": 8898,
+            "count": 8899,
             "min_pct": 5.810172,
-            "p25_pct": 10.327253,
-            "median_pct": 14.878091,
-            "p75_pct": 30.406673,
+            "p25_pct": 10.327459,
+            "median_pct": 14.876991,
+            "p75_pct": 30.402004,
             "max_pct": 2169.128729,
-            "mean_pct": 225.204646
+            "mean_pct": 225.180766
           },
           "series": [
             {
@@ -33485,27 +33485,27 @@
               "annual_equivalent_pct": 12.59645
             },
             {
-              "date": "2026-10-07",
-              "annual_equivalent_pct": 12.688664
+              "date": "2026-10-08",
+              "annual_equivalent_pct": 12.69477
             }
           ]
         },
         "real": {
           "latest": {
-            "start": "2021-10-01",
-            "end": "2026-10-07",
+            "start": "2021-10-04",
+            "end": "2026-10-08",
             "business_days": 1260,
-            "accumulated_pct": 81.719338,
-            "annual_equivalent_pct": 12.688664
+            "accumulated_pct": 81.768574,
+            "annual_equivalent_pct": 12.69477
           },
           "distribution": {
-            "count": 6840,
+            "count": 6841,
             "min_pct": 5.810172,
-            "p25_pct": 9.78018,
-            "median_pct": 11.186416,
-            "p75_pct": 18.657737,
+            "p25_pct": 9.780613,
+            "median_pct": 11.186457,
+            "p75_pct": 18.657515,
             "max_pct": 36.009723,
-            "mean_pct": 13.911841
+            "mean_pct": 13.911663
           },
           "series": [
             {
@@ -34813,27 +34813,27 @@
               "annual_equivalent_pct": 12.59645
             },
             {
-              "date": "2026-10-07",
-              "annual_equivalent_pct": 12.688664
+              "date": "2026-10-08",
+              "annual_equivalent_pct": 12.69477
             }
           ]
         },
         "targets": {
           "latest": {
-            "start": "2021-10-01",
-            "end": "2026-10-07",
+            "start": "2021-10-04",
+            "end": "2026-10-08",
             "business_days": 1260,
-            "accumulated_pct": 81.719338,
-            "annual_equivalent_pct": 12.688664
+            "accumulated_pct": 81.768574,
+            "annual_equivalent_pct": 12.69477
           },
           "distribution": {
-            "count": 5592,
+            "count": 5593,
             "min_pct": 5.810172,
-            "p25_pct": 9.497855,
-            "median_pct": 10.802988,
-            "p75_pct": 13.53599,
+            "p25_pct": 9.498008,
+            "median_pct": 10.803214,
+            "p75_pct": 13.534176,
             "max_pct": 19.054991,
-            "mean_pct": 11.610386
+            "mean_pct": 11.610579
           },
           "series": [
             {
@@ -35905,27 +35905,27 @@
               "annual_equivalent_pct": 12.658139
             },
             {
-              "date": "2026-10-07",
-              "annual_equivalent_pct": 12.688664
+              "date": "2026-10-08",
+              "annual_equivalent_pct": 12.69477
             }
           ]
         },
         "recent": {
           "latest": {
-            "start": "2021-10-01",
-            "end": "2026-10-07",
+            "start": "2021-10-04",
+            "end": "2026-10-08",
             "business_days": 1260,
-            "accumulated_pct": 81.719338,
-            "annual_equivalent_pct": 12.688664
+            "accumulated_pct": 81.768574,
+            "annual_equivalent_pct": 12.69477
           },
           "distribution": {
-            "count": 4206,
+            "count": 4207,
             "min_pct": 5.810172,
-            "p25_pct": 8.503781,
-            "median_pct": 10.20518,
-            "p75_pct": 11.063421,
+            "p25_pct": 8.503842,
+            "median_pct": 10.206058,
+            "p75_pct": 11.063885,
             "max_pct": 13.621235,
-            "mean_pct": 9.747312
+            "mean_pct": 9.748013
           },
           "series": [
             {
@@ -36733,8 +36733,8 @@
               "annual_equivalent_pct": 12.658139
             },
             {
-              "date": "2026-10-07",
-              "annual_equivalent_pct": 12.688664
+              "date": "2026-10-08",
+              "annual_equivalent_pct": 12.69477
             }
           ]
         }
@@ -36744,20 +36744,20 @@
       "label": "7A",
       "business_days": 1764,
       "latest": {
-        "start": "2019-09-30",
-        "end": "2026-10-07",
+        "start": "2019-10-01",
+        "end": "2026-10-08",
         "business_days": 1764,
-        "accumulated_pct": 93.856939,
-        "annual_equivalent_pct": 9.917987
+        "accumulated_pct": 93.914921,
+        "annual_equivalent_pct": 9.922683
       },
       "distribution": {
-        "count": 8394,
+        "count": 8395,
         "min_pct": 7.777455,
-        "p25_pct": 10.135891,
-        "median_pct": 15.222729,
-        "p75_pct": 29.081081,
+        "p25_pct": 10.13573,
+        "median_pct": 15.218186,
+        "p75_pct": 29.076194,
         "max_pct": 1582.963071,
-        "mean_pct": 182.805121
+        "mean_pct": 182.784527
       },
       "series": [
         {
@@ -38361,27 +38361,27 @@
           "annual_equivalent_pct": 9.854327
         },
         {
-          "date": "2026-10-07",
-          "annual_equivalent_pct": 9.917987
+          "date": "2026-10-08",
+          "annual_equivalent_pct": 9.922683
         }
       ],
       "regimes": {
         "full": {
           "latest": {
-            "start": "2019-09-30",
-            "end": "2026-10-07",
+            "start": "2019-10-01",
+            "end": "2026-10-08",
             "business_days": 1764,
-            "accumulated_pct": 93.856939,
-            "annual_equivalent_pct": 9.917987
+            "accumulated_pct": 93.914921,
+            "annual_equivalent_pct": 9.922683
           },
           "distribution": {
-            "count": 8394,
+            "count": 8395,
             "min_pct": 7.777455,
-            "p25_pct": 10.135891,
-            "median_pct": 15.222729,
-            "p75_pct": 29.081081,
+            "p25_pct": 10.13573,
+            "median_pct": 15.218186,
+            "p75_pct": 29.076194,
             "max_pct": 1582.963071,
-            "mean_pct": 182.805121
+            "mean_pct": 182.784527
           },
           "series": [
             {
@@ -39985,27 +39985,27 @@
               "annual_equivalent_pct": 9.854327
             },
             {
-              "date": "2026-10-07",
-              "annual_equivalent_pct": 9.917987
+              "date": "2026-10-08",
+              "annual_equivalent_pct": 9.922683
             }
           ]
         },
         "real": {
           "latest": {
-            "start": "2019-09-30",
-            "end": "2026-10-07",
+            "start": "2019-10-01",
+            "end": "2026-10-08",
             "business_days": 1764,
-            "accumulated_pct": 93.856939,
-            "annual_equivalent_pct": 9.917987
+            "accumulated_pct": 93.914921,
+            "annual_equivalent_pct": 9.922683
           },
           "distribution": {
-            "count": 6336,
+            "count": 6337,
             "min_pct": 7.777455,
-            "p25_pct": 9.663081,
-            "median_pct": 10.899669,
-            "p75_pct": 17.502687,
+            "p25_pct": 9.66336,
+            "median_pct": 10.899358,
+            "p75_pct": 17.501901,
             "max_pct": 30.430675,
-            "mean_pct": 13.570976
+            "mean_pct": 13.5704
           },
           "series": [
             {
@@ -41217,27 +41217,27 @@
               "annual_equivalent_pct": 9.854327
             },
             {
-              "date": "2026-10-07",
-              "annual_equivalent_pct": 9.917987
+              "date": "2026-10-08",
+              "annual_equivalent_pct": 9.922683
             }
           ]
         },
         "targets": {
           "latest": {
-            "start": "2019-09-30",
-            "end": "2026-10-07",
+            "start": "2019-10-01",
+            "end": "2026-10-08",
             "business_days": 1764,
-            "accumulated_pct": 93.856939,
-            "annual_equivalent_pct": 9.917987
+            "accumulated_pct": 93.914921,
+            "annual_equivalent_pct": 9.922683
           },
           "distribution": {
-            "count": 5088,
+            "count": 5089,
             "min_pct": 7.777455,
-            "p25_pct": 9.053229,
-            "median_pct": 10.292102,
-            "p75_pct": 13.102229,
+            "p25_pct": 9.054245,
+            "median_pct": 10.292081,
+            "p75_pct": 13.101765,
             "max_pct": 18.569942,
-            "mean_pct": 11.346841
+            "mean_pct": 11.346562
           },
           "series": [
             {
@@ -42213,27 +42213,27 @@
               "annual_equivalent_pct": 9.89451
             },
             {
-              "date": "2026-10-07",
-              "annual_equivalent_pct": 9.917987
+              "date": "2026-10-08",
+              "annual_equivalent_pct": 9.922683
             }
           ]
         },
         "recent": {
           "latest": {
-            "start": "2019-09-30",
-            "end": "2026-10-07",
+            "start": "2019-10-01",
+            "end": "2026-10-08",
             "business_days": 1764,
-            "accumulated_pct": 93.856939,
-            "annual_equivalent_pct": 9.917987
+            "accumulated_pct": 93.914921,
+            "annual_equivalent_pct": 9.922683
           },
           "distribution": {
-            "count": 3702,
+            "count": 3703,
             "min_pct": 7.777455,
-            "p25_pct": 8.272585,
-            "median_pct": 9.935208,
-            "p75_pct": 10.480979,
+            "p25_pct": 8.273264,
+            "median_pct": 9.934531,
+            "p75_pct": 10.480706,
             "max_pct": 12.790878,
-            "mean_pct": 9.645563
+            "mean_pct": 9.645638
           },
           "series": [
             {
@@ -42945,8 +42945,8 @@
               "annual_equivalent_pct": 9.89451
             },
             {
-              "date": "2026-10-07",
-              "annual_equivalent_pct": 9.917987
+              "date": "2026-10-08",
+              "annual_equivalent_pct": 9.922683
             }
           ]
         }
@@ -42956,20 +42956,20 @@
       "label": "10A",
       "business_days": 2520,
       "latest": {
-        "start": "2016-09-22",
-        "end": "2026-10-07",
+        "start": "2016-09-23",
+        "end": "2026-10-08",
         "business_days": 2520,
-        "accumulated_pct": 145.897422,
-        "annual_equivalent_pct": 9.41463
+        "accumulated_pct": 145.89331,
+        "annual_equivalent_pct": 9.414447
       },
       "distribution": {
-        "count": 7638,
+        "count": 7639,
         "min_pct": 8.365357,
-        "p25_pct": 10.132252,
-        "median_pct": 15.084116,
-        "p75_pct": 64.940644,
+        "p25_pct": 10.130389,
+        "median_pct": 15.082928,
+        "p75_pct": 64.87631,
         "max_pct": 766.300938,
-        "mean_pct": 109.604056
+        "mean_pct": 109.590941
       },
       "series": [
         {
@@ -44429,27 +44429,27 @@
           "annual_equivalent_pct": 9.417192
         },
         {
-          "date": "2026-10-07",
-          "annual_equivalent_pct": 9.41463
+          "date": "2026-10-08",
+          "annual_equivalent_pct": 9.414447
         }
       ],
       "regimes": {
         "full": {
           "latest": {
-            "start": "2016-09-22",
-            "end": "2026-10-07",
+            "start": "2016-09-23",
+            "end": "2026-10-08",
             "business_days": 2520,
-            "accumulated_pct": 145.897422,
-            "annual_equivalent_pct": 9.41463
+            "accumulated_pct": 145.89331,
+            "annual_equivalent_pct": 9.414447
           },
           "distribution": {
-            "count": 7638,
+            "count": 7639,
             "min_pct": 8.365357,
-            "p25_pct": 10.132252,
-            "median_pct": 15.084116,
-            "p75_pct": 64.940644,
+            "p25_pct": 10.130389,
+            "median_pct": 15.082928,
+            "p75_pct": 64.87631,
             "max_pct": 766.300938,
-            "mean_pct": 109.604056
+            "mean_pct": 109.590941
           },
           "series": [
             {
@@ -45909,27 +45909,27 @@
               "annual_equivalent_pct": 9.417192
             },
             {
-              "date": "2026-10-07",
-              "annual_equivalent_pct": 9.41463
+              "date": "2026-10-08",
+              "annual_equivalent_pct": 9.414447
             }
           ]
         },
         "real": {
           "latest": {
-            "start": "2016-09-22",
-            "end": "2026-10-07",
+            "start": "2016-09-23",
+            "end": "2026-10-08",
             "business_days": 2520,
-            "accumulated_pct": 145.897422,
-            "annual_equivalent_pct": 9.41463
+            "accumulated_pct": 145.89331,
+            "annual_equivalent_pct": 9.414447
           },
           "distribution": {
-            "count": 5580,
+            "count": 5581,
             "min_pct": 8.365357,
-            "p25_pct": 9.41088,
-            "median_pct": 11.300041,
-            "p75_pct": 16.015156,
+            "p25_pct": 9.410929,
+            "median_pct": 11.298994,
+            "p75_pct": 16.014136,
             "max_pct": 27.151087,
-            "mean_pct": 13.362568
+            "mean_pct": 13.361861
           },
           "series": [
             {
@@ -46997,27 +46997,27 @@
               "annual_equivalent_pct": 9.417192
             },
             {
-              "date": "2026-10-07",
-              "annual_equivalent_pct": 9.41463
+              "date": "2026-10-08",
+              "annual_equivalent_pct": 9.414447
             }
           ]
         },
         "targets": {
           "latest": {
-            "start": "2016-09-22",
-            "end": "2026-10-07",
+            "start": "2016-09-23",
+            "end": "2026-10-08",
             "business_days": 2520,
-            "accumulated_pct": 145.897422,
-            "annual_equivalent_pct": 9.41463
+            "accumulated_pct": 145.89331,
+            "annual_equivalent_pct": 9.414447
           },
           "distribution": {
-            "count": 4332,
+            "count": 4333,
             "min_pct": 8.365357,
-            "p25_pct": 9.303767,
-            "median_pct": 10.757991,
-            "p75_pct": 12.355536,
+            "p25_pct": 9.303772,
+            "median_pct": 10.757097,
+            "p75_pct": 12.35452,
             "max_pct": 16.637498,
-            "mean_pct": 11.207563
+            "mean_pct": 11.207149
           },
           "series": [
             {
@@ -47849,27 +47849,27 @@
               "annual_equivalent_pct": 9.415545
             },
             {
-              "date": "2026-10-07",
-              "annual_equivalent_pct": 9.41463
+              "date": "2026-10-08",
+              "annual_equivalent_pct": 9.414447
             }
           ]
         },
         "recent": {
           "latest": {
-            "start": "2016-09-22",
-            "end": "2026-10-07",
+            "start": "2016-09-23",
+            "end": "2026-10-08",
             "business_days": 2520,
-            "accumulated_pct": 145.897422,
-            "annual_equivalent_pct": 9.41463
+            "accumulated_pct": 145.89331,
+            "annual_equivalent_pct": 9.414447
           },
           "distribution": {
-            "count": 2946,
+            "count": 2947,
             "min_pct": 8.365357,
-            "p25_pct": 9.223743,
-            "median_pct": 9.41842,
-            "p75_pct": 10.832262,
+            "p25_pct": 9.224116,
+            "median_pct": 9.418415,
+            "p75_pct": 10.831839,
             "max_pct": 11.663585,
-            "mean_pct": 9.814817
+            "mean_pct": 9.814682
           },
           "series": [
             {
@@ -48437,8 +48437,8 @@
               "annual_equivalent_pct": 9.415545
             },
             {
-              "date": "2026-10-07",
-              "annual_equivalent_pct": 9.41463
+              "date": "2026-10-08",
+              "annual_equivalent_pct": 9.414447
             }
           ]
         }
